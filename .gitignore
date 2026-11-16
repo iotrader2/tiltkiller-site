@@ -1,2 +1,3 @@
-# Private sheet exports — rebuild public backtest/data/ with build_data.py
+# Private sheet exports and local generator (not served on GitHub Pages)
 backtest/raw/
+backtest/build_data.py
