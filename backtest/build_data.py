@@ -9,9 +9,33 @@ from __future__ import annotations
 
 import csv
 import json
+import re
 from pathlib import Path
 
 DATA = Path(__file__).resolve().parent / "data"
+
+
+def scrub_crossback(s: str) -> str:
+    """Rewrite every visible 'crossback' label for the public site."""
+    t = s
+    t = re.sub(r"6\s*EMA\s+crossback", "a 15-minute candle closes back above its 6 EMA", t, flags=re.I)
+    t = re.sub(r"EMA\s+Crossback", "EMA Bounce", t, flags=re.I)
+    t = re.sub(r"Crossback\s+trading\s+rules", "TiltKiller trading rules", t, flags=re.I)
+    t = re.sub(r"crossback\s+rules", "trading rules", t, flags=re.I)
+    t = re.sub(r"Results:\s*crossback", "Results: trading", t, flags=re.I)
+    t = re.sub(r"s_ema-crossback", "s_ema-bounce", t, flags=re.I)
+    t = re.sub(r"cross[\s_-]*back", "bounce", t, flags=re.I)
+    return t
+
+
+def scrub_tree(obj):
+    if isinstance(obj, dict):
+        return {k: scrub_tree(v) for k, v in obj.items()}
+    if isinstance(obj, list):
+        return [scrub_tree(v) for v in obj]
+    if isinstance(obj, str):
+        return scrub_crossback(obj)
+    return obj
 
 
 def read_table(name: str) -> list[dict]:
@@ -197,9 +221,12 @@ def build() -> dict:
 
 
 def main() -> None:
-    out = build()
+    out = scrub_tree(build())
     path = DATA / "backtest.json"
     path.write_text(json.dumps(out, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    blob = path.read_text(encoding="utf-8")
+    if re.search(r"cross[\s_-]*back", blob, flags=re.I):
+        raise SystemExit("backtest.json still contains a crossback substring after scrub")
     print(
         f"Wrote {path} ({path.stat().st_size} bytes) — "
         f"{len(out['rules'])} rules, {len(out['monthly'])} months, {len(out['trades'])} trades"

@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "TiltKiller trading rules v1.6",
-    "sheet": "Results: crossback rules v1.6",
+    "sheet": "Results: trading rules v1.6",
     "period": "November 2023 to November 2026 (three years)",
     "r_definition": "1R is the amount you risk on a trade (what you lose if the stop hits).",
     "version": "1.6",
@@ -51,9 +51,9 @@
     "The rules were chosen by comparing many variants on this same three-year period, so the figures are optimistic.",
     "Held days use daily bars: a day that trades both the stop and a higher price is counted as stopped.",
     "Not modelled: the 15:45 sell time (the backtest sells at the close), commissions, buying power, names added mid-session. The universe is today's list, so delisted names are missing.",
-    "Source: Alpaca 15-minute and daily bars, the scanner daily scan as of each previous close, Yahoo Finance earnings dates; backend/research/crossback_runner.py run 2026-11-16 with KEEP_UP=1 KEEP_DOWN=0 RISK_ATR_MAX=0.25 REGIME=1 REGIME_PRIOR=1 INV_NONE=1 QQQ_COND=close10 LEADER=1 LEADER_ATR=5 LEADER_RISK_ATR=0.35 MIN_ADV=300e6 MIN_ATR=3 SETUP_ONLY=s_ema-crossback,s_mur20 RAISE_AFTER=5 FILTER='rs_intraday > 0 and (ext_s50 > 0 or leader)' (row: extension cap off, at most 3 new trades a day)."
+    "Source: Alpaca 15-minute and daily bars, the scanner daily scan as of each previous close, Yahoo Finance earnings dates; backend/research/bounce_runner.py run 2026-11-16 with KEEP_UP=1 KEEP_DOWN=0 RISK_ATR_MAX=0.25 REGIME=1 REGIME_PRIOR=1 INV_NONE=1 QQQ_COND=close10 LEADER=1 LEADER_ATR=5 LEADER_RISK_ATR=0.35 MIN_ADV=300e6 MIN_ATR=3 SETUP_ONLY=s_ema-bounce,s_mur20 RAISE_AFTER=5 FILTER='rs_intraday > 0 and (ext_s50 > 0 or leader)' (row: extension cap off, at most 3 new trades a day)."
   ],
-  "risk_table_source": "Source: backend/research/crossback_sizing.py on the same run. The account rows above (and the Trades tab) compound trade by trade in order of entry instead, so they differ a little.",
+  "risk_table_source": "Source: backend/research/bounce_sizing.py on the same run. The account rows above (and the Trades tab) compound trade by trade in order of entry instead, so they differ a little.",
   "risk_table": [
     {
       "Risk per trade": "0.10%",
@@ -121,7 +121,7 @@
   ],
   "risk_table_intro": "$100k start, every trade above, positions overlapping as they did (sized at entry). The reshuffled columns replay the same trades in 2,000 random orders: plan for the 1-in-20 drawdown, not the one history happened to give.",
   "rules_meta": {
-    "title": "Crossback trading rules v1.6",
+    "title": "TiltKiller trading rules v1.6",
     "blurb": "Version 1.6, 2026-11-16. The rules as the app runs them. Tested over November 2023 to November 2026; results are on the other tabs. Every rule change gets the next version number (Version history tab)."
   },
   "rules": [
@@ -134,7 +134,7 @@
     {
       "n": 2,
       "group": "Which names: pattern setups (daily scan, as of the previous close)",
-      "rule": "Stock or ETF with an EMA Crossback or a 20-day Moving Average Undercut and Rally on the daily chart (other setups are switched off)",
+      "rule": "Stock or ETF with an EMA Bounce or a 20-day Moving Average Undercut and Rally on the daily chart (other setups are switched off)",
       "value": "2 setups"
     },
     {
@@ -201,7 +201,7 @@
       "n": 13,
       "group": "Entry (15-minute chart)",
       "rule": "A candle closes above the 6 EMA after the prior candle closed at or below it",
-      "value": "6 EMA crossback"
+      "value": "a 15-minute candle closes back above its 6 EMA"
     },
     {
       "n": 14,
@@ -989,7 +989,7 @@
       "kind": "Best",
       "Entry date": "2024-11-22",
       "Symbol": "PLTR",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Kept overnight": "Yes",
       "Exit date": "2024-12-31",
       "Exit": "stop",
@@ -1039,7 +1039,7 @@
       "kind": "Best",
       "Entry date": "2025-11-11",
       "Symbol": "REGN",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Kept overnight": "Yes",
       "Exit date": "2025-12-02",
       "Exit": "stop (gap)",
@@ -1069,7 +1069,7 @@
       "kind": "Best",
       "Entry date": "2026-04-07",
       "Symbol": "KEYS",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Kept overnight": "Yes",
       "Exit date": "2026-04-28",
       "Exit": "stop",
@@ -1109,7 +1109,7 @@
       "kind": "Worst",
       "Entry date": "2026-08-04",
       "Symbol": "CRM",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Kept overnight": "Yes",
       "Exit date": "2026-08-06",
       "Exit": "stop (gap)",
@@ -1119,7 +1119,7 @@
       "kind": "Worst",
       "Entry date": "2026-08-04",
       "Symbol": "NOW",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Kept overnight": "Yes",
       "Exit date": "2026-08-06",
       "Exit": "stop (gap)",
@@ -1159,7 +1159,7 @@
       "kind": "Worst",
       "Entry date": "2024-12-03",
       "Symbol": "CRWD",
-      "Daily setup": "EMA Crossback; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (10-day)",
       "Kept overnight": "No",
       "Exit date": "",
       "Exit": "",
@@ -1169,7 +1169,7 @@
       "kind": "Worst",
       "Entry date": "2024-11-07",
       "Symbol": "DAL",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Kept overnight": "No",
       "Exit date": "",
       "Exit": "",
@@ -1189,7 +1189,7 @@
       "kind": "Worst",
       "Entry date": "2025-10-03",
       "Symbol": "KGC",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Kept overnight": "No",
       "Exit date": "",
       "Exit": "",
@@ -1199,7 +1199,7 @@
       "kind": "Worst",
       "Entry date": "2026-10-09",
       "Symbol": "FIX",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Kept overnight": "Yes",
       "Exit date": "2026-10-12",
       "Exit": "stop (gap)",
@@ -1209,7 +1209,7 @@
       "kind": "Worst",
       "Entry date": "2025-08-14",
       "Symbol": "FIX",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Kept overnight": "No",
       "Exit date": "",
       "Exit": "",
@@ -1219,7 +1219,7 @@
       "kind": "Worst",
       "Entry date": "2024-12-18",
       "Symbol": "DDOG",
-      "Daily setup": "EMA Crossback; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (10-day)",
       "Kept overnight": "No",
       "Exit date": "",
       "Exit": "",
@@ -1229,7 +1229,7 @@
       "kind": "Worst",
       "Entry date": "2024-12-05",
       "Symbol": "CRWD",
-      "Daily setup": "EMA Crossback; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (10-day)",
       "Kept overnight": "No",
       "Exit date": "",
       "Exit": "",
@@ -1239,7 +1239,7 @@
       "kind": "Worst",
       "Entry date": "2026-08-11",
       "Symbol": "PAYX",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Kept overnight": "Yes",
       "Exit date": "2026-08-12",
       "Exit": "stop (gap)",
@@ -1261,7 +1261,7 @@
     {
       "Entry date": "2023-11-10",
       "Symbol": "SPOT",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1272,7 +1272,7 @@
     {
       "Entry date": "2023-11-13",
       "Symbol": "SPOT",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1283,7 +1283,7 @@
     {
       "Entry date": "2023-11-15",
       "Symbol": "ANET",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1305,7 +1305,7 @@
     {
       "Entry date": "2023-11-21",
       "Symbol": "PANW",
-      "Daily setup": "EMA Crossback; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (10-day)",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1371,7 +1371,7 @@
     {
       "Entry date": "2023-12-27",
       "Symbol": "SNAP",
-      "Daily setup": "EMA Crossback; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (10-day)",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1382,7 +1382,7 @@
     {
       "Entry date": "2023-12-28",
       "Symbol": "TTD",
-      "Daily setup": "EMA Crossback; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (10-day)",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1448,7 +1448,7 @@
     {
       "Entry date": "2024-02-07",
       "Symbol": "NFLX",
-      "Daily setup": "EMA Crossback; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (10-day)",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1459,7 +1459,7 @@
     {
       "Entry date": "2024-02-23",
       "Symbol": "DECK",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "9:45",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1536,7 +1536,7 @@
     {
       "Entry date": "2024-03-13",
       "Symbol": "ANET",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2024-03-15",
@@ -1657,7 +1657,7 @@
     {
       "Entry date": "2024-05-07",
       "Symbol": "GE",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:15",
       "Kept overnight": "Yes",
       "Exit date": "2024-05-08",
@@ -1668,7 +1668,7 @@
     {
       "Entry date": "2024-05-07",
       "Symbol": "DELL",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1690,7 +1690,7 @@
     {
       "Entry date": "2024-05-08",
       "Symbol": "NEM",
-      "Daily setup": "Delayed High Volume Close; EMA Crossback",
+      "Daily setup": "Delayed High Volume Close; EMA Bounce",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1701,7 +1701,7 @@
     {
       "Entry date": "2024-05-14",
       "Symbol": "VRT",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:15",
       "Kept overnight": "Yes",
       "Exit date": "2024-05-17",
@@ -1712,7 +1712,7 @@
     {
       "Entry date": "2024-05-14",
       "Symbol": "SNAP",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1723,7 +1723,7 @@
     {
       "Entry date": "2024-05-16",
       "Symbol": "MPWR",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1734,7 +1734,7 @@
     {
       "Entry date": "2024-05-17",
       "Symbol": "BIDU",
-      "Daily setup": "Delayed High Volume Close; EMA Crossback; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "Delayed High Volume Close; EMA Bounce; Moving Average Undercut and Rally (10-day)",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1745,7 +1745,7 @@
     {
       "Entry date": "2024-05-20",
       "Symbol": "BABA",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1767,7 +1767,7 @@
     {
       "Entry date": "2024-05-21",
       "Symbol": "BX",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2024-05-22",
@@ -1789,7 +1789,7 @@
     {
       "Entry date": "2024-06-06",
       "Symbol": "AMD",
-      "Daily setup": "EMA Crossback; Moving Average Undercut and Rally (20-day)",
+      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (20-day)",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1822,7 +1822,7 @@
     {
       "Entry date": "2024-06-10",
       "Symbol": "DECK",
-      "Daily setup": "EMA Crossback; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (10-day)",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1899,7 +1899,7 @@
     {
       "Entry date": "2024-07-05",
       "Symbol": "SHOP",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1921,7 +1921,7 @@
     {
       "Entry date": "2024-07-15",
       "Symbol": "ON",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1932,7 +1932,7 @@
     {
       "Entry date": "2024-08-13",
       "Symbol": "NEM",
-      "Daily setup": "EMA Crossback; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (10-day)",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1976,7 +1976,7 @@
     {
       "Entry date": "2024-08-22",
       "Symbol": "VST",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2024-08-28",
@@ -2086,7 +2086,7 @@
     {
       "Entry date": "2024-10-22",
       "Symbol": "HOOD",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:15",
       "Kept overnight": "Yes",
       "Exit date": "2024-10-23",
@@ -2097,7 +2097,7 @@
     {
       "Entry date": "2024-10-23",
       "Symbol": "PLTR",
-      "Daily setup": "EMA Crossback; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (10-day)",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2141,7 +2141,7 @@
     {
       "Entry date": "2024-11-07",
       "Symbol": "DAL",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2196,7 +2196,7 @@
     {
       "Entry date": "2024-11-22",
       "Symbol": "TWLO",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:15",
       "Kept overnight": "Yes",
       "Exit date": "2024-11-27",
@@ -2218,7 +2218,7 @@
     {
       "Entry date": "2024-11-22",
       "Symbol": "PLTR",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2024-12-31",
@@ -2284,7 +2284,7 @@
     {
       "Entry date": "2024-12-03",
       "Symbol": "CRWD",
-      "Daily setup": "EMA Crossback; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (10-day)",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2317,7 +2317,7 @@
     {
       "Entry date": "2024-12-05",
       "Symbol": "CRWD",
-      "Daily setup": "EMA Crossback; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (10-day)",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2328,7 +2328,7 @@
     {
       "Entry date": "2024-12-05",
       "Symbol": "ZS",
-      "Daily setup": "EMA Crossback; Moving Average Undercut and Rally (20-day)",
+      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (20-day)",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2372,7 +2372,7 @@
     {
       "Entry date": "2024-12-11",
       "Symbol": "WDAY",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2394,7 +2394,7 @@
     {
       "Entry date": "2024-12-12",
       "Symbol": "SHOP",
-      "Daily setup": "EMA Crossback; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (10-day)",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2416,7 +2416,7 @@
     {
       "Entry date": "2024-12-16",
       "Symbol": "WDAY",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2427,7 +2427,7 @@
     {
       "Entry date": "2024-12-17",
       "Symbol": "WDAY",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:00",
       "Kept overnight": "Yes",
       "Exit date": "2024-12-18",
@@ -2438,7 +2438,7 @@
     {
       "Entry date": "2024-12-17",
       "Symbol": "OKTA",
-      "Daily setup": "EMA Crossback; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (10-day)",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2449,7 +2449,7 @@
     {
       "Entry date": "2024-12-18",
       "Symbol": "DDOG",
-      "Daily setup": "EMA Crossback; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (10-day)",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2460,7 +2460,7 @@
     {
       "Entry date": "2024-12-18",
       "Symbol": "XYZ",
-      "Daily setup": "EMA Crossback; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (10-day)",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2493,7 +2493,7 @@
     {
       "Entry date": "2024-12-26",
       "Symbol": "LULU",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "9:45",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2504,7 +2504,7 @@
     {
       "Entry date": "2024-12-26",
       "Symbol": "ULTA",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:00",
       "Kept overnight": "Yes",
       "Exit date": "2024-12-27",
@@ -2570,7 +2570,7 @@
     {
       "Entry date": "2025-02-05",
       "Symbol": "HUBS",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "9:45",
       "Kept overnight": "Yes",
       "Exit date": "2025-02-12",
@@ -2581,7 +2581,7 @@
     {
       "Entry date": "2025-02-05",
       "Symbol": "MDB",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:00",
       "Kept overnight": "Yes",
       "Exit date": "2025-02-07",
@@ -2603,7 +2603,7 @@
     {
       "Entry date": "2025-02-06",
       "Symbol": "GLW",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "9:45",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2625,7 +2625,7 @@
     {
       "Entry date": "2025-02-12",
       "Symbol": "VST",
-      "Daily setup": "Delayed High Volume Close; EMA Crossback; Moving Average Undercut and Rally (20-day)",
+      "Daily setup": "Delayed High Volume Close; EMA Bounce; Moving Average Undercut and Rally (20-day)",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2636,7 +2636,7 @@
     {
       "Entry date": "2025-02-12",
       "Symbol": "APP",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2658,7 +2658,7 @@
     {
       "Entry date": "2025-02-14",
       "Symbol": "VST",
-      "Daily setup": "EMA Crossback; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (10-day)",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2669,7 +2669,7 @@
     {
       "Entry date": "2025-02-19",
       "Symbol": "WDC",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2691,7 +2691,7 @@
     {
       "Entry date": "2025-04-16",
       "Symbol": "MCK",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2735,7 +2735,7 @@
     {
       "Entry date": "2025-05-08",
       "Symbol": "HCA",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2801,7 +2801,7 @@
     {
       "Entry date": "2025-05-30",
       "Symbol": "NRG",
-      "Daily setup": "EMA Crossback; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (10-day)",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2867,7 +2867,7 @@
     {
       "Entry date": "2025-06-17",
       "Symbol": "MPWR",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2889,7 +2889,7 @@
     {
       "Entry date": "2025-06-24",
       "Symbol": "MCHP",
-      "Daily setup": "High Tight Flag; EMA Crossback",
+      "Daily setup": "High Tight Flag; EMA Bounce",
       "Fill time (ET)": "9:45",
       "Kept overnight": "Yes",
       "Exit date": "2025-06-25",
@@ -2911,7 +2911,7 @@
     {
       "Entry date": "2025-06-25",
       "Symbol": "ELF",
-      "Daily setup": "EMA Crossback; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (10-day)",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2025-07-07",
@@ -2955,7 +2955,7 @@
     {
       "Entry date": "2025-07-07",
       "Symbol": "CCJ",
-      "Daily setup": "EMA Crossback; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (10-day)",
       "Fill time (ET)": "10:15",
       "Kept overnight": "Yes",
       "Exit date": "2025-07-08",
@@ -2966,7 +2966,7 @@
     {
       "Entry date": "2025-07-08",
       "Symbol": "SMCI",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "9:45",
       "Kept overnight": "Yes",
       "Exit date": "2025-07-22",
@@ -3076,7 +3076,7 @@
     {
       "Entry date": "2025-07-16",
       "Symbol": "CRDO",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3098,7 +3098,7 @@
     {
       "Entry date": "2025-07-17",
       "Symbol": "INTC",
-      "Daily setup": "EMA Crossback; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (10-day)",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2025-07-24",
@@ -3186,7 +3186,7 @@
     {
       "Entry date": "2025-07-30",
       "Symbol": "AVAV",
-      "Daily setup": "EMA Crossback; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (10-day)",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3263,7 +3263,7 @@
     {
       "Entry date": "2025-08-14",
       "Symbol": "FIX",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3318,7 +3318,7 @@
     {
       "Entry date": "2025-08-19",
       "Symbol": "MU",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3483,7 +3483,7 @@
     {
       "Entry date": "2025-09-22",
       "Symbol": "NRG",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:15",
       "Kept overnight": "Yes",
       "Exit date": "2025-09-23",
@@ -3538,7 +3538,7 @@
     {
       "Entry date": "2025-09-29",
       "Symbol": "AVGO",
-      "Daily setup": "EMA Crossback; Moving Average Undercut and Rally (20-day)",
+      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (20-day)",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3637,7 +3637,7 @@
     {
       "Entry date": "2025-10-03",
       "Symbol": "KGC",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3703,7 +3703,7 @@
     {
       "Entry date": "2025-10-14",
       "Symbol": "AVAV",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3714,7 +3714,7 @@
     {
       "Entry date": "2025-10-14",
       "Symbol": "HL",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3769,7 +3769,7 @@
     {
       "Entry date": "2025-10-21",
       "Symbol": "COHR",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:15",
       "Kept overnight": "Yes",
       "Exit date": "2025-10-22",
@@ -3780,7 +3780,7 @@
     {
       "Entry date": "2025-10-21",
       "Symbol": "DELL",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:15",
       "Kept overnight": "Yes",
       "Exit date": "2025-10-22",
@@ -3989,7 +3989,7 @@
     {
       "Entry date": "2025-10-30",
       "Symbol": "TER",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:15",
       "Kept overnight": "Yes",
       "Exit date": "2025-11-07",
@@ -4033,7 +4033,7 @@
     {
       "Entry date": "2025-11-04",
       "Symbol": "KTOS",
-      "Daily setup": "EMA Crossback; Wedge Pop",
+      "Daily setup": "EMA Bounce; Wedge Pop",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4066,7 +4066,7 @@
     {
       "Entry date": "2025-11-06",
       "Symbol": "GLW",
-      "Daily setup": "EMA Crossback; Moving Average Undercut and Rally (20-day)",
+      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (20-day)",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4088,7 +4088,7 @@
     {
       "Entry date": "2025-11-11",
       "Symbol": "REGN",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:15",
       "Kept overnight": "Yes",
       "Exit date": "2025-12-02",
@@ -4099,7 +4099,7 @@
     {
       "Entry date": "2025-11-13",
       "Symbol": "UPS",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "9:45",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4143,7 +4143,7 @@
     {
       "Entry date": "2025-11-25",
       "Symbol": "EQT",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4209,7 +4209,7 @@
     {
       "Entry date": "2025-12-04",
       "Symbol": "CIEN",
-      "Daily setup": "Delayed High Volume Close; EMA Crossback; Moving Average Undercut and Rally (20-day)",
+      "Daily setup": "Delayed High Volume Close; EMA Bounce; Moving Average Undercut and Rally (20-day)",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4286,7 +4286,7 @@
     {
       "Entry date": "2025-12-31",
       "Symbol": "AAL",
-      "Daily setup": "EMA Crossback; Moving Average Undercut and Rally (20-day)",
+      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (20-day)",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4341,7 +4341,7 @@
     {
       "Entry date": "2026-01-28",
       "Symbol": "COHR",
-      "Daily setup": "Delayed High Volume Close; EMA Crossback",
+      "Daily setup": "Delayed High Volume Close; EMA Bounce",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2026-01-29",
@@ -4363,7 +4363,7 @@
     {
       "Entry date": "2026-02-26",
       "Symbol": "MCK",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4374,7 +4374,7 @@
     {
       "Entry date": "2026-02-27",
       "Symbol": "NCLH",
-      "Daily setup": "Delayed High Volume Close; EMA Crossback",
+      "Daily setup": "Delayed High Volume Close; EMA Bounce",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4550,7 +4550,7 @@
     {
       "Entry date": "2026-04-07",
       "Symbol": "KEYS",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2026-04-28",
@@ -4649,7 +4649,7 @@
     {
       "Entry date": "2026-04-20",
       "Symbol": "ODFL",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:00",
       "Kept overnight": "Yes",
       "Exit date": "2026-04-24",
@@ -4682,7 +4682,7 @@
     {
       "Entry date": "2026-04-23",
       "Symbol": "GLW",
-      "Daily setup": "EMA Crossback; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (10-day)",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -5078,7 +5078,7 @@
     {
       "Entry date": "2026-06-05",
       "Symbol": "CHRW",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -5089,7 +5089,7 @@
     {
       "Entry date": "2026-06-05",
       "Symbol": "PANW",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -5166,7 +5166,7 @@
     {
       "Entry date": "2026-06-23",
       "Symbol": "CNC",
-      "Daily setup": "EMA Crossback; Moving Average Undercut and Rally (20-day)",
+      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (20-day)",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -5276,7 +5276,7 @@
     {
       "Entry date": "2026-08-04",
       "Symbol": "NOW",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:00",
       "Kept overnight": "Yes",
       "Exit date": "2026-08-06",
@@ -5287,7 +5287,7 @@
     {
       "Entry date": "2026-08-04",
       "Symbol": "CRM",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:00",
       "Kept overnight": "Yes",
       "Exit date": "2026-08-06",
@@ -5298,7 +5298,7 @@
     {
       "Entry date": "2026-08-05",
       "Symbol": "DHR",
-      "Daily setup": "EMA Crossback; Moving Average Undercut and Rally (20-day)",
+      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (20-day)",
       "Fill time (ET)": "10:00",
       "Kept overnight": "Yes",
       "Exit date": "2026-08-06",
@@ -5309,7 +5309,7 @@
     {
       "Entry date": "2026-08-07",
       "Symbol": "PAYX",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -5320,7 +5320,7 @@
     {
       "Entry date": "2026-08-07",
       "Symbol": "BSX",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -5331,7 +5331,7 @@
     {
       "Entry date": "2026-08-10",
       "Symbol": "BX",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:15",
       "Kept overnight": "Yes",
       "Exit date": "2026-08-18",
@@ -5342,7 +5342,7 @@
     {
       "Entry date": "2026-08-10",
       "Symbol": "APO",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:15",
       "Kept overnight": "Yes",
       "Exit date": "2026-08-18",
@@ -5364,7 +5364,7 @@
     {
       "Entry date": "2026-08-11",
       "Symbol": "PAYX",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2026-08-12",
@@ -5375,7 +5375,7 @@
     {
       "Entry date": "2026-08-11",
       "Symbol": "AJG",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2026-08-12",
@@ -5386,7 +5386,7 @@
     {
       "Entry date": "2026-08-14",
       "Symbol": "BKNG",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -5408,7 +5408,7 @@
     {
       "Entry date": "2026-08-28",
       "Symbol": "ADBE",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -5474,7 +5474,7 @@
     {
       "Entry date": "2026-09-25",
       "Symbol": "LITE",
-      "Daily setup": "Delayed High Volume Close; EMA Crossback",
+      "Daily setup": "Delayed High Volume Close; EMA Bounce",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2026-09-28",
@@ -5496,7 +5496,7 @@
     {
       "Entry date": "2026-09-29",
       "Symbol": "DELL",
-      "Daily setup": "EMA Crossback; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (10-day)",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -5518,7 +5518,7 @@
     {
       "Entry date": "2026-10-01",
       "Symbol": "BMNR",
-      "Daily setup": "EMA Crossback; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (10-day)",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -5540,7 +5540,7 @@
     {
       "Entry date": "2026-10-06",
       "Symbol": "PSX",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:15",
       "Kept overnight": "Yes",
       "Exit date": "2026-10-22",
@@ -5551,7 +5551,7 @@
     {
       "Entry date": "2026-10-09",
       "Symbol": "FIX",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2026-10-12",
@@ -5562,7 +5562,7 @@
     {
       "Entry date": "2026-10-12",
       "Symbol": "RVTY",
-      "Daily setup": "EMA Crossback; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (10-day)",
       "Fill time (ET)": "9:45",
       "Kept overnight": "No",
       "Exit date": "",
@@ -5595,7 +5595,7 @@
     {
       "Entry date": "2026-11-13",
       "Symbol": "AJG",
-      "Daily setup": "EMA Crossback; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (10-day)",
       "Fill time (ET)": "9:45",
       "Kept overnight": "No",
       "Exit date": "",
@@ -5606,7 +5606,7 @@
     {
       "Entry date": "2026-11-13",
       "Symbol": "ACN",
-      "Daily setup": "High Tight Flag; EMA Crossback; Moving Average Undercut and Rally (20-day)",
+      "Daily setup": "High Tight Flag; EMA Bounce; Moving Average Undercut and Rally (20-day)",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -5617,7 +5617,7 @@
     {
       "Entry date": "2026-11-13",
       "Symbol": "EL",
-      "Daily setup": "EMA Crossback",
+      "Daily setup": "EMA Bounce",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",

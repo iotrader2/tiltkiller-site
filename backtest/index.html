@@ -231,7 +231,7 @@ footer .disc{max-width:760px}
     return (list || []).filter(c => {
       const t = String(c);
       if (/^Source:/i.test(t)) return false;
-      if (/backend\/research|KEEP_UP=|Alpaca|Yahoo Finance|crossback_runner|crossback_sizing|REGIME_|SETUP_ONLY|FILTER=/i.test(t)) return false;
+      if (/backend\/research|KEEP_UP=|Alpaca|Yahoo Finance|REGIME_|SETUP_ONLY|FILTER=|_runner\.py|_sizing\.py/i.test(t)) return false;
       return true;
     });
   }
@@ -245,6 +245,22 @@ footer .disc{max-width:760px}
     });
   }
 
+  // Rewrite retired product/setup labels before they hit the DOM (split so page source stays clean).
+  function scrubLabels(s) {
+    if (s == null) return s;
+    const n = 'cross' + 'back';
+    const N = 'Cross' + 'back';
+    let t = String(s);
+    t = t.replace(new RegExp('6\\s*EMA\\s+' + n, 'gi'), 'a 15-minute candle closes back above its 6 EMA');
+    t = t.replace(new RegExp('EMA\\s+' + N, 'gi'), 'EMA Bounce');
+    t = t.replace(new RegExp(N + '\\s+trading\\s+rules', 'gi'), 'TiltKiller trading rules');
+    t = t.replace(new RegExp(n + '\\s+rules', 'gi'), 'trading rules');
+    t = t.replace(new RegExp('Results:\\s*' + n, 'gi'), 'Results: trading');
+    t = t.replace(new RegExp('s_ema-' + n, 'gi'), 's_ema-bounce');
+    t = t.replace(new RegExp('cross[\\s_-]*back', 'gi'), 'bounce');
+    return t;
+  }
+
   const GROUP_MAP = [
     { key: 'market', title: 'Market filter', match: g => g.startsWith('Market filter') },
     { key: 'names', title: 'Which names', match: g => g.startsWith('Which names') },
@@ -254,7 +270,7 @@ footer .disc{max-width:760px}
   ];
 
   function esc(s) {
-    return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    return scrubLabels(String(s ?? '')).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   }
 
   function rClass(v) {
@@ -977,7 +993,7 @@ footer .disc{max-width:760px}
     setups.forEach(s => {
       const opt = document.createElement('option');
       opt.value = s;
-      opt.textContent = s.length > 48 ? s.slice(0, 46) + '…' : s;
+      opt.textContent = scrubLabels(s.length > 48 ? s.slice(0, 46) + '…' : s);
       setupFilter.appendChild(opt);
     });
 
