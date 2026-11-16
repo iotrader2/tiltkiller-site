@@ -23,10 +23,10 @@ def build() -> dict:
     lines = (DATA / "results.csv").read_text(encoding="utf-8").splitlines()
     out: dict = {
         "meta": {
-            "title": "Crossback trading rules v1.6",
+            "title": "TiltKiller trading rules v1.6",
             "sheet": lines[0],
             "period": "November 2023 to November 2026 (three years)",
-            "r_definition": "1R is the distance from the buy to the initial stop.",
+            "r_definition": "1R is the amount you risk on a trade (what you lose if the stop hits).",
             "version": "1.6",
             "as_of": "2026-11-16",
         }

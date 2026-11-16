@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Crossback Backtest v1.6 · TiltKiller</title>
-<meta name="description" content="Simulated Crossback trading rules v1.6 backtest: November 2023 to November 2026. Not actual trading results.">
+<title>TiltKiller Backtest · Rules v1.6</title>
+<meta name="description" content="Simulated TiltKiller rules v1.6 backtest: November 2023 to November 2026. Not actual trading results.">
 <link rel="canonical" href="https://tiltkiller.com/backtest">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://tiltkiller.com/backtest">
-<meta property="og:title" content="Crossback Backtest v1.6 · TiltKiller">
+<meta property="og:title" content="TiltKiller Backtest · Rules v1.6">
 <meta property="og:image" content="https://tiltkiller.com/img/ragnar-512.jpg">
 <meta name="twitter:card" content="summary">
 <link rel="icon" href="/favicon.ico" sizes="any">
@@ -172,13 +172,13 @@ footer .disc{max-width:760px}
   data-maker="Anthropic"
   data-model-blurb="Anthropic's smartest model"></div>
 
-<div id="app"><p class="loading">Loading the raid log…</p></div>
+<div id="app"><p class="loading">Loading the backtest…</p></div>
 
 <footer>
   <div class="wrap">
     <p><a href="https://x.com/tiltkillerapp" rel="noopener">@tiltkillerapp on X</a></p>
     <p>&copy; 2026 Innovative Objects LLC. TiltKiller is operated by Innovative Objects LLC.</p>
-    <p class="disc">Legal stuff, translated from Old Norse: Ragnar is not a financial advisor. His only certification is in pillaging. He has lost three longships on margin, which is exactly why he built this. TiltKiller is an educational tool and does not provide financial advice. Trading involves risk of loss. No scanner, rule, or deeply disappointed Viking can guarantee profits. The backtest on this page is simulated and hypothetical.</p>
+    <p class="disc">Legal stuff, translated from Old Norse: Ragnar is not a financial advisor. His only certification is in pillaging. He has lost three longships on margin, which is exactly why he built this. TiltKiller is an educational tool and does not provide financial advice. Trading involves risk of loss. No alert, rule, or deeply disappointed Viking can guarantee profits. The backtest on this page is simulated and hypothetical.</p>
   </div>
 </footer>
 
@@ -205,9 +205,27 @@ footer .disc{max-width:760px}
     <h2>How this was built</h2>
     <span class="model-badge">${esc(modelName)}</span>
   </div>
-  <p>Every rule was coded, stress-tested across three years of 15-minute bars, and checked against rule variants by an AI research analyst — <strong>${esc(modelName)}</strong> by ${esc(maker)}, which the owner describes as ${esc(modelBlurb)}. The owner made the trading calls.</p>
-  <p class="hb-note">Honesty check from the sheet: variants were compared on this same period, so the figures are optimistic. The version history below shows each change was measured.</p>
+  <p>Every rule was written down, tested over three years of market data, and compared against other versions by an AI research analyst — <strong>${esc(modelName)}</strong> by ${esc(maker)}, which the owner describes as ${esc(modelBlurb)}. The owner made the trading calls.</p>
+  <p class="hb-note">Honesty check: different rule versions were compared on this same period, so the figures look a bit optimistic. The version history below shows each change was measured.</p>
 </aside>`;
+  }
+
+  function plainCaveats(list) {
+    return (list || []).filter(c => {
+      const t = String(c);
+      if (/^Source:/i.test(t)) return false;
+      if (/backend\/research|KEEP_UP=|Alpaca|Yahoo Finance|crossback_runner|crossback_sizing|REGIME_|SETUP_ONLY|FILTER=/i.test(t)) return false;
+      return true;
+    });
+  }
+
+  function plainNotes(list) {
+    return (list || []).filter(c => {
+      const t = String(c);
+      if (/backend\/research|Source:/i.test(t)) return false;
+      if (/15:45|4:00 close|150-name/i.test(t)) return false; // too technical for this page
+      return true;
+    });
   }
 
   const GROUP_MAP = [
@@ -433,27 +451,27 @@ footer .disc{max-width:760px}
     const stats = [
       { l: 'Trades', v: R['Trades'] },
       { l: 'Win rate', v: R['Win rate'] },
-      { l: 'Average win', v: R['Average win (R)'] + ' R', cls: 'pos' },
-      { l: 'Average loss', v: R['Average loss (R)'] + ' R', cls: 'neg' },
-      { l: 'Expectancy', v: R['Expectancy (R per trade)'] + ' R', cls: 'pos' },
+      { l: 'Average win (in R)', v: R['Average win (R)'], cls: 'pos' },
+      { l: 'Average loss (in R)', v: R['Average loss (R)'], cls: 'neg' },
+      { l: 'Expectancy per trade (R)', v: R['Expectancy (R per trade)'], cls: 'pos' },
       { l: 'Total R', v: R['Total R'], cls: 'pos' },
-      { l: 'Largest drawdown (month-end)', v: R['Largest drawdown (R), month-end to month-end'] + ' R', cls: 'neg' },
-      { l: 'Ending account (entry-order compound)', v: R['Ending account'], cls: 'pos' },
+      { l: 'Largest drawdown (month-end, R)', v: R['Largest drawdown (R), month-end to month-end'], cls: 'neg' },
+      { l: 'Ending account', v: R['Ending account'], cls: 'pos' },
       { l: 'Yearly return (3 years)', v: R['Yearly return (three years)'], cls: 'pos' },
-      { l: 'Risk used in haul below', v: I.risk_per_trade },
+      { l: 'Risk per trade used here', v: I.risk_per_trade },
       { l: 'Starting account', v: I.starting_account },
-      { l: 'Total return, compounded', v: R['Total return, compounded'], cls: 'pos' },
+      { l: 'Total return', v: R['Total return, compounded'], cls: 'pos' },
     ];
 
     app.innerHTML = `
 <header class="hero"><div class="wrap">
   <img class="logo" src="/img/ragnar-160.png" alt="Ragnar, the TiltKiller Viking">
-  <h1>Crossback <span>Backtest</span></h1>
-  <p class="sub">Simulated Crossback rules v${esc(data.meta.version)} · ${esc(data.meta.period)}. Same trades, different risk. You dial how hard to push — history shows what that cost in drawdown.</p>
+  <h1>TiltKiller <span>Backtest</span></h1>
+  <p class="sub">Simulated rules v${esc(data.meta.version)} · ${esc(data.meta.period)}. Same trades, different risk. You choose how hard to push — and see what that meant for the account and the drawdowns. <strong style="color:var(--text)">1R = the amount you risk on a trade</strong> (what you lose if the stop hits).</p>
   <div class="pillrow">
     <span class="pill"><b>v${esc(data.meta.version)}</b> · as of ${esc(data.meta.as_of)}</span>
     <span class="pill">$100k start · 3-year test</span>
-    <span class="pill">Slippage <b>${esc(I.slippage_per_side)}</b> / side</span>
+    <span class="pill">Small slippage built in</span>
   </div>
   <div class="banner" role="note"><strong>Hypothetical performance.</strong> ${esc(data.disclaimer.hypothetical)}</div>
   ${howBuiltBlock()}
@@ -464,7 +482,7 @@ footer .disc{max-width:760px}
   <div class="risk-stage">
     <div class="risk-kicker"><span class="sim-tag">Simulated backtest results</span></div>
     <h2>Pick your risk. See what history said.</h2>
-    <p class="risk-copy">Same Crossback trades on a <strong>$100,000</strong> start over three years. Slide risk from <strong>0.10%</strong> to <strong>0.50%</strong> per trade and watch ending account, yearly growth, and the ugly drawdowns move together. No promises — just the sheet.</p>
+    <p class="risk-copy">Same trades on a <strong>$100,000</strong> start over three years. Slide risk from <strong>0.10%</strong> to <strong>0.50%</strong> per trade and watch ending account, yearly growth, and the hard drawdowns move together. No promises — just the simulated results.</p>
 
     <div class="risk-picker">
       <div class="seg" role="group" aria-label="Risk per trade" id="riskSeg">
@@ -486,7 +504,7 @@ footer .disc{max-width:760px}
       <div class="metric" data-key="p5"><span class="mv neg" id="mP5">—</span><span class="ml">1-in-20 drawdown</span><span class="msub">reshuffled 2,000 times</span></div>
     </div>
 
-    <p class="plan-line"><strong>Plan for the 1-in-20 drawdown</strong> — not the lucky path this one history happened to give. Reshuffled columns replay the same trades in 2,000 random orders.</p>
+    <p class="plan-line"><strong>Plan for the 1-in-20 drawdown</strong> — not the lucky path this one history happened to give. We reshuffled the same trades 2,000 times so you can see a tougher, more realistic drawdown.</p>
 
     <div class="charts-2">
       <div class="mini-chart">
@@ -525,28 +543,27 @@ footer .disc{max-width:760px}
         </tbody>
       </table>
     </div>
-    <p class="note">${esc(data.risk_table_intro || '')}</p>
-    ${data.risk_table_source ? `<p class="note">${esc(data.risk_table_source)}</p>` : ''}
+    <p class="note">$100k start. Same trades at each risk level. Plan for the 1-in-20 drawdown, not the one lucky path history gave you.</p>
 
     <div class="risk-cta">
-      <p>Ready to trade the leaders with a risk you chose on purpose?</p>
-      <a class="cta-btn" href="/#waitlist">Join the waitlist on the homepage →</a>
+      <p>Ready for clear alerts with a risk you chose on purpose?</p>
+      <a class="cta-btn" href="https://discord.gg/rcmJE4xKsK" target="_blank" rel="noopener">Join the Discord →</a>
     </div>
   </div>
 </section>
 
 <section>
   <h2>The haul at a glance</h2>
-  <p class="lead">Headline results at ${esc(I.risk_per_trade)} risk, compounding trade by trade in entry order (a little different from the overlapping-position risk table above). Win rate is low on purpose — the edge lives in the runners you hold.</p>
+  <p class="lead">Headline results at ${esc(I.risk_per_trade)} risk per trade. Win rate is low on purpose — most of the gain comes from a few big winners you hold. Remember: <strong style="color:var(--text)">1R is the dollars you risk on one trade</strong>.</p>
   <div class="stats">
     ${stats.map(s => `<div class="stat"><span class="v ${s.cls || ''}">${esc(s.v)}</span><span class="l">${esc(s.l)}</span></div>`).join('')}
   </div>
-  <p class="note">Trade-by-trade max drawdown (simulation): ${esc(data.extra.trade_by_trade_max_drawdown_R)} R. ${esc(data.extra.trade_by_trade_max_drawdown_note || '')}</p>
+  <p class="note">Largest drawdown measured trade by trade in this simulation: ${esc(data.extra.trade_by_trade_max_drawdown_R)} R.</p>
 </section>
 
 <section>
   <h2>Equity curve</h2>
-  <p class="lead">Cumulative R by month, with drawdown from the peak underneath. Flat stretches are not a bug — many months the market filter keeps you on the beach.</p>
+  <p class="lead">Total gain in R by month, with drawdowns from the peak underneath. Flat stretches are normal — some months the rules keep you out.</p>
   <div class="chart-card">
     ${equitySvg(data.monthly)}
     <div class="chart-meta">
@@ -560,7 +577,7 @@ footer .disc{max-width:760px}
 
 <section>
   <h2>The rules in plain language</h2>
-  <p class="lead">${esc(data.rules_meta.blurb)}</p>
+  <p class="lead">Rules v${esc(data.meta.version)} as the alerts follow them. Tested from ${esc(data.meta.period.replace(/ \(three years\)/, ''))}. Get the alert, know the entry and the stop, size it to your risk.</p>
   <div class="grid">
     ${groups.map(g => `
       <div class="card">
@@ -570,7 +587,7 @@ footer .disc{max-width:760px}
         </ul>
       </div>`).join('')}
   </div>
-  ${data.rules_notes?.length ? `<div class="note">${data.rules_notes.map(n => `<p>${esc(n)}</p>`).join('')}</div>` : ''}
+  ${plainNotes(data.rules_notes).length ? `<div class="note">${plainNotes(data.rules_notes).map(n => `<p>${esc(n)}</p>`).join('')}</div>` : ''}
 </section>
 
 <section>
@@ -598,7 +615,7 @@ footer .disc{max-width:760px}
 
 <section>
   <h2>Half-year stretches</h2>
-  <p class="lead">Every half-year in this run finished green. That is part of why v1.6 earned the longship — and part of why you should still distrust cherry-picked calm seas.</p>
+  <p class="lead">Every half-year in this run finished green. That is encouraging — and still not a promise. Markets change.</p>
   <div class="table-wrap">
     <table>
       <thead><tr>
@@ -620,8 +637,8 @@ footer .disc{max-width:760px}
 </section>
 
 <section>
-  <h2>Best &amp; worst raids</h2>
-  <p class="lead">A few longships carried most of the gold. Respect that — and do not size as if every trade will be HOOD.</p>
+  <h2>Best &amp; worst trades</h2>
+  <p class="lead">A few big winners carried most of the result. Respect that — and do not size as if every trade will be a home run.</p>
   <div class="bw">
     <div class="card">
       <h3 class="best">Best</h3>
@@ -669,7 +686,7 @@ footer .disc{max-width:760px}
 
 <section>
   <h2>Rule-variant comparison</h2>
-  <p class="lead">Nearby cousins of v1.6 on the same three-year stretch. Close scores do not mean the rules are interchangeable — half-year shape matters.</p>
+  <p class="lead">Nearby versions of the rules on the same three-year stretch. Close scores do not mean they are the same — the path through each half-year still matters.</p>
   <div class="table-wrap">
     <table>
       <thead><tr>
@@ -688,12 +705,12 @@ footer .disc{max-width:760px}
       </tbody>
     </table>
   </div>
-  ${data.comparison_note ? `<p class="note">${esc(data.comparison_note)}</p>` : ''}
+  <p class="note">Simulated results. Months with no trades count as months without a gain.</p>
 </section>
 
 <section>
   <h2>Version history</h2>
-  <p class="lead">Every rule change gets a new number. Read the scars before you polish the axe.</p>
+  <p class="lead">Every rule change gets a new number. Each one was measured before it shipped.</p>
   <div class="version">
     ${data.version_history.map(v => `
       <div class="vrow">
@@ -708,7 +725,7 @@ footer .disc{max-width:760px}
     <h2>How far to trust this</h2>
     <p class="hypo">${esc(data.disclaimer.hypothetical)}</p>
     <ol>
-      ${data.caveats.map(c => `<li>${esc(c)}</li>`).join('')}
+      ${plainCaveats(data.caveats).map(c => `<li>${esc(c)}</li>`).join('')}
     </ol>
     <p class="note" style="margin-top:18px;color:#c4a0a8">Simulated backtest · not actual trading · past results do not guarantee future results · not investment advice.</p>
   </div>
