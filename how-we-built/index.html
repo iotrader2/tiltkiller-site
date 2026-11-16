@@ -118,7 +118,7 @@ footer .disc{max-width:760px}
     <div class="card"><span class="n">1</span><h3>Rebuild the market</h3><p>We collected three years of daily and 15-minute price data for every stock and ETF on our list, plus earnings dates. For each trading day, we recreated the scan exactly as it would have looked at the previous close, so no test could peek at the future.</p></div>
     <div class="card"><span class="n">2</span><h3>Start with a fixed entry</h3><p>The entry never changed: a 15-minute candle that turns back up, bought at that candle’s high. Everything else — which stocks, where the stop goes, when to sell — was open to testing.</p></div>
     <div class="card"><span class="n">3</span><h3>Change one thing at a time</h3><p>Each test moved a single setting, such as the minimum trading volume, the stop size, or the market filter, and replayed every trade. Changing one thing at a time shows exactly what that setting is worth.</p></div>
-    <div class="card"><span class="n">4</span><h3>Build test grids</h3><p>Where two settings could interact, we tested combinations side by side in a grid so we could see what each pairing was worth.</p></div>
+    <div class="card"><span class="n">4</span><h3>Build test grids</h3><p>Where two settings could interact, we tested combinations side by side in a grid (a matrix).</p></div>
     <div class="card"><span class="n">5</span><h3>Score on more than profit</h3><p>Each test was ranked on total return in R, the deepest losing stretch (drawdown), the share of winning months, and account growth at several risk levels.</p></div>
     <div class="card"><span class="n">6</span><h3>Demand consistency</h3><p>We split the three years into six half-years. A rule that only helped in one of them was treated as luck and left out.</p></div>
     <div class="card"><span class="n">7</span><h3>Check for mistakes</h3><p>When a result looked too good, or the app and the test disagreed, we traced it to the cause and fixed it before going on.</p></div>
@@ -162,6 +162,7 @@ footer .disc{max-width:760px}
     <li><strong>They are on the optimistic side.</strong><span>The rules were chosen by comparing many versions on the same three years, so the best one looks better than it will in the future.</span></li>
     <li><strong>A few big winners did much of the work.</strong><span>The two best trades made about a third of the total. Missing one big winner changes the result a lot.</span></li>
     <li><strong>The bad stretches can be deeper.</strong><span>When we shuffled the same trades into 2,000 random orders, 1 in 20 had a drawdown nearly twice the one history gave.</span></li>
+    <li><strong>Stops aren’t guaranteed.</strong><span>If a stock gaps down overnight or on news, it can open below your stop and the loss can be bigger than your planned risk. Positions held overnight carry this risk.</span></li>
   </ul>
   <div class="cta-row">
     <a class="ghost-btn" href="/backtest">See the full backtest</a>
