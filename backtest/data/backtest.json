@@ -633,7 +633,7 @@
       "Daily setup": "Leader",
       "Kept overnight": "Yes",
       "Exit date": "2025-07-30",
-      "Exit": "before earnings",
+      "Exit": "close",
       "R": "+59.44"
     },
     {
@@ -743,7 +743,7 @@
       "Daily setup": "Leader",
       "Kept overnight": "Yes",
       "Exit date": "2026-05-05",
-      "Exit": "before earnings",
+      "Exit": "close",
       "R": "+15.88"
     },
     {
@@ -763,7 +763,7 @@
       "Daily setup": "Leader",
       "Kept overnight": "Yes",
       "Exit date": "2026-04-28",
-      "Exit": "before earnings",
+      "Exit": "close",
       "R": "+15.53"
     },
     {
@@ -1980,7 +1980,7 @@
       "Fill time (ET)": "10:15",
       "Kept overnight": "Yes",
       "Exit date": "2024-12-09",
-      "Exit": "before earnings",
+      "Exit": "close",
       "Days held": "6",
       "R": "+4.21"
     },
@@ -2255,7 +2255,7 @@
       "Fill time (ET)": "9:45",
       "Kept overnight": "Yes",
       "Exit date": "2025-02-12",
-      "Exit": "before earnings",
+      "Exit": "close",
       "Days held": "7",
       "R": "+2.23"
     },
@@ -2431,7 +2431,7 @@
       "Fill time (ET)": "10:00",
       "Kept overnight": "Yes",
       "Exit date": "2025-07-30",
-      "Exit": "before earnings",
+      "Exit": "close",
       "Days held": "72",
       "R": "+59.44"
     },
@@ -3245,7 +3245,7 @@
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2025-10-21",
-      "Exit": "before earnings",
+      "Exit": "close",
       "Days held": "21",
       "R": "+15.04"
     },
@@ -3509,7 +3509,7 @@
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2025-10-27",
-      "Exit": "before earnings",
+      "Exit": "close",
       "Days held": "4",
       "R": "+4.17"
     },
@@ -4224,7 +4224,7 @@
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2026-04-28",
-      "Exit": "before earnings",
+      "Exit": "close",
       "Days held": "21",
       "R": "+15.53"
     },
@@ -4279,7 +4279,7 @@
       "Fill time (ET)": "9:45",
       "Kept overnight": "Yes",
       "Exit date": "2026-05-05",
-      "Exit": "before earnings",
+      "Exit": "close",
       "Days held": "22",
       "R": "+15.88"
     },
@@ -4345,7 +4345,7 @@
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2026-04-22",
-      "Exit": "before earnings",
+      "Exit": "close",
       "Days held": "2",
       "R": "+3.43"
     },
@@ -4609,7 +4609,7 @@
       "Fill time (ET)": "9:45",
       "Kept overnight": "Yes",
       "Exit date": "2026-06-02",
-      "Exit": "before earnings",
+      "Exit": "close",
       "Days held": "5",
       "R": "+10.72"
     },
@@ -4950,7 +4950,7 @@
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2026-08-04",
-      "Exit": "before earnings",
+      "Exit": "close",
       "Days held": "1",
       "R": "+4.48"
     },
