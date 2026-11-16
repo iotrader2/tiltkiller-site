@@ -17,16 +17,12 @@ nav{display:flex;align-items:center;gap:10px;padding:18px 0;font-weight:700;font
 h1{font-size:clamp(34px,6vw,60px);line-height:1.1;margin:28px 0 16px}h1 span{color:var(--blue)}
 .sub{max-width:680px;margin:0 auto 28px;color:var(--muted);font-size:18px}
 .cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:0 auto 14px}
-.discord-btn{display:inline-block;padding:14px 24px;border-radius:10px;background:var(--blue);color:#07090d;font-weight:700;font-size:16px;text-decoration:none}
-.discord-btn:hover{filter:brightness(1.1)}
 .ghost-btn{display:inline-block;padding:14px 22px;border-radius:10px;border:1px solid rgba(56,189,248,.45);color:var(--text);font-weight:600;font-size:16px;text-decoration:none;background:transparent}
 .ghost-btn:hover{background:rgba(56,189,248,.1);border-color:#38bdf8;color:#38bdf8}
-form{display:flex;gap:10px;max-width:480px;margin:18px auto 0;flex-wrap:wrap;justify-content:center}
-input[type=email]{flex:1 1 220px;padding:12px 14px;border-radius:10px;border:1px solid #232c3a;background:var(--card);color:var(--text);font-size:15px}
-input:focus{outline:2px solid var(--blue)}button{padding:12px 18px;border:0;border-radius:10px;background:#1b2330;color:var(--text);font-weight:600;font-size:15px;cursor:pointer;border:1px solid #2a3548}
-button:hover{filter:brightness(1.1)}.note{color:var(--muted);font-size:14px;margin-top:12px}.thanks{display:none;color:var(--green);font-weight:600}
-.secondary{max-width:480px;margin:22px auto 0;padding-top:18px;border-top:1px solid #1b2330}
-.secondary p{margin:0 0 10px;color:var(--muted);font-size:14px}
+.note{color:var(--muted);font-size:14px;margin-top:12px}
+.soon{display:inline-block;padding:14px 22px;border-radius:10px;border:1px solid rgba(56,189,248,.4);background:rgba(56,189,248,.08);color:var(--text);font-weight:650;font-size:15px;line-height:1.35}
+.soon strong{color:var(--blue);font-weight:750}
+.cta .soon{margin-top:6px}
 section{padding:60px 0}h2{font-size:30px;text-align:center;margin:0 0 16px}
 .lead{max-width:680px;margin:0 auto 28px;text-align:center;color:var(--muted);font-size:17px}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
@@ -55,17 +51,12 @@ footer{padding:40px 0;color:var(--muted);font-size:13px;border-top:1px solid #1b
 <header class="hero"><div class="wrap">
 <img class="logo" src="img/ragnar-160.png" alt="Ragnar, the TiltKiller Viking">
 <h1>Trade the leaders. <span>Stop blowing up.</span></h1>
-<p class="sub">TiltKiller sends trade alerts in Discord — the stock, the entry, and the stop. You choose how much to risk. Built so you can trade with NO emotions: same written rules, every time.</p>
+<p class="sub">TiltKiller will send trade alerts in Discord — the stock, the entry, and the stop. You choose how much to risk. Built so you can trade with NO emotions: same written rules, every time.</p>
 <div class="cta-row">
-  <a class="discord-btn" href="https://discord.gg/rcmJE4xKsK" target="_blank" rel="noopener">Join the Discord</a>
+  <span class="soon" role="status"><strong>Trade alerts in Discord — opening soon</strong></span>
   <a class="ghost-btn" href="/backtest">See the backtest</a>
 </div>
 <p class="note">Get the alert. Know the plan. Size it to your risk.</p>
-<div class="secondary" id="waitlist">
-  <p>Prefer email updates? Join the waitlist.</p>
-  <form class="wl" action="https://formsubmit.co/8e90299c64359ae88f654469976290e0" method="POST"><input type="hidden" name="_cc" value="tiltkillerapp@gmail.com"><input type="hidden" name="_subject" value="TiltKiller waitlist signup (hero)"><input type="hidden" name="_captcha" value="false"><input type="text" name="_honey" style="display:none"><input type="email" name="email" required placeholder="you@example.com" aria-label="Email"><button>Join the waitlist</button></form>
-  <p class="thanks">Thanks! You're on the list.</p>
-</div>
 </div></header>
 <main class="wrap">
 <section class="no-emo">
@@ -83,18 +74,18 @@ footer{padding:40px 0;color:var(--muted);font-size:13px;border-top:1px solid #1b
 <section><h2>How it works</h2>
 <p class="lead">No guesswork. A clear alert, a clear stop, and a size that matches what you're willing to lose.</p>
 <div class="grid">
-<div class="card"><b>1</b><strong>Get the alert in Discord.</strong> When a setup is ready, you see the name, the entry, and where the stop goes.</div>
+<div class="card"><b>1</b><strong>Get the alert in Discord.</strong> When a setup is ready, you’ll see the name, the entry, and where the stop goes.</div>
 <div class="card"><b>2</b><strong>Know the plan before you click.</strong> Entry and stop are decided up front — not after the trade starts moving.</div>
 <div class="card"><b>3</b><strong>Size it to your risk.</strong> You pick how much of your account you're willing to lose if the stop hits. TiltKiller keeps that number honest.</div>
 </div></section>
 <section class="alerts"><h2>Alerts in Discord. That's the product.</h2>
-<p class="lead">Alerts hit Discord in the first hour after the opening bell. We check every 15-minute candle from the open to 10:45 ET — so you know your trade, entry, and stop early, then get on with your day.</p>
+<p class="lead">Alerts will hit Discord in the first hour after the opening bell. We check every 15-minute candle from the open to 10:45 ET — so you know your trade, entry, and stop early, then get on with your day.</p>
 <ul class="steps">
 <li><span class="n">1</span><div><strong>Alert arrives.</strong> The stock, the entry price, and the stop — in one Discord message, before 10:45 ET.</div></li>
 <li><span class="n">2</span><div><strong>You size the trade.</strong> Decide how much you're okay losing if you're wrong. That amount is your 1R (the money at risk on that trade).</div></li>
 <li><span class="n">3</span><div><strong>You follow the rules.</strong> Stop goes in right away. No revenge trades. No guessing mid-raid.</div></li>
 </ul>
-<p style="margin-top:28px"><a class="discord-btn" href="https://discord.gg/rcmJE4xKsK" target="_blank" rel="noopener">Join the Discord</a></p>
+<p style="margin-top:28px"><span class="soon" role="status"><strong>Trade alerts in Discord — opening soon</strong></span></p>
 </section>
 <section><h2>The rules Ragnar lives by</h2><ul class="rules"><li>Only leaders in the top sectors</li><li>The stop goes in right away</li><li>Size from your risk, not your gut</li><li>Hold the winners</li><li>No trading in the opening chaos</li></ul><p style="text-align:center;margin-top:22px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap"><a class="rulesbtn" href="/rules">Read the full rules &rarr;</a><a class="rulesbtn" href="/backtest">See the backtest &rarr;</a></p></section>
 <section><h2>Ragnar</h2><div class="ragnar"><img src="img/ragnar-512.jpg" alt="Ragnar"><p style="font-size:19px">Meet Ragnar. He has strong opinions on how to trade, and he doesn't give a sh*t about your gut feeling. Neither does the market. Break a rule and he lets you know, before it costs you.</p></div></section>
@@ -105,17 +96,13 @@ footer{padding:40px 0;color:var(--muted);font-size:13px;border-top:1px solid #1b
     <p>TiltKiller is him turning those 18 years of trading lessons into a rules-based system: clear alerts, written rules, and a stop on every trade — so you can stay disciplined when emotion wants to take over.</p>
   </div>
 </section>
-<section class="cta"><h2>Stop trading on tilt. Join the Discord.</h2>
-<p>Clear alerts. Clear risk. A Viking who won't let you wing it.</p>
-<a class="discord-btn" href="https://discord.gg/rcmJE4xKsK" target="_blank" rel="noopener">Join the Discord</a>
+<section class="cta"><h2>Stop trading on tilt.</h2>
+<p>Clear alerts in Discord. Clear risk. A Viking who won't let you wing it.</p>
+<span class="soon" role="status"><strong>Trade alerts in Discord — opening soon</strong></span>
 </section>
 </main>
-<footer><div class="wrap"><p><a href="https://x.com/tiltkillerapp" rel="noopener">@tiltkillerapp on X</a> · <a href="https://discord.gg/rcmJE4xKsK" target="_blank" rel="noopener">Discord</a></p>
+<footer><div class="wrap"><p><a href="https://x.com/tiltkillerapp" rel="noopener">@tiltkillerapp on X</a></p>
 <p>&copy; 2026 Innovative Objects LLC. TiltKiller is operated by Innovative Objects LLC.</p>
 <p class="disc">Legal stuff, translated from Old Norse: Ragnar is not a financial advisor. His only certification is in pillaging. He has lost three longships on margin, which is exactly why he built this. TiltKiller is an educational tool and does not provide financial advice. Trading involves risk of loss. No alert, rule, or deeply disappointed Viking can guarantee profits.</p></div></footer>
-<script>
-document.querySelectorAll('form.wl').forEach(f=>f.addEventListener('submit',async e=>{e.preventDefault();const b=f.querySelector('button');b.disabled=true;b.textContent='Joining…';
-try{const r=await fetch(f.action.replace('formsubmit.co/','formsubmit.co/ajax/'),{method:'POST',headers:{Accept:'application/json'},body:new FormData(f)});if(!r.ok)throw 0;f.style.display='none';f.nextElementSibling.style.display='block'}
-catch(_){b.disabled=false;b.textContent='Try again'}}));
-</script><script data-goatcounter="https://tiltkiller.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script data-goatcounter="https://tiltkiller.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body></html>
