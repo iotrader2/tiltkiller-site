@@ -44,11 +44,11 @@
     "trade_by_trade_max_drawdown_note": "At 0.03% slippage; does not recalculate."
   },
   "caveats": [
-    "The result rests on a few large runners. HOOD (+59R, bought 2025-05-19) and MARA (+43R, bought 2023-11-27) are 32% of the total.",
+    "A big share of the gain comes from a few large winners. HOOD (bought 2025-05-19, about +59 times the amount risked) and MARA (bought 2023-11-27, about +43 times the amount risked) are 32% of the total.",
     "Many months have no trades because the market was in a downtrend, or they lose. Expect long flat stretches between big winners.",
-    "The rules were chosen by comparing many variants on this same three-year period, so the figures are optimistic.",
-    "Held days use daily bars: a day that trades both the stop and a higher price is counted as stopped.",
-    "Not modelled: the 15:45 sell time (the backtest sells at the close), commissions, buying power, names added mid-session. The universe is today's list, so delisted names are missing."
+    "The rules were chosen by comparing many rule sets on this same three-year period, so the figures look optimistic.",
+    "Not in this simulation: late-day sells (the backtest sells at the close), trading costs, how much cash you actually need in the account, and stocks added mid-session. The name list is today’s list, so stocks that later disappeared are missing.",
+    "At most 3 new trades a day — so you know your risk up front."
   ],
   "risk_table": [
     {
@@ -118,226 +118,41 @@
   "risk_table_intro": "$100k start, every trade above, positions overlapping as they did (sized at entry). The reshuffled columns replay the same trades in 2,000 random orders: plan for the 1-in-20 drawdown, not the one history happened to give.",
   "rules_meta": {
     "title": "TiltKiller trading rules",
-    "blurb": "2026-11-16. The rules as the app runs them. Tested over November 2023 to November 2026; results are on the other tabs. Every change is recorded with its full results."
+    "blurb": "2026-11-16. The rules as the app runs them. Tested over November 2023 to November 2026. Every change is recorded with its full results."
   },
   "rules": [
     {
       "n": 1,
       "group": "Market filter",
-      "rule": "No new long trades when the overall market looks weak. On those days the watchlist holds no long names",
-      "value": "uptrend only"
+      "rule": "Only trades when the overall market is in an uptrend. If the market looks weak, no new long alerts that day.",
+      "value": ""
     },
     {
       "n": 2,
-      "group": "Which names: pattern setups (daily scan, as of the previous close)",
-      "rule": "Pullback",
-      "value": "2 setups"
+      "group": "Which names",
+      "rule": "Focuses on strong, heavily traded leading stocks — Leaders and Pullbacks.",
+      "value": ""
     },
     {
       "n": 3,
-      "group": "Which names: pattern setups (daily scan, as of the previous close)",
-      "rule": "Its theme ranks in the top band of themes",
-      "value": "top 25%"
+      "group": "Entry",
+      "rule": "Buys when a stock turns back up early in the session. Alerts land in Discord from the open through 10:45 ET.",
+      "value": ""
     },
     {
       "n": 4,
-      "group": "Which names: pattern setups (daily scan, as of the previous close)",
-      "rule": "Average dollar volume at least",
-      "value": "$300M"
+      "group": "Stop",
+      "rule": "Every trade has a set stop. Stops aren’t guaranteed — a gap down overnight or on news can open below your stop.",
+      "value": ""
     },
     {
       "n": 5,
-      "group": "Which names: pattern setups (daily scan, as of the previous close)",
-      "rule": "Daily volatility above",
-      "value": "3%"
-    },
-    {
-      "n": 6,
-      "group": "Which names: pattern setups (daily scan, as of the previous close)",
-      "rule": "At most this many names, highest score first",
-      "value": "150"
-    },
-    {
-      "n": 7,
-      "group": "Which names: pattern setups (daily scan, as of the previous close)",
-      "rule": "Pullback",
-      "value": "off"
-    },
-    {
-      "n": 8,
-      "group": "Which names: pattern setups (daily scan, as of the previous close)",
-      "rule": "The buy is above the prior-day longer-term trend; names under it are not on the watchlist",
-      "value": "above 50-day"
-    },
-    {
-      "n": 9,
-      "group": "Leader",
-      "rule": "Pullback",
-      "value": "Leader"
-    },
-    {
-      "n": 10,
-      "group": "Leader",
-      "rule": "Daily volatility at least",
-      "value": "5%"
-    },
-    {
-      "n": 11,
-      "group": "Leader",
-      "rule": "Average dollar volume at least",
-      "value": "$300M"
-    },
-    {
-      "n": 12,
-      "group": "Leader",
-      "rule": "No theme rank, no chart pattern and no name cap required",
+      "group": "Exits & holds",
+      "rule": "Winners can be held overnight; losers are cut quickly. Max 3 new trades a day. Long trades only.",
       "value": ""
-    },
-    {
-      "n": 13,
-      "group": "Entry (15-minute chart)",
-      "rule": "Pullback",
-      "value": "Pullback"
-    },
-    {
-      "n": 14,
-      "group": "Entry (15-minute chart)",
-      "rule": "That candle is green, with a body of at least this share of its range",
-      "value": "50%"
-    },
-    {
-      "n": 15,
-      "group": "Entry (15-minute chart)",
-      "rule": "Pullback",
-      "value": "Pullback"
-    },
-    {
-      "n": 16,
-      "group": "Entry (15-minute chart)",
-      "rule": "It ends by the cutoff, and the buy fills on a candle starting before the cutoff",
-      "value": "10:45 ET"
-    },
-    {
-      "n": 17,
-      "group": "Entry (15-minute chart)",
-      "rule": "Buy at the candle high plus",
-      "value": "1 cent"
-    },
-    {
-      "n": 18,
-      "group": "Entry (15-minute chart)",
-      "rule": "The order is cancelled if the candle low trades first; at most this many fills per name a day",
-      "value": "2"
-    },
-    {
-      "n": 19,
-      "group": "Entry (15-minute chart)",
-      "rule": "The stock is stronger than the market since the open: its % move from today's open to the buy price minus the market's % move from its open to the trigger candle's close is above this many points; otherwise skip",
-      "value": "0 points"
-    },
-    {
-      "n": 20,
-      "group": "Stop",
-      "rule": "Stop under the candle low by (the position is sized to this stop)",
-      "value": "1 cent"
-    },
-    {
-      "n": 21,
-      "group": "Stop",
-      "rule": "Pattern setups: skip when the stop is further from the buy than this share of the 14-day daily volatility",
-      "value": "0.25"
-    },
-    {
-      "n": 22,
-      "group": "Stop",
-      "rule": "Leader",
-      "value": "0.35"
-    },
-    {
-      "n": 23,
-      "group": "Stop",
-      "rule": "Skip a stop closer to the buy than",
-      "value": "0.5%"
-    },
-    {
-      "n": 24,
-      "group": "Stop",
-      "rule": "After this many 15-minute candles past the trigger candle, raise the stop once to 1 cent under their lowest low",
-      "value": "5 candles"
-    },
-    {
-      "n": 25,
-      "group": "Entry day, 15:45 ET",
-      "rule": "Pullback",
-      "value": "hold all"
-    },
-    {
-      "n": 26,
-      "group": "Entry day, 15:45 ET",
-      "rule": "Otherwise sell the whole position",
-      "value": "sell all"
-    },
-    {
-      "n": 27,
-      "group": "Entry day, 15:45 ET",
-      "rule": "An earnings report due before the next open: sell the whole position",
-      "value": "sell all"
-    },
-    {
-      "n": 28,
-      "group": "Entry day, 15:45 ET",
-      "rule": "The stock is stronger than the market since the open: its % move from today's open to the buy price minus the market's % move from its open to the trigger candle's close is above this many points; otherwise skip",
-      "value": "0 points"
-    },
-    {
-      "n": 29,
-      "group": "Held position (later days)",
-      "rule": "At each day's 15:45 check (the entry day's included), raise the stop to 1 cent under the lowest daily low of the last N days, today included; it only moves up",
-      "value": "5 days"
-    },
-    {
-      "n": 30,
-      "group": "Held position (later days)",
-      "rule": "A gap under the stop sells at the open",
-      "value": ""
-    },
-    {
-      "n": 31,
-      "group": "Held position (later days)",
-      "rule": "Sell at the 15:45 check before an earnings report",
-      "value": ""
-    },
-    {
-      "n": 32,
-      "group": "Limits",
-      "rule": "A name with an open position takes no new trade",
-      "value": ""
-    },
-    {
-      "n": 33,
-      "group": "Limits",
-      "rule": "At most this many new trades a day, earliest fills first (higher daily scan score first within the same candle); later fills and waiting alerts are cancelled",
-      "value": "3"
-    },
-    {
-      "n": 34,
-      "group": "Limits",
-      "rule": "Long trades only: no short side",
-      "value": "longs only"
-    },
-    {
-      "n": 35,
-      "group": "Limits",
-      "rule": "The watchlist is system-only: only the alerts add and remove names; you cannot add, remove or star names",
-      "value": "system only"
     }
   ],
-  "rules_notes": [
-    "The backtest matches the app except: sells are at the 4:00 close instead of 15:45, and the 150-name cap is not applied.",
-    "The two pattern setups and the stronger-than-the market rule were chosen after comparing many variants on this same period, so the total is optimistic; the rule's case rests on every half-year being positive.",
-    "Risk per trade is not a rule of the app; the account columns use the risk on the Results tab.",
-    "Risk per trade on the Results and Trades tabs: 0.20% of the account, compounding trade by trade in order of entry; with several positions open at once the real path differs a little."
-  ],
+  "rules_notes": [],
   "monthly": [
     {
       "Month": "Nov 2023",

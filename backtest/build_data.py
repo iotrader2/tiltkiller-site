@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-"""Rebuild backtest/data/backtest.json from the exported CSV tabs.
+"""Rebuild public backtest/data/backtest.json from private sheet exports.
 
-Swap a future rules version by replacing the CSVs in backtest/data/, then:
+Raw CSVs live in backtest/raw/ (gitignored — not shipped). Public output is only
+plain-language JSON under backtest/data/.
 
     python3 backtest/build_data.py
 """
@@ -10,26 +11,38 @@ from __future__ import annotations
 import csv
 import json
 import re
+import sys
 from pathlib import Path
 
-DATA = Path(__file__).resolve().parent / "data"
+ROOT = Path(__file__).resolve().parent
+RAW = ROOT / "raw"
+DATA = ROOT / "data"
+
+BANNED = re.compile(
+    r"cross[\s_-]*back|\bEMA\b|\bATR\b|\bQQQ\b|\bSPY\b|\bvariant|\bversion\b",
+    flags=re.I,
+)
 
 
 def plain_setup(s: str) -> str:
-    t = s.strip()
-    if re.search(r"trend\s*leader", t, flags=re.I):
+    t = (s or "").strip()
+    if not t:
+        return t
+    if re.search(r"(?:^|\b)(?:trend\s*)?leader(?:\b|$)", t, flags=re.I) and not re.search(
+        r"EMA|Undercut|Flag|Wedge|Delayed", t, flags=re.I
+    ):
+        return "Leader"
+    if re.fullmatch(r"Leader", t, flags=re.I):
         return "Leader"
     return "Pullback"
 
 
 def scrub_public_text(s: str) -> str:
-    """Plain-language rewrites for the public site (no indicator jargon)."""
+    """Force plain-language public copy (no indicator / private jargon)."""
     t = s
     t = re.sub(r"Trend Leader names only", "Leaders only", t, flags=re.I)
-    t = re.sub(r"v\d+\.\d+:\s*no 50-day rule", "without the longer-term trend filter", t, flags=re.I)
     t = re.sub(r"\bVersion\s*\d+\.\d+\b", "the current rules", t, flags=re.I)
     t = re.sub(r"\bv\d+\.\d+\b", "", t, flags=re.I)
-    t = re.sub(r"\s{2,}", " ", t).strip()
     t = re.sub(
         r"Pattern names not below all of the 10 EMA, 20 EMA and 50-day average",
         "Pullbacks that stay in an overall uptrend",
@@ -49,18 +62,6 @@ def scrub_public_text(s: str) -> str:
         flags=re.I,
     )
     t = re.sub(
-        r"Pattern-setup names need the buy above the prior-day 50-day average, and names under it are left off the watchlist \(Trend Leaders already meet it\)\.",
-        "Pullback trades need the stock in a longer-term uptrend; leaders already qualify.",
-        t,
-        flags=re.I,
-    )
-    t = re.sub(
-        r"Take a long only when the stock is stronger than QQQ since the open:[^.]*\.",
-        "Only take trades when the stock is beating the market since the open.",
-        t,
-        flags=re.I,
-    )
-    t = re.sub(
         r"Many months have no trades \(QQQ under its 10 EMA\) or lose\.\s*Expect long flat stretches between runners\.",
         "Many months have no trades because the market was in a downtrend, or they lose. Expect long flat stretches between big winners.",
         t,
@@ -74,15 +75,33 @@ def scrub_public_text(s: str) -> str:
         flags=re.I,
     )
     t = re.sub(r"Market filter \(QQQ daily chart\)", "Market filter", t, flags=re.I)
+    t = re.sub(
+        r"Take a long only when the stock is stronger than QQQ since the open:[^.]*\.",
+        "Only take trades when the stock is beating the market since the open.",
+        t,
+        flags=re.I,
+    )
+    t = re.sub(r"stronger than QQQ since the open", "beating the market since the open", t, flags=re.I)
+    t = re.sub(
+        r"comparing many variants",
+        "comparing many rule sets",
+        t,
+        flags=re.I,
+    )
+    t = re.sub(
+        r"comparing many versions",
+        "comparing many rule sets",
+        t,
+        flags=re.I,
+    )
+    t = re.sub(r"\bvariants?\b", "rule sets", t, flags=re.I)
+    t = re.sub(r"\bversions?\b", "rule sets", t, flags=re.I)
+
     if re.search(
         r"Trend Leader|EMA|Moving Average Undercut|Delayed High Volume|High Tight Flag|Wedge Pop",
         t,
         flags=re.I,
-    ) and len(t) < 140 and not re.search(
-        r"v1\.|this document|Pullbacks |Leaders only|without the longer|Many months|downtrend|Expect long",
-        t,
-        flags=re.I,
-    ) and "." not in t:
+    ) and len(t) < 140 and "." not in t:
         return plain_setup(t)
 
     t = re.sub(r"\b\d+\s*EMA\b", "trend", t, flags=re.I)
@@ -102,6 +121,7 @@ def scrub_public_text(s: str) -> str:
     t = re.sub(r"Results:\s*crossback", "Results: trading", t, flags=re.I)
     t = re.sub(r"s_ema-crossback", "pattern", t, flags=re.I)
     t = re.sub(r"cross[\s_-]*back", "pullback", t, flags=re.I)
+    t = re.sub(r"\s{2,}", " ", t).strip()
     return t
 
 
@@ -122,13 +142,18 @@ def scrub_tree(obj):
 
 
 def read_table(name: str) -> list[dict]:
-    with open(DATA / name, newline="", encoding="utf-8") as f:
+    with open(RAW / name, newline="", encoding="utf-8") as f:
         return list(csv.DictReader(f))
 
 
 def build() -> dict:
-    lines = (DATA / "results.csv").read_text(encoding="utf-8").splitlines()
-    # No version / variant labels in the public JSON — those stay private.
+    if not (RAW / "results.csv").exists():
+        raise SystemExit(
+            f"Missing raw sheets in {RAW}. Place private CSV exports there "
+            "(gitignored), then re-run build_data.py."
+        )
+
+    lines = (RAW / "results.csv").read_text(encoding="utf-8").splitlines()
     out: dict = {
         "meta": {
             "title": "TiltKiller trading rules",
@@ -180,21 +205,14 @@ def build() -> dict:
             extra["trade_by_trade_max_drawdown_note"] = parts[2] if len(parts) > 2 else ""
     out["extra"] = extra
 
-    caveats: list[str] = []
-    for line in lines[lines.index("How far to trust this") + 1 :]:
-        if line == "Risk per trade":
-            break
-        if not line.strip():
-            continue
-        text = next(csv.reader([line]))[0].strip()
-        if text.startswith("$100k start"):
-            break
-        # Research Source lines stay private — not shipped in the public JSON.
-        if text.startswith("Source:"):
-            continue
-        if text:
-            caveats.append(text)
-    out["caveats"] = caveats
+    # Public trust bullets (page may also hardcode these). No private/jargon strings.
+    out["caveats"] = [
+        "A big share of the gain comes from a few large winners. HOOD (bought 2025-05-19, about +59 times the amount risked) and MARA (bought 2023-11-27, about +43 times the amount risked) are 32% of the total.",
+        "Many months have no trades because the market was in a downtrend, or they lose. Expect long flat stretches between big winners.",
+        "The rules were chosen by comparing many rule sets on this same three-year period, so the figures look optimistic.",
+        "Not in this simulation: late-day sells (the backtest sells at the close), trading costs, how much cash you actually need in the account, and stocks added mid-session. The name list is today’s list, so stocks that later disappeared are missing.",
+        "At most 3 new trades a day — so you know your risk up front.",
+    ]
 
     risk_rows: list[dict] = []
     for idx, line in enumerate(lines):
@@ -204,7 +222,7 @@ def build() -> dict:
                 if not line2.strip():
                     continue
                 if line2.startswith('"Source:') or line2.startswith("Source:"):
-                    break  # do not ship research Source strings
+                    break
                 parts = next(csv.reader([line2]))
                 if not parts[0]:
                     continue
@@ -217,53 +235,54 @@ def build() -> dict:
             out["risk_table_intro"] = next(csv.reader([line]))[0]
             break
 
-    rules_lines = (DATA / "rules.csv").read_text(encoding="utf-8").splitlines()
-    # Strip private version labels from public meta copy.
-    title = re.sub(r"\s*v\d+\.\d+\b", "", rules_lines[0], flags=re.I).strip()
-    blurb = next(csv.reader([rules_lines[1]]))[0]
-    blurb = re.sub(r"Version\s*\d+\.\d+\s*,?\s*", "", blurb, flags=re.I).strip()
-    blurb = re.sub(r"\bv\d+\.\d+\b", "", blurb, flags=re.I).strip()
-    blurb = re.sub(
-        r"Every rule change gets the next version number\s*\([^)]*\)\.?",
-        "Every change is recorded with its full results.",
-        blurb,
-        flags=re.I,
-    ).strip()
+    # Plain public rule summary only — never ship the private coded rule sheet.
     out["rules_meta"] = {
-        "title": title or "TiltKiller trading rules",
-        "blurb": blurb,
+        "title": "TiltKiller trading rules",
+        "blurb": (
+            "2026-11-16. The rules as the app runs them. "
+            "Tested over November 2023 to November 2026. "
+            "Every change is recorded with its full results."
+        ),
     }
-    header_idx = next(i for i, l in enumerate(rules_lines) if l.startswith("#,Group,Rule"))
-    rules: list[dict] = []
-    for row in csv.DictReader(rules_lines[header_idx:]):
-        n = (row.get("#") or "").strip()
-        if not n.isdigit():
-            break
-        rules.append(
-            {
-                "n": int(n),
-                "group": row["Group"],
-                "rule": row["Rule"],
-                "value": (row.get("Value") or "").strip(),
-            }
-        )
-    out["rules"] = rules
-
-    notes: list[str] = []
-    in_notes = False
-    for line in rules_lines:
-        if line.strip() == "Notes":
-            in_notes = True
-            continue
-        if in_notes and line.strip():
-            notes.append(next(csv.reader([line]))[0])
-    out["rules_notes"] = notes
+    out["rules"] = [
+        {
+            "n": 1,
+            "group": "Market filter",
+            "rule": "Only trades when the overall market is in an uptrend. If the market looks weak, no new long alerts that day.",
+            "value": "",
+        },
+        {
+            "n": 2,
+            "group": "Which names",
+            "rule": "Focuses on strong, heavily traded leading stocks — Leaders and Pullbacks.",
+            "value": "",
+        },
+        {
+            "n": 3,
+            "group": "Entry",
+            "rule": "Buys when a stock turns back up early in the session. Alerts land in Discord from the open through 10:45 ET.",
+            "value": "",
+        },
+        {
+            "n": 4,
+            "group": "Stop",
+            "rule": "Every trade has a set stop. Stops aren’t guaranteed — a gap down overnight or on news can open below your stop.",
+            "value": "",
+        },
+        {
+            "n": 5,
+            "group": "Exits & holds",
+            "rule": "Winners can be held overnight; losers are cut quickly. Max 3 new trades a day. Long trades only.",
+            "value": "",
+        },
+    ]
+    # Private sheet notes are not shipped.
+    out["rules_notes"] = []
 
     out["monthly"] = read_table("monthly.csv")
     out["half_years"] = read_table("half-years.csv")
-    # comparison.csv and version_history.csv are private — not shipped.
 
-    with open(DATA / "best_and_worst.csv", newline="", encoding="utf-8") as f:
+    with open(RAW / "best_and_worst.csv", newline="", encoding="utf-8") as f:
         rows = list(csv.reader(f))
     header = ["kind"] + rows[0][1:]
     bw: list[dict] = []
@@ -272,7 +291,10 @@ def build() -> dict:
             continue
         if r[0] in ("Best", "Worst"):
             padded = r + [""] * (len(header) - len(r))
-            bw.append(dict(zip(header, padded[: len(header)])))
+            row = dict(zip(header, padded[: len(header)]))
+            if "Daily setup" in row:
+                row["Daily setup"] = plain_setup(row["Daily setup"])
+            bw.append(row)
         elif r[0].startswith("R after"):
             out["best_worst_note"] = r[0]
     out["best_and_worst"] = bw
@@ -288,8 +310,13 @@ def build() -> dict:
         "Days held",
         "R",
     ]
-    with open(DATA / "trades.csv", newline="", encoding="utf-8") as f:
-        out["trades"] = [{k: row.get(k, "") for k in trade_cols} for row in csv.DictReader(f)]
+    with open(RAW / "trades.csv", newline="", encoding="utf-8") as f:
+        trades = []
+        for row in csv.DictReader(f):
+            item = {k: row.get(k, "") for k in trade_cols}
+            item["Daily setup"] = plain_setup(item["Daily setup"])
+            trades.append(item)
+        out["trades"] = trades
 
     out["disclaimer"] = {
         "title": "How far to trust this",
@@ -302,18 +329,28 @@ def build() -> dict:
     return out
 
 
+def assert_clean(blob: str, path: Path) -> None:
+    hits = sorted(set(m.group(0) for m in BANNED.finditer(blob)))
+    if hits:
+        raise SystemExit(f"{path} still contains banned terms after scrub: {hits}")
+
+
 def main() -> None:
+    DATA.mkdir(parents=True, exist_ok=True)
     out = scrub_tree(build())
     path = DATA / "backtest.json"
-    path.write_text(json.dumps(out, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    blob = path.read_text(encoding="utf-8")
-    if re.search(r"cross[\s_-]*back", blob, flags=re.I):
-        raise SystemExit("backtest.json still contains a crossback substring after scrub")
-    if re.search(r"\bEMA\b", blob):
-        raise SystemExit("backtest.json still contains EMA after scrub")
+    blob = json.dumps(out, indent=2, ensure_ascii=False) + "\n"
+    assert_clean(blob, path)
+    path.write_text(blob, encoding="utf-8")
+
+    # Remove any leftover public CSVs so only clean JSON ships under data/.
+    for leftover in DATA.glob("*.csv"):
+        leftover.unlink()
+        print(f"Removed shipped CSV {leftover.name} (raw sheets live in backtest/raw/)", file=sys.stderr)
+
     print(
         f"Wrote {path} ({path.stat().st_size} bytes) — "
-        f"{len(out['rules'])} rules, {len(out['monthly'])} months, {len(out['trades'])} trades"
+        f"{len(out['rules'])} public rules, {len(out['monthly'])} months, {len(out['trades'])} trades"
     )
 
 
