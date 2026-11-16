@@ -133,12 +133,29 @@ footer .disc{max-width:760px}
 .mini-chart h3{margin:0 0 4px;font-size:15px;font-weight:650}
 .mini-chart .hint{margin:0 0 12px;color:var(--muted);font-size:12.5px}
 .mini-chart svg{width:100%;height:auto;display:block}
+.seg button .agg{display:block;font-size:9px;font-weight:700;letter-spacing:.02em;margin-top:4px;opacity:.9}
+.seg button[aria-pressed="true"] .agg{opacity:1}
+.dollar-block{margin:0 0 18px;background:rgba(7,9,13,.45);border:1px solid #243044;border-radius:16px;padding:18px 16px 14px}
+.dollar-block .db-head{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:6px}
+.dollar-block h3{margin:0;font-size:17px}
+.dollar-block .hint{margin:0 0 14px;color:var(--muted);font-size:13px}
+.tradeoff{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:stretch;margin:0 0 16px}
+.toff{background:rgba(15,20,28,.8);border:1px solid #243044;border-radius:14px;padding:16px 14px;text-align:center}
+.toff.pain{border-color:#5c2434;background:rgba(244,63,94,.07)}
+.toff.growth{border-color:rgba(34,197,94,.35);background:rgba(34,197,94,.06)}
+.toff .toff-v{display:block;font-size:clamp(26px,4vw,36px);font-weight:750;line-height:1.1;margin-bottom:6px;font-variant-numeric:tabular-nums}
+.toff .toff-l{font-size:13px;color:var(--muted);line-height:1.35}
+.toff-mid{display:flex;align-items:center;justify-content:center;color:#8b93a7;font-size:13px;font-weight:700;padding:0 4px;text-transform:uppercase;letter-spacing:.04em}
+.dollar-grid{display:grid;grid-template-columns:1.4fr .9fr;gap:14px}
+.dollar-stats{display:grid;gap:8px}
+.dstat{display:flex;justify-content:space-between;gap:10px;padding:10px 12px;border-radius:10px;background:rgba(15,20,28,.7);border:1px solid #1b2330;font-size:14px}
+.dstat span:last-child{font-weight:700;font-variant-numeric:tabular-nums}
 .risk-cta{margin-top:22px;text-align:center;padding:22px 16px;border-radius:16px;background:linear-gradient(180deg,rgba(56,189,248,.1),rgba(56,189,248,.03));border:1px solid rgba(56,189,248,.28)}
 .risk-cta p{margin:0 0 14px;color:var(--text);font-size:16px}
 .cta-btn{display:inline-block;padding:14px 24px;border-radius:12px;background:var(--blue);color:#07090d;font-weight:750;font-size:16px;text-decoration:none;transition:filter .2s,transform .15s}
 .cta-btn:hover{filter:brightness(1.08);transform:translateY(-1px)}
 .risk-table-note{margin-top:16px}
-@media(max-width:900px){.charts-2{grid-template-columns:1fr}.big-metrics{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:900px){.charts-2,.dollar-grid{grid-template-columns:1fr}.big-metrics{grid-template-columns:repeat(2,1fr)}.tradeoff{grid-template-columns:1fr;}.toff-mid{padding:2px 0}}
 @media(max-width:860px){.stats{grid-template-columns:repeat(2,1fr)}.bw{grid-template-columns:1fr}}
 @media(max-width:560px){
   .seg{border-radius:16px;width:100%}
@@ -380,6 +397,75 @@ footer .disc{max-width:760px}
     </svg>`;
   }
 
+  function riskFraction(riskLabel) {
+    return parsePct(riskLabel) / 100;
+  }
+
+  function compoundDollarCurve(trades, riskLabel) {
+    const risk = riskFraction(riskLabel);
+    let acct = START_ACCOUNT;
+    const pts = [{ i: 0, date: '', acct, label: 'Start' }];
+    for (let i = 0; i < trades.length; i++) {
+      const R = parseFloat(String(trades[i].R).replace('+', '')) || 0;
+      acct = acct + acct * risk * R;
+      pts.push({
+        i: i + 1,
+        date: trades[i]['Entry date'],
+        acct,
+        R,
+        sym: trades[i].Symbol,
+      });
+    }
+    return pts;
+  }
+
+  function dollarEquitySvg(trades, riskLabel) {
+    const pts = compoundDollarCurve(trades, riskLabel);
+    const W = 640, H = 280, padL = 58, padR = 16, padT = 18, padB = 36;
+    const maxA = Math.max(...pts.map(p => p.acct), START_ACCOUNT) * 1.04;
+    const minA = Math.min(...pts.map(p => p.acct), START_ACCOUNT) * 0.98;
+    const x = i => padL + (i / Math.max(pts.length - 1, 1)) * (W - padL - padR);
+    const y = v => padT + (1 - (v - minA) / (maxA - minA || 1)) * (H - padT - padB);
+    const baselineY = y(START_ACCOUNT);
+
+    let line = '';
+    let area = `M ${x(0)} ${baselineY} `;
+    pts.forEach((p, i) => {
+      line += (i ? 'L' : 'M') + ` ${x(i)} ${y(p.acct)} `;
+      area += `L ${x(i)} ${y(p.acct)} `;
+    });
+    area += `L ${x(pts.length - 1)} ${baselineY} Z`;
+
+    const ticks = [0, 0.25, 0.5, 0.75, 1].map(t => {
+      const v = minA + t * (maxA - minA);
+      return `<line x1="${padL}" y1="${y(v)}" x2="${W - padR}" y2="${y(v)}" stroke="#1b2330"/>
+        <text x="${padL - 8}" y="${y(v) + 4}" text-anchor="end" fill="#8b93a7" font-size="10">$${(v / 1000).toFixed(0)}k</text>`;
+    }).join('');
+
+    const labelIdx = [0, Math.floor((pts.length - 1) / 2), pts.length - 1];
+    const labels = labelIdx.map(i => {
+      const label = i === 0 ? 'Start' : (pts[i].date || '');
+      return `<text x="${x(i)}" y="${H - 10}" text-anchor="middle" fill="#8b93a7" font-size="11">${esc(label)}</text>`;
+    }).join('');
+
+    const end = pts[pts.length - 1].acct;
+    return {
+      svg: `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Simulated dollar equity curve from $100,000 at ${esc(riskLabel)} risk per trade">
+        ${ticks}
+        <line x1="${padL}" y1="${baselineY}" x2="${W - padR}" y2="${baselineY}" stroke="#8b93a7" stroke-width="1.2" stroke-dasharray="4 4"/>
+        <text x="${W - padR}" y="${baselineY - 6}" text-anchor="end" fill="#8b93a7" font-size="10">$100k start</text>
+        <path d="${area}" fill="#22c55e18"/>
+        <path d="${line}" fill="none" stroke="#38bdf8" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+        <circle cx="${x(pts.length - 1)}" cy="${y(end)}" r="4.5" fill="#22c55e" stroke="#e6e9ef" stroke-width="1.5">
+          <title>End ${esc(fmtMoney(end))}</title>
+        </circle>
+        ${labels}
+      </svg>`,
+      ending: end,
+      pts,
+    };
+  }
+
   function equitySvg(monthly) {
     const W = 960, H = 280, padL = 44, padR = 16, padT = 18, padB = 28;
     const pts = monthly.map((m, i) => ({
@@ -446,7 +532,8 @@ footer .disc{max-width:760px}
     const best = data.best_and_worst.filter(t => t.kind === 'Best').slice(0, 10);
     const worst = data.best_and_worst.filter(t => t.kind === 'Worst').slice(0, 10);
     const riskRows = data.risk_table;
-    const defaultRisk = riskRows.some(r => r['Risk per trade'] === '0.20%') ? '0.20%' : riskRows[0]['Risk per trade'];
+    // Feature the most aggressive row (0.50%) as the default showcase.
+    const defaultRisk = riskRows.some(r => r['Risk per trade'] === '0.50%') ? '0.50%' : riskRows[riskRows.length - 1]['Risk per trade'];
 
     const stats = [
       { l: 'Trades', v: R['Trades'] },
@@ -482,17 +569,18 @@ footer .disc{max-width:760px}
   <div class="risk-stage">
     <div class="risk-kicker"><span class="sim-tag">Simulated backtest results</span></div>
     <h2>Pick your risk. See what history said.</h2>
-    <p class="risk-copy">Same trades on a <strong>$100,000</strong> start over three years. Slide risk from <strong>0.10%</strong> to <strong>0.50%</strong> per trade and watch ending account, yearly growth, and the hard drawdowns move together. No promises — just the simulated results.</p>
+    <p class="risk-copy">Same trades on a <strong>$100,000</strong> start over three years. Slide risk from <strong>0.10%</strong> to <strong>0.50%</strong> (most aggressive) and watch ending account, yearly growth, and the hard drawdowns move together. Higher risk can grow the account faster — and the drawdowns get bigger too. No promises — just the simulated results.</p>
 
     <div class="risk-picker">
       <div class="seg" role="group" aria-label="Risk per trade" id="riskSeg">
         ${riskRows.map(r => {
           const risk = r['Risk per trade'];
-          return `<button type="button" data-risk="${esc(risk)}" aria-pressed="${risk === defaultRisk ? 'true' : 'false'}">${esc(risk)}</button>`;
+          const aggressive = risk === '0.50%';
+          return `<button type="button" data-risk="${esc(risk)}" aria-pressed="${risk === defaultRisk ? 'true' : 'false'}">${esc(risk)}${aggressive ? '<span class="agg">most aggressive</span>' : ''}</button>`;
         }).join('')}
       </div>
       <div class="slider-wrap">
-        <label for="riskSlider"><span>Risk per trade</span><span id="riskSliderLabel">${esc(defaultRisk)}</span></label>
+        <label for="riskSlider"><span>Risk per trade</span><span id="riskSliderLabel">${esc(defaultRisk)}${defaultRisk === '0.50%' ? ' · most aggressive' : ''}</span></label>
         <input id="riskSlider" type="range" min="0" max="${riskRows.length - 1}" step="1" value="${riskRows.findIndex(r => r['Risk per trade'] === defaultRisk)}" aria-valuetext="${esc(defaultRisk)}">
       </div>
     </div>
@@ -504,7 +592,36 @@ footer .disc{max-width:760px}
       <div class="metric" data-key="p5"><span class="mv neg" id="mP5">—</span><span class="ml">1-in-20 drawdown</span><span class="msub">reshuffled 2,000 times</span></div>
     </div>
 
-    <p class="plan-line"><strong>Plan for the 1-in-20 drawdown</strong> — not the lucky path this one history happened to give. We reshuffled the same trades 2,000 times so you can see a tougher, more realistic drawdown.</p>
+    <p class="plan-line"><strong>Plan for the 1-in-20 drawdown</strong> — not the lucky path this one history happened to give. We reshuffled the same trades 2,000 times so you can see a tougher, more realistic drawdown. At 0.50% risk that figure is <strong>−20.3%</strong>.</p>
+
+    <div class="dollar-block" id="dollarBlock">
+      <div class="db-head">
+        <h3>Account path in dollars</h3>
+        <span class="sim-tag">Simulated backtest</span>
+      </div>
+      <p class="hint">Starts at $100,000. Each trade’s profit or loss = account before × risk per trade × R. The risk picker above drives this curve.</p>
+      <div class="tradeoff" aria-label="Growth versus 1-in-20 drawdown">
+        <div class="toff growth">
+          <span class="toff-v pos" id="toffGrowth">—</span>
+          <span class="toff-l">Yearly growth<br>(from the risk table)</span>
+        </div>
+        <div class="toff-mid">vs</div>
+        <div class="toff pain">
+          <span class="toff-v neg" id="toffP5">—</span>
+          <span class="toff-l">1-in-20 drawdown<br>Higher risk → bigger drops</span>
+        </div>
+      </div>
+      <div class="dollar-grid">
+        <div class="mini-chart" style="margin:0;border:0;background:transparent;padding:0">
+          <div id="dollarChart"></div>
+          <p class="note" id="dollarDiffNote"></p>
+        </div>
+        <div>
+          <p class="hint" style="margin-top:0">Risk-table stats for <strong id="dollarRiskLabel" style="color:var(--text)">—</strong></p>
+          <div class="dollar-stats" id="dollarStats"></div>
+        </div>
+      </div>
+    </div>
 
     <div class="charts-2">
       <div class="mini-chart">
@@ -732,11 +849,11 @@ footer .disc{max-width:760px}
 </section>
 </main>`;
 
-    wireRisk(riskRows, defaultRisk);
+    wireRisk(riskRows, defaultRisk, data.trades);
     wireTrades(data.trades);
   }
 
-  function wireRisk(rows, initialRisk) {
+  function wireRisk(rows, initialRisk, trades) {
     const byRisk = Object.fromEntries(rows.map(r => [r['Risk per trade'], r]));
     const order = rows.map(r => r['Risk per trade']);
     const seg = document.getElementById('riskSeg');
@@ -744,6 +861,12 @@ footer .disc{max-width:760px}
     const sliderLabel = document.getElementById('riskSliderLabel');
     const endingChart = document.getElementById('endingChart');
     const rewardChart = document.getElementById('rewardChart');
+    const dollarChart = document.getElementById('dollarChart');
+    const dollarStats = document.getElementById('dollarStats');
+    const dollarDiffNote = document.getElementById('dollarDiffNote');
+    const dollarRiskLabel = document.getElementById('dollarRiskLabel');
+    const toffGrowth = document.getElementById('toffGrowth');
+    const toffP5 = document.getElementById('toffP5');
     const mEnd = document.getElementById('mEnd');
     const mGrowth = document.getElementById('mGrowth');
     const mWorst = document.getElementById('mWorst');
@@ -757,6 +880,32 @@ footer .disc{max-width:760px}
       worst: parsePct(byRisk[initialRisk]['Largest account drawdown']),
       p5: parsePct(byRisk[initialRisk]['1-in-20 drawdown (reshuffled)']),
     };
+
+    function paintDollar(risk, row) {
+      const built = dollarEquitySvg(trades, risk);
+      dollarChart.innerHTML = built.svg;
+      dollarRiskLabel.textContent = risk === '0.50%' ? risk + ' (most aggressive)' : risk;
+      toffGrowth.textContent = row['Yearly growth'];
+      toffP5.textContent = row['1-in-20 drawdown (reshuffled)'];
+      dollarStats.innerHTML = [
+        ['Ending account', row['Ending account'], 'pos'],
+        ['Yearly growth', row['Yearly growth'], 'pos'],
+        ['Largest account drawdown', row['Largest account drawdown'], 'neg'],
+        ['Median drawdown (reshuffled)', row['Median drawdown (reshuffled)'], 'neg'],
+        ['1-in-20 drawdown', row['1-in-20 drawdown (reshuffled)'], 'neg'],
+        ['Most risk open at once', row['Most risk open at once'], ''],
+      ].map(([k, v, cls]) => `<div class="dstat"><span>${esc(k)}</span><span class="${cls}">${esc(v)}</span></div>`).join('');
+
+      const tableEnd = parseMoney(row['Ending account']);
+      const curveEnd = built.ending;
+      if (Math.abs(tableEnd - curveEnd) > 500) {
+        dollarDiffNote.textContent =
+          `This curve ends near ${fmtMoney(curveEnd)} when compounding trade by trade. ` +
+          `The table’s ${row['Ending account']} sizes overlapping positions together, so the two can differ a little.`;
+      } else {
+        dollarDiffNote.textContent = `Curve ending: ${fmtMoney(curveEnd)} (trade-by-trade compound).`;
+      }
+    }
 
     function paint(risk, animate) {
       const row = byRisk[risk];
@@ -775,14 +924,13 @@ footer .disc{max-width:760px}
       const idx = order.indexOf(risk);
       slider.value = String(idx);
       slider.setAttribute('aria-valuetext', risk);
-      sliderLabel.textContent = risk;
+      sliderLabel.textContent = risk === '0.50%' ? risk + ' · most aggressive' : risk;
 
       document.querySelectorAll('#riskTableBody tr').forEach(tr => {
         tr.classList.toggle('highlight', tr.getAttribute('data-risk-row') === risk);
       });
 
       metrics.forEach(m => m.classList.remove('active-glow'));
-      // force reflow for glow pulse
       void metrics[0].offsetWidth;
       metrics.forEach(m => m.classList.add('active-glow'));
 
@@ -792,7 +940,6 @@ footer .disc{max-width:760px}
         animateValue(mWorst, prev.worst, next.worst, 420, fmtPctNeg);
         animateValue(mP5, prev.p5, next.p5, 420, fmtPctNeg);
       } else {
-        // Exact CSV strings on first paint
         mEnd.textContent = row['Ending account'];
         mGrowth.textContent = row['Yearly growth'];
         mWorst.textContent = row['Largest account drawdown'];
@@ -801,6 +948,7 @@ footer .disc{max-width:760px}
 
       endingChart.innerHTML = endingBarsSvg(rows, risk);
       rewardChart.innerHTML = rewardRiskSvg(rows, risk);
+      paintDollar(risk, row);
       prev = next;
     }
 
