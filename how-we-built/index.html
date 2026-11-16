@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>How We Built the Trading Rules · TiltKiller</title>
+<meta name="description" content="How TiltKiller’s trading rules were built: tested across three years of market data, one change at a time. Simulated results — not actual trading.">
+<link rel="canonical" href="https://tiltkiller.com/how-we-built">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://tiltkiller.com/how-we-built">
+<meta property="og:title" content="How We Built the Trading Rules · TiltKiller">
+<meta property="og:image" content="https://tiltkiller.com/img/ragnar-512.jpg">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<meta name="theme-color" content="#07090d">
+<style>
+:root{--bg:#07090d;--card:#0f141c;--text:#e6e9ef;--muted:#8b93a7;--blue:#38bdf8;--green:#22c55e;--red:#f43f5e;--line:#1b2330;--warn:#1a0f14}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+a{color:var(--blue)}.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+nav{display:flex;align-items:center;gap:10px;padding:18px 0;font-weight:700;font-size:20px;flex-wrap:wrap}
+nav img{width:40px;height:40px;border-radius:50%}
+nav .home{display:flex;align-items:center;gap:10px;color:inherit;text-decoration:none}
+nav .links{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.navlink{font-size:14px;font-weight:600;color:#e6e9ef;text-decoration:none;padding:8px 16px;border:1px solid rgba(56,189,248,.45);border-radius:999px;transition:all .2s}
+.navlink:hover,.navlink.on{background:rgba(56,189,248,.12);border-color:#38bdf8;color:#38bdf8}
+.hero{position:relative;padding:48px 0 36px;text-align:center;overflow:hidden}
+.hero:before{content:"";position:absolute;inset:0;background:url(/img/hero-bg.jpg) center/cover;opacity:.07}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 35%,var(--bg))}
+.hero>*{position:relative;z-index:1}
+.hero .logo{width:96px;height:96px;border-radius:50%;box-shadow:0 0 0 3px var(--blue),0 0 50px #38bdf855}
+h1{font-size:clamp(30px,5vw,48px);line-height:1.12;margin:18px 0 14px}h1 span{color:var(--blue)}
+.sub{max-width:720px;margin:0 auto 18px;color:var(--muted);font-size:17px}
+.credit{display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center;margin:0 auto 8px}
+.model-badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;letter-spacing:.03em;color:var(--blue);border:1px solid rgba(56,189,248,.4);background:rgba(56,189,248,.08);padding:5px 11px;border-radius:999px}
+.credit-note{font-size:13px;color:var(--muted)}
+.credit-note strong{color:var(--text);font-weight:600}
+section{padding:44px 0}h2{font-size:28px;text-align:center;margin:0 0 12px}
+.lead{max-width:720px;margin:0 auto 28px;text-align:center;color:var(--muted);font-size:16px}
+.prose{max-width:720px;margin:0 auto;font-size:16.5px;line-height:1.65}
+.prose p{margin:0 0 16px;color:var(--text)}
+.prose p:last-child{margin-bottom:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 18px}
+.card .n{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:rgba(56,189,248,.12);color:var(--blue);font-weight:700;font-size:13px;margin-bottom:10px}
+.card h3{margin:0 0 8px;font-size:16.5px;color:var(--text)}
+.card p{margin:0;font-size:14.5px;color:var(--muted);line-height:1.5}
+.lesson h3{color:var(--blue)}
+.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--card);max-width:720px;margin:0 auto 18px}
+table{width:100%;border-collapse:collapse;font-size:14.5px;min-width:420px}
+th,td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--line)}
+th{color:var(--muted);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.03em;background:#0c1118}
+tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+.honest{max-width:720px;margin:0 auto;list-style:none;padding:0}
+.honest li{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:0 0 10px}
+.honest li strong{color:var(--text)}
+.honest li span{display:block;margin-top:4px;color:var(--muted);font-size:14.5px;line-height:1.5}
+.glossary{max-width:820px;margin:0 auto}
+.banner{max-width:820px;margin:0 auto;background:var(--warn);border:1px solid #5c2434;border-left:4px solid var(--red);border-radius:12px;padding:18px 20px;font-size:15px;line-height:1.55;color:#e7c4cb}
+.banner strong{color:#fff}
+.cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:22px}
+.ghost-btn{display:inline-block;padding:12px 20px;border-radius:10px;border:1px solid rgba(56,189,248,.45);color:var(--text);font-weight:600;font-size:15px;text-decoration:none}
+.ghost-btn:hover{background:rgba(56,189,248,.1);border-color:#38bdf8;color:#38bdf8}
+.soon{display:inline-block;padding:12px 18px;border-radius:10px;border:1px solid rgba(56,189,248,.4);background:rgba(56,189,248,.08);color:var(--text);font-weight:650;font-size:14.5px;line-height:1.35}
+.soon strong{color:var(--blue);font-weight:750}
+footer{padding:40px 0;color:var(--muted);font-size:13px;border-top:1px solid var(--line);margin-top:40px}
+footer .disc{max-width:760px}
+.date-line{color:var(--muted);font-size:14px;margin:0 0 8px}
+.about-creator{max-width:720px;margin:0 auto;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px 22px;text-align:left}
+.about-creator h2{text-align:left;margin:0 0 10px;font-size:24px}.about-creator p{margin:0 0 10px;color:var(--muted);font-size:15.5px;line-height:1.55}.about-creator p:last-child{margin-bottom:0}.about-creator strong{color:var(--text)}
+@media(max-width:640px){section{padding:36px 0}h2{font-size:24px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav>
+  <a class="home" href="/"><img src="/img/ragnar-160.png" alt="">TiltKiller</a>
+  <div class="links">
+    <a class="navlink" href="/rules">Rules</a>
+    <a class="navlink" href="/backtest">Backtest</a>
+    <a class="navlink on" href="/how-we-built" aria-current="page">How we built</a>
+  </div>
+</nav>
+</div>
+
+<!--
+  OWNER EDIT — research credit (change text in #research-credit only).
+  Uses the owner's wording for the model. Do not claim Anthropic endorses
+  or partners with TiltKiller. Do not expand claims beyond this element.
+-->
+<div id="research-credit" hidden
+  data-model-name="Fable 5.2"
+  data-maker="Anthropic"
+  data-model-blurb="Anthropic's smartest model"></div>
+
+<header class="hero"><div class="wrap">
+  <img class="logo" src="/img/ragnar-160.png" alt="Ragnar, the TiltKiller Viking">
+  <p class="date-line">November 16, 2026</p>
+  <h1>Rules built by testing, <span>not by guessing.</span></h1>
+  <p class="sub">Every rule in our system earned its place. We tested it across three years of market data, changed one setting at a time, and kept only what held up in good markets and bad ones.</p>
+  <div class="credit" id="creditLine"></div>
+</div></header>
+
+<main class="wrap">
+
+<section>
+  <h2>In short</h2>
+  <div class="prose">
+    <p>Most trading rules start as an opinion. Ours started as a question: which rules would actually have worked, across many market conditions, if you had followed them exactly?</p>
+    <p>To answer it, we rebuilt three years of the market, from November 2023 to November 2026, in 15-minute steps. We replayed every possible trade through a simulator, then changed one rule at a time and measured what happened. Each change was scored on more than profit: how deep the losing stretches got, how many months made money, and whether the result held up in every six-month period, not just one lucky stretch.</p>
+    <p>The rules you see today are the current rules. Every change is recorded with its full results, so nothing changes without evidence.</p>
+  </div>
+</section>
+
+<section>
+  <h2>How we did it, step by step</h2>
+  <p class="lead">Eight steps. One careful process.</p>
+  <div class="grid">
+    <div class="card"><span class="n">1</span><h3>Rebuild the market</h3><p>We collected three years of daily and 15-minute price data for every stock and ETF on our list, plus earnings dates. For each trading day, we recreated the scan exactly as it would have looked at the previous close, so no test could peek at the future.</p></div>
+    <div class="card"><span class="n">2</span><h3>Start with a fixed entry</h3><p>The entry never changed: a 15-minute candle that turns back up, bought at that candle’s high. Everything else — which stocks, where the stop goes, when to sell — was open to testing.</p></div>
+    <div class="card"><span class="n">3</span><h3>Change one thing at a time</h3><p>Each test moved a single setting, such as the minimum trading volume, the stop size, or the market filter, and replayed every trade. Changing one thing at a time shows exactly what that setting is worth.</p></div>
+    <div class="card"><span class="n">4</span><h3>Build test grids</h3><p>Where two settings could interact, we tested combinations side by side in a grid (a matrix).</p></div>
+    <div class="card"><span class="n">5</span><h3>Score on more than profit</h3><p>Each test was ranked on total return in R, the deepest losing stretch (drawdown), the share of winning months, and account growth at several risk levels.</p></div>
+    <div class="card"><span class="n">6</span><h3>Demand consistency</h3><p>We split the three years into six half-years. A rule that only helped in one of them was treated as luck and left out.</p></div>
+    <div class="card"><span class="n">7</span><h3>Check for mistakes</h3><p>When a result looked too good, or the app and the test disagreed, we traced it to the cause and fixed it before going on.</p></div>
+    <div class="card"><span class="n">8</span><h3>Record every change</h3><p>Each accepted change is saved with its full results and every simulated trade, so nothing ships without evidence.</p></div>
+  </div>
+</section>
+
+<section>
+  <h2>What the testing taught us</h2>
+  <p class="lead">The lessons that survived the data.</p>
+  <div class="grid">
+    <div class="card lesson"><h3>Let winners run</h3><p>A few big moves paid for everything. Taking partial profits early, at a fixed target or a stretched price, cut total return by as much as 45% in our tests. Our rules hold the whole position and trail the stop as the trade works.</p></div>
+    <div class="card lesson"><h3>Trade with the market, not against it</h3><p>Taking no new trades while the market is in a downtrend removed many losing stretches.</p></div>
+    <div class="card lesson"><h3>Strength beats a good story</h3><p>The single best filter was simple: buy only stocks stronger than the market since the open. It cut the deepest losing stretch by more than 40%.</p></div>
+    <div class="card lesson"><h3>Fewer, better trades</h3><p>Capping new trades at three a day made more money than taking every signal, because the late signals on busy days were the weakest.</p></div>
+    <div class="card lesson"><h3>More rules is not better</h3><p>Many reasonable ideas — stricter strength filters, tighter trends, or more volume — made results worse. A rule had to prove itself to stay.</p></div>
+    <div class="card lesson"><h3>Expect quiet months</h3><p>Only about 4 in 10 months made money in the backtest. The gains came in bursts, so patience and small position sizes matter.</p></div>
+  </div>
+</section>
+
+<section>
+  <h2>The numbers, with honest context</h2>
+  <div class="prose" style="margin-bottom:22px">
+    <p>Over the three-year backtest, the current rules took <strong>398 trades</strong> and made <strong>+319.8R</strong> after trading costs. With 0.2% of the account risked per trade, a $100,000 account would have grown to about $185,000, a compound annual growth rate of about 22.6%. The deepest drop from a high point was about 5% of the account.</p>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>What we measured</th><th class="num">Result</th></tr></thead>
+      <tbody>
+        <tr><td>Trades over three years</td><td class="num">398</td></tr>
+        <tr><td>Total return</td><td class="num">+319.8R</td></tr>
+        <tr><td>Deepest losing stretch</td><td class="num">25.4R (about 5% of the account at 0.2% risk)</td></tr>
+        <tr><td>Six-month periods that made money</td><td class="num">6 of 6</td></tr>
+        <tr><td>Months that made money</td><td class="num">14 of 37</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="lead" style="margin-bottom:14px">What these numbers do not tell you:</p>
+  <ul class="honest">
+    <li><strong>They are a simulation.</strong><span>No real money traded these exact rules over this period.</span></li>
+    <li><strong>They are on the optimistic side.</strong><span>The rules were chosen by comparing many rule sets on the same three years, so the best one looks better than it will in the future.</span></li>
+    <li><strong>A few big winners did much of the work.</strong><span>The two best trades made about a third of the total. Missing one big winner changes the result a lot.</span></li>
+    <li><strong>The bad stretches can be deeper.</strong><span>When we shuffled the same trades into 2,000 random orders, 1 in 20 had a drawdown nearly twice the one history gave.</span></li>
+    <li><strong>Stops aren’t guaranteed.</strong><span>If a stock gaps down overnight or on news, it can open below your stop and the loss can be bigger than your planned risk. Positions held overnight carry this risk.</span></li>
+  </ul>
+  <div class="cta-row">
+    <a class="ghost-btn" href="/backtest">See the full backtest</a>
+    <span class="soon" role="status"><strong>Trade alerts in Discord — opening soon</strong></span>
+  </div>
+</section>
+
+<section>
+  <h2>Glossary</h2>
+  <p class="lead">Plain meanings for the few terms we still use.</p>
+  <div class="table-wrap glossary">
+    <table>
+      <thead><tr><th>Term</th><th>What it means</th></tr></thead>
+      <tbody>
+        <tr><td>Backtest</td><td>Replaying a set of rules over past market data to see how they would have done.</td></tr>
+        <tr><td>R</td><td>The amount you risk on one trade: the distance from your buy to your stop. A +3R trade made three times what it risked.</td></tr>
+        <tr><td>Stop</td><td>A price where the trade is sold automatically to limit the loss.</td></tr>
+        <tr><td>Drawdown</td><td>How far the account falls from its last high point before recovering.</td></tr>
+        <tr><td>CAGR</td><td>Compound annual growth rate: the steady yearly growth that would turn the starting amount into the ending amount.</td></tr>
+        <tr><td>Risk per trade</td><td>The share of the account you lose if a trade hits its stop, for example 0.2%.</td></tr>
+        <tr><td>15-minute candle</td><td>One bar on a chart showing a stock’s open, high, low and close over 15 minutes.</td></tr>
+        <tr><td>Grid (matrix)</td><td>A table of test results where each cell is one combination of settings.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <div class="about-creator">
+    <h2>About the creator</h2>
+    <p><strong><a href="https://x.com/ioTrader" target="_blank" rel="noopener">ioTrader</a></strong> (<a href="https://x.com/ioTrader" target="_blank" rel="noopener">@ioTrader on X</a>) is a Senior Staff Engineer at a financial technology company. He’s been in the software industry for 28 years, and trading for 18. He built TiltKiller to automate his own process, so he doesn’t have to sit and watch every tick, and neither do you — turning those lessons into a rules-based system so trading can stay disciplined instead of emotional.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Disclaimer</h2>
+  <div class="banner" role="note">
+    <p style="margin:0"><strong>The results on this page are hypothetical.</strong> They come from a computer simulation of past market data from November 2023 to November 2026, not from real trading. Simulated results have limits: they are built with the benefit of hindsight, do not reflect every real-world cost or execution delay, and the rules were chosen after testing many rule sets on the same data. Past performance, real or simulated, does not guarantee future results. Trading stocks involves risk, including the loss of money you invest. This page is for education only and is not financial advice; consider your own situation, or speak with a licensed professional, before trading.</p>
+  </div>
+</section>
+
+</main>
+
+<footer><div class="wrap">
+  <p><a href="https://x.com/tiltkillerapp" rel="noopener">@tiltkillerapp on X</a></p>
+  <p>&copy; 2026 Innovative Objects LLC. TiltKiller is operated by Innovative Objects LLC.</p>
+  <p class="disc">TiltKiller is an educational tool and does not provide financial advice. Trading involves risk of loss. Simulated backtests are hypothetical and do not guarantee future results.</p>
+</div></footer>
+
+<script>
+(function () {
+  const el = document.getElementById('research-credit');
+  const modelName = el?.dataset.modelName || 'Fable 5.2';
+  const maker = el?.dataset.maker || 'Anthropic';
+  const modelBlurb = el?.dataset.modelBlurb || "Anthropic's smartest model";
+  const line = document.getElementById('creditLine');
+  if (line) {
+    line.innerHTML =
+      '<span class="model-badge">' + modelName + '</span>' +
+      '<span class="credit-note">Research with <strong>' + modelName + '</strong> by ' + maker +
+      ' — which the owner describes as ' + modelBlurb + '. The owner made the trading calls.</span>';
+  }
+})();
+</script>
+<script data-goatcounter="https://tiltkiller.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
