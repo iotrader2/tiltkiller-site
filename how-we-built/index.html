@@ -88,13 +88,15 @@ footer .disc{max-width:760px}
 
 <!--
   OWNER EDIT — research credit (change text in #research-credit only).
-  Uses the owner's wording for the model. Do not claim Anthropic endorses
-  or partners with TiltKiller. Do not expand claims beyond this element.
+  Quote Anthropic’s published model description (linked). Do not claim
+  Anthropic endorses or partners with TiltKiller.
 -->
 <div id="research-credit" hidden
   data-model-name="Fable 5.2"
   data-maker="Anthropic"
-  data-model-blurb="Anthropic's smartest model"></div>
+  data-model-label="Claude Fable 5.2"
+  data-model-quote="our most capable model for technical work, setting a new bar in coding, finance, and the sciences."
+  data-model-quote-url="https://www.anthropic.com/claude/fable"></div>
 
 <header class="hero"><div class="wrap">
   <img class="logo" src="/img/ragnar-160.png" alt="Ragnar, the TiltKiller Viking">
@@ -221,8 +223,9 @@ footer .disc{max-width:760px}
 (function () {
   const el = document.getElementById('research-credit');
   const modelName = el?.dataset.modelName || 'Fable 5.2';
-  const maker = el?.dataset.maker || 'Anthropic';
-  const modelBlurb = el?.dataset.modelBlurb || "Anthropic's smartest model";
+  const modelLabel = el?.dataset.modelLabel || 'Claude Fable 5.2';
+  const modelQuote = el?.dataset.modelQuote || 'our most capable model for technical work, setting a new bar in coding, finance, and the sciences.';
+  const modelQuoteUrl = el?.dataset.modelQuoteUrl || 'https://www.anthropic.com/claude/fable';
   const anthropicMark =
     '<svg class="anthropic-mark" viewBox="0 0 92 64" width="14" height="10" role="img" aria-label="Anthropic" xmlns="http://www.w3.org/2000/svg"><title>Anthropic</title>' +
     '<path fill="currentColor" d="M65.92 0H51.9314L77.44 64H91.4286L65.92 0Z"/>' +
@@ -232,8 +235,9 @@ footer .disc{max-width:760px}
   if (line) {
     line.innerHTML =
       '<span class="model-badge">' + anthropicMark + modelName + '</span>' +
-      '<span class="credit-note">Research built with <strong>' + modelName + '</strong> by ' + maker +
-      ' — which the owner describes as ' + modelBlurb + '. The owner made the trading calls.</span>';
+      '<span class="credit-note">Research built with <strong>' + modelLabel + '</strong>, which Anthropic calls ' +
+      '<a href="' + modelQuoteUrl + '" target="_blank" rel="noopener">&ldquo;' + modelQuote + '&rdquo;</a>. ' +
+      'The owner made the trading calls.</span>';
   }
 })();
 </script>
