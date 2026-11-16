@@ -268,7 +268,7 @@ footer .disc{max-width:760px}
     'A big share of the gain comes from a few large winners. HOOD (bought 2025-05-19, about +59 times the amount risked) and MARA (bought 2023-11-27, about +43 times the amount risked) are 32% of the total.',
     'Many months have no trades because the market was in a downtrend, or they lose. Expect long flat stretches between big winners.',
     'The rules were chosen by comparing many rule sets on this same three-year period, so the figures look optimistic.',
-    'Not in this simulation: late-day sells (the backtest sells at the close), trading costs, how much cash you actually need in the account, and stocks added mid-session. The name list is today’s list, so stocks that later disappeared are missing.',
+    'Not in the headline results or the R figures: late-day sells (the backtest sells at the close), trading costs, how much cash you actually need in the account, and stocks added mid-session. The name list is today’s list, so stocks that later disappeared are missing.',
     'At most 3 new trades a day — so you know your risk up front.',
   ];
 
@@ -470,30 +470,31 @@ footer .disc{max-width:760px}
     </svg>`;
   }
 
-  function riskFraction(riskLabel) {
-    return parsePct(riskLabel) / 100;
+  function riskCurveKey(riskLabel) {
+    // "0.50%" → "0.50"
+    return String(riskLabel || '').replace(/%/g, '').trim();
   }
 
-  function compoundDollarCurve(trades, riskLabel) {
-    const risk = riskFraction(riskLabel);
-    let acct = START_ACCOUNT;
-    const pts = [{ i: 0, date: '', acct, label: 'Start' }];
-    for (let i = 0; i < trades.length; i++) {
-      const R = parseFloat(String(trades[i].R).replace('+', '')) || 0;
-      acct = acct + acct * risk * R;
+  function storedDollarCurve(trades, riskLabel, curves) {
+    const key = riskCurveKey(riskLabel);
+    const series = curves && curves[key];
+    const pts = [{ i: 0, date: '', acct: START_ACCOUNT, label: 'Start' }];
+    if (!Array.isArray(series) || !series.length) return pts;
+    for (let i = 0; i < series.length; i++) {
+      const trade = trades[i] || {};
       pts.push({
         i: i + 1,
-        date: trades[i]['Entry date'],
-        acct,
-        R,
-        sym: trades[i].Symbol,
+        date: trade['Entry date'] || '',
+        acct: Number(series[i]),
+        R: trade.R,
+        sym: trade.Symbol,
       });
     }
     return pts;
   }
 
-  function dollarEquitySvg(trades, riskLabel) {
-    const pts = compoundDollarCurve(trades, riskLabel);
+  function dollarEquitySvg(trades, riskLabel, curves) {
+    const pts = storedDollarCurve(trades, riskLabel, curves);
     const W = 640, H = 280, padL = 58, padR = 16, padT = 18, padB = 36;
     const maxA = Math.max(...pts.map(p => p.acct), START_ACCOUNT) * 1.04;
     const minA = Math.min(...pts.map(p => p.acct), START_ACCOUNT) * 0.98;
@@ -674,7 +675,7 @@ footer .disc{max-width:760px}
         <div class="dc-kicker">Built-in daily limit</div>
         <p class="dc-main">Max <strong>3</strong> new trades a day. At <strong id="dcRisk">0.50%</strong> risk per trade, the most you put at risk on new trades in a day is <strong id="dcMaxNew">1.50%</strong>.</p>
         <p class="dc-math">3 × <b id="dcRiskMath">0.50%</b> = <b id="dcMaxMath">1.50%</b></p>
-        <p class="dc-note">Winners held overnight can stack. Total open risk across held positions peaked at <strong id="dcOpenPeak">5.5%</strong> in this simulated run (the “most risk open at once” figure in the table below).</p>
+        <p class="dc-note">Winners held overnight can stack. Total open risk across held positions peaked at <strong id="dcOpenPeak">2.5%</strong> in this simulated run (the “most risk open at once” figure in the table below).</p>
       </div>
       <aside class="gap-warn" id="gapWarn" aria-label="Gap-down risk">
         <div class="gw-kicker">Stops aren’t guaranteed</div>
@@ -690,7 +691,7 @@ footer .disc{max-width:760px}
         <h3>Account path in dollars</h3>
         <span class="sim-tag">Simulated backtest</span>
       </div>
-      <p class="hint">Starts at $100,000. Each trade’s profit or loss = account before × risk per trade × R. The risk picker above drives this curve.</p>
+        <p class="hint">Starts at $100,000. The risk picker above drives this curve.</p>
       <div class="tradeoff" aria-label="Growth versus 1-in-20 drawdown">
         <div class="toff growth">
           <span class="toff-v pos" id="toffGrowth">—</span>
@@ -751,7 +752,7 @@ footer .disc{max-width:760px}
         </tbody>
       </table>
     </div>
-    <p class="note">$100k start. Same trades at each risk level. Plan for the 1-in-20 drawdown, not the one lucky path history gave you.</p>
+    <p class="note">$100k start. Same trades at each risk level. Plan for the 1-in-20 drawdown, not the one lucky path history gave you. Positions together are never more than the account: a new trade is cut to the cash left, or skipped when none is left.</p>
 
     <div class="risk-cta">
       <p>Alerts for the way in and the way out — buy with entry and stop, sell when it’s time. Delivered in Discord.</p>
@@ -910,11 +911,11 @@ footer .disc{max-width:760px}
     const gapCountEl = document.getElementById('gapCount');
     if (gapCountEl) gapCountEl.textContent = String(gapExitCount);
 
-    wireRisk(riskRows, defaultRisk, data.trades);
+    wireRisk(riskRows, defaultRisk, data.trades, data.no_margin_curves || {});
     wireTrades(data.trades);
   }
 
-  function wireRisk(rows, initialRisk, trades) {
+  function wireRisk(rows, initialRisk, trades, curves) {
     const byRisk = Object.fromEntries(rows.map(r => [r['Risk per trade'], r]));
     const order = rows.map(r => r['Risk per trade']);
     const seg = document.getElementById('riskSeg');
@@ -967,7 +968,7 @@ footer .disc{max-width:760px}
     }
 
     function paintDollar(risk, row) {
-      const built = dollarEquitySvg(trades, risk);
+      const built = dollarEquitySvg(trades, risk, curves);
       dollarChart.innerHTML = built.svg;
       dollarRiskLabel.textContent = risk === '0.50%' ? risk + ' (most aggressive)' : risk;
       toffGrowth.textContent = row['Yearly growth'];
@@ -985,10 +986,10 @@ footer .disc{max-width:760px}
       const curveEnd = built.ending;
       if (Math.abs(tableEnd - curveEnd) > 500) {
         dollarDiffNote.textContent =
-          `This curve ends near ${fmtMoney(curveEnd)} when compounding trade by trade. ` +
-          `The table’s ${row['Ending account']} sizes overlapping positions together, so the two can differ a little.`;
+          `This curve ends near ${fmtMoney(curveEnd)}. ` +
+          `The table’s ${row['Ending account']} can differ a little from the stored path.`;
       } else {
-        dollarDiffNote.textContent = `Curve ending: ${fmtMoney(curveEnd)} (trade-by-trade compound).`;
+        dollarDiffNote.textContent = `Curve ending: ${fmtMoney(curveEnd)}.`;
       }
       paintDayCap(risk, row);
     }
