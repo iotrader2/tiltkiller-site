@@ -1,0 +1,552 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Crossback Backtest v1.6 · TiltKiller</title>
+<meta name="description" content="Simulated Crossback trading rules v1.6 backtest: November 2023 to November 2026. Not actual trading results.">
+<link rel="canonical" href="https://tiltkiller.com/backtest">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://tiltkiller.com/backtest">
+<meta property="og:title" content="Crossback Backtest v1.6 · TiltKiller">
+<meta property="og:image" content="https://tiltkiller.com/img/ragnar-512.jpg">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<meta name="theme-color" content="#07090d">
+<style>
+:root{--bg:#07090d;--card:#0f141c;--text:#e6e9ef;--muted:#8b93a7;--blue:#38bdf8;--green:#22c55e;--red:#f43f5e;--line:#1b2330;--warn:#1a0f14}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+a{color:var(--blue)}.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+nav{display:flex;align-items:center;gap:10px;padding:18px 0;font-weight:700;font-size:20px;flex-wrap:wrap}
+nav img{width:40px;height:40px;border-radius:50%}
+nav .home{display:flex;align-items:center;gap:10px;color:inherit;text-decoration:none}
+nav .links{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.navlink{font-size:14px;font-weight:600;color:#e6e9ef;text-decoration:none;padding:8px 16px;border:1px solid rgba(56,189,248,.45);border-radius:999px;transition:all .2s}
+.navlink:hover,.navlink.on{background:rgba(56,189,248,.12);border-color:#38bdf8;color:#38bdf8}
+.hero{position:relative;padding:50px 0 40px;text-align:center;overflow:hidden}
+.hero:before{content:"";position:absolute;inset:0;background:url(/img/hero-bg.jpg) center/cover;opacity:.07}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 40%,var(--bg))}
+.hero>*{position:relative;z-index:1}
+.hero .logo{width:110px;height:110px;border-radius:50%;box-shadow:0 0 0 3px var(--blue),0 0 60px #38bdf855}
+h1{font-size:clamp(32px,5vw,52px);line-height:1.1;margin:22px 0 14px}h1 span{color:var(--blue)}
+.sub{max-width:720px;margin:0 auto 18px;color:var(--muted);font-size:17px}
+.pillrow{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:0 0 8px}
+.pill{font-size:13px;color:var(--muted);border:1px solid var(--line);background:rgba(15,20,28,.7);padding:6px 12px;border-radius:999px}
+.pill b{color:var(--text);font-weight:600}
+.banner{max-width:820px;margin:22px auto 0;background:var(--warn);border:1px solid #5c2434;border-left:4px solid var(--red);border-radius:10px;padding:14px 18px;text-align:left;font-size:15px}
+.banner strong{color:var(--red)}
+section{padding:48px 0}h2{font-size:28px;text-align:center;margin:0 0 10px}
+.lead{max-width:720px;margin:0 auto 28px;text-align:center;color:var(--muted);font-size:16px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 16px;text-align:center}
+.stat .v{display:block;font-size:clamp(22px,3.2vw,30px);font-weight:700;color:var(--blue);line-height:1.15;margin-bottom:6px}
+.stat .v.pos{color:var(--green)}.stat .v.neg{color:var(--red)}
+.stat .l{font-size:13px;color:var(--muted);line-height:1.35}
+.chart-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 14px 10px}
+.chart-card svg{display:block;width:100%;height:auto}
+.chart-meta{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:13px;margin-top:8px;padding:0 4px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
+.card h3{margin:0 0 12px;font-size:17px;color:var(--blue)}
+.card ul{margin:0;padding:0;list-style:none}
+.card li{padding:8px 0;border-top:1px solid var(--line);font-size:14.5px;color:var(--text)}
+.card li:first-child{border-top:0;padding-top:0}
+.card li .val{display:inline-block;margin-left:6px;color:var(--muted);font-size:13px}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:14px;background:var(--card)}
+table{width:100%;border-collapse:collapse;font-size:14px;min-width:640px}
+th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+th{color:var(--muted);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.03em;background:#0c1118;position:sticky;top:0}
+tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+.pos{color:var(--green)}.neg{color:var(--red)}
+tr.highlight{background:rgba(56,189,248,.06)}
+.bw{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.bw .card h3.best{color:var(--green)}.bw .card h3.worst{color:var(--red)}
+.trade{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-top:1px solid var(--line);font-size:14px}
+.trade:first-of-type{border-top:0;padding-top:0}
+.trade .sym{font-weight:700}.trade .meta{color:var(--muted);font-size:12px}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 14px;align-items:center}
+.controls input,.controls select{padding:10px 12px;border-radius:10px;border:1px solid #232c3a;background:var(--card);color:var(--text);font-size:14px}
+.controls input{flex:1 1 180px;min-width:140px}
+.controls select{flex:0 1 200px}
+.ghost{padding:10px 16px;border-radius:10px;border:1px solid rgba(56,189,248,.4);background:transparent;color:var(--blue);font-weight:600;font-size:14px;cursor:pointer}
+.ghost:hover{background:rgba(56,189,248,.1)}
+details.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:0}
+details.panel>summary{cursor:pointer;padding:18px 20px;font-weight:700;font-size:18px;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px}
+details.panel>summary::-webkit-details-marker{display:none}
+details.panel>summary:after{content:"+";color:var(--blue);font-size:22px;line-height:1}
+details.panel[open]>summary:after{content:"–"}
+details.panel .inner{padding:0 20px 20px}
+.note{color:var(--muted);font-size:13px;margin-top:12px}
+.trust{background:var(--warn);border:1px solid #5c2434;border-radius:16px;padding:28px 24px}
+.trust h2{text-align:left;color:var(--red);margin-bottom:12px}
+.trust .hypo{font-size:18px;font-weight:600;margin:0 0 18px;line-height:1.45}
+.trust ol{margin:0;padding-left:20px}
+.trust li{margin:0 0 10px}
+.version{display:grid;gap:10px}
+.vrow{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.vrow .top{display:flex;gap:12px;flex-wrap:wrap;align-items:baseline;margin-bottom:6px}
+.vrow .ver{color:var(--blue);font-weight:700}.vrow .date{color:var(--muted);font-size:13px}
+.vrow p{margin:0;font-size:14.5px}
+footer{padding:40px 0;color:var(--muted);font-size:13px;border-top:1px solid var(--line);margin-top:40px}
+footer .disc{max-width:760px}
+.loading,.error{text-align:center;padding:80px 20px;color:var(--muted)}
+.error{color:var(--red)}
+@media(max-width:860px){.stats{grid-template-columns:repeat(2,1fr)}.bw{grid-template-columns:1fr}}
+@media(max-width:520px){.stats{grid-template-columns:1fr 1fr}.stat .v{font-size:22px}nav .links{width:100%;margin-left:0;margin-top:4px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav>
+  <a class="home" href="/"><img src="/img/ragnar-160.png" alt="">TiltKiller</a>
+  <div class="links">
+    <a class="navlink" href="/rules">Rules</a>
+    <a class="navlink on" href="/backtest" aria-current="page">Backtest</a>
+  </div>
+</nav>
+</div>
+
+<div id="app"><p class="loading">Loading the raid log…</p></div>
+
+<footer>
+  <div class="wrap">
+    <p><a href="https://x.com/tiltkillerapp" rel="noopener">@tiltkillerapp on X</a></p>
+    <p>&copy; 2026 Innovative Objects LLC. TiltKiller is operated by Innovative Objects LLC.</p>
+    <p class="disc">Legal stuff, translated from Old Norse: Ragnar is not a financial advisor. His only certification is in pillaging. He has lost three longships on margin, which is exactly why he built this. TiltKiller is an educational tool and does not provide financial advice. Trading involves risk of loss. No scanner, rule, or deeply disappointed Viking can guarantee profits. The backtest on this page is simulated and hypothetical.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  const app = document.getElementById('app');
+
+  const GROUP_MAP = [
+    { key: 'market', title: 'Market filter', match: g => g.startsWith('Market filter') },
+    { key: 'names', title: 'Which names', match: g => g.startsWith('Which names') },
+    { key: 'entry', title: 'Entry', match: g => g.startsWith('Entry (') },
+    { key: 'stop', title: 'Stop', match: g => g === 'Stop' },
+    { key: 'exits', title: 'Exits & holds', match: g => g.startsWith('Entry day') || g.startsWith('Held position') || g === 'Limits' },
+  ];
+
+  function esc(s) {
+    return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  function rClass(v) {
+    const n = parseFloat(String(v).replace(/[+%,$]/g, ''));
+    if (Number.isNaN(n) || n === 0) return '';
+    return n > 0 ? 'pos' : 'neg';
+  }
+
+  function tdNum(v) {
+    return `<td class="num ${rClass(v)}">${esc(v)}</td>`;
+  }
+
+  function groupRules(rules) {
+    return GROUP_MAP.map(g => ({
+      ...g,
+      items: rules.filter(r => g.match(r.group)),
+    })).filter(g => g.items.length);
+  }
+
+  function equitySvg(monthly) {
+    const W = 960, H = 280, padL = 44, padR = 16, padT = 18, padB = 28;
+    const pts = monthly.map((m, i) => ({
+      i,
+      label: m.Month,
+      cum: parseFloat(m['Cumulative R']),
+      dd: parseFloat(m['Drawdown from the peak (R)']) || 0,
+      r: parseFloat(String(m['Total R']).replace('+','')) || 0,
+    }));
+    const maxC = Math.max(...pts.map(p => p.cum), 1);
+    const minC = Math.min(...pts.map(p => p.cum), 0);
+    const maxDd = Math.max(...pts.map(p => p.dd), 1);
+    const x = i => padL + (i / Math.max(pts.length - 1, 1)) * (W - padL - padR);
+    const y = v => padT + (1 - (v - minC) / (maxC - minC || 1)) * (H - padT - padB - 56);
+    const yDd = v => (H - 48) + (v / maxDd) * 40;
+
+    let line = '';
+    let area = `M ${x(0)} ${y(minC)} `;
+    pts.forEach((p, i) => {
+      const X = x(i), Y = y(p.cum);
+      line += (i ? 'L' : 'M') + ` ${X} ${Y} `;
+      area += `L ${X} ${Y} `;
+    });
+    area += `L ${x(pts.length - 1)} ${y(minC)} Z`;
+
+    let ddPath = '';
+    pts.forEach((p, i) => {
+      const X = x(i), Y = yDd(p.dd);
+      ddPath += (i ? 'L' : 'M') + ` ${X} ${Y} `;
+    });
+    let ddArea = `M ${x(0)} ${H - 48} `;
+    pts.forEach((p, i) => { ddArea += `L ${x(i)} ${yDd(p.dd)} `; });
+    ddArea += `L ${x(pts.length - 1)} ${H - 48} Z`;
+
+    const ticks = [0, 0.25, 0.5, 0.75, 1].map(t => {
+      const v = minC + t * (maxC - minC);
+      return `<text x="${padL - 8}" y="${y(v) + 4}" text-anchor="end" fill="#8b93a7" font-size="11">${v.toFixed(0)}</text>
+        <line x1="${padL}" y1="${y(v)}" x2="${W - padR}" y2="${y(v)}" stroke="#1b2330" stroke-width="1"/>`;
+    }).join('');
+
+    const labels = [0, Math.floor((pts.length - 1) / 2), pts.length - 1].map(i =>
+      `<text x="${x(i)}" y="${H - 6}" text-anchor="middle" fill="#8b93a7" font-size="11">${esc(pts[i].label)}</text>`
+    ).join('');
+
+    const circles = pts.map((p, i) =>
+      `<circle cx="${x(i)}" cy="${y(p.cum)}" r="2.5" fill="${p.r >= 0 ? '#22c55e' : '#f43f5e'}" opacity=".85">
+        <title>${esc(p.label)}: cum ${p.cum}R · month ${p.r >= 0 ? '+' : ''}${p.r}R · DD ${p.dd}R</title>
+      </circle>`
+    ).join('');
+
+    return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Equity curve of cumulative R by month with drawdown strip">
+      <rect x="0" y="0" width="${W}" height="${H}" fill="transparent"/>
+      ${ticks}
+      <path d="${area}" fill="#38bdf818"/>
+      <path d="${line}" fill="none" stroke="#38bdf8" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+      ${circles}
+      <text x="${padL}" y="${H - 52}" fill="#8b93a7" font-size="11">Drawdown from peak (R)</text>
+      <path d="${ddArea}" fill="#f43f5e33"/>
+      <path d="${ddPath}" fill="none" stroke="#f43f5e" stroke-width="1.5"/>
+      ${labels}
+    </svg>`;
+  }
+
+  function render(data) {
+    const R = data.results;
+    const I = data.input;
+    const groups = groupRules(data.rules);
+    const best = data.best_and_worst.filter(t => t.kind === 'Best').slice(0, 10);
+    const worst = data.best_and_worst.filter(t => t.kind === 'Worst').slice(0, 10);
+
+    const stats = [
+      { l: 'Trades', v: R['Trades'] },
+      { l: 'Win rate', v: R['Win rate'] },
+      { l: 'Average win', v: R['Average win (R)'] + ' R', cls: 'pos' },
+      { l: 'Average loss', v: R['Average loss (R)'] + ' R', cls: 'neg' },
+      { l: 'Expectancy', v: R['Expectancy (R per trade)'] + ' R', cls: 'pos' },
+      { l: 'Total R', v: R['Total R'], cls: 'pos' },
+      { l: 'Largest drawdown (month-end)', v: R['Largest drawdown (R), month-end to month-end'] + ' R', cls: 'neg' },
+      { l: 'Ending account', v: R['Ending account'], cls: 'pos' },
+      { l: 'Yearly return (3 years)', v: R['Yearly return (three years)'], cls: 'pos' },
+      { l: 'Risk per trade', v: I.risk_per_trade },
+      { l: 'Starting account', v: I.starting_account },
+      { l: 'Total return, compounded', v: R['Total return, compounded'], cls: 'pos' },
+    ];
+
+    app.innerHTML = `
+<header class="hero"><div class="wrap">
+  <img class="logo" src="/img/ragnar-160.png" alt="Ragnar, the TiltKiller Viking">
+  <h1>Crossback <span>Backtest</span></h1>
+  <p class="sub">The raid log for ${esc(data.meta.title)}. ${esc(data.meta.period)}. ${esc(data.meta.r_definition)} Every figure below comes from the exported sheet — Ragnar does not invent plunder.</p>
+  <div class="pillrow">
+    <span class="pill"><b>v${esc(data.meta.version)}</b> · as of ${esc(data.meta.as_of)}</span>
+    <span class="pill">Risk <b>${esc(I.risk_per_trade)}</b> per trade</span>
+    <span class="pill">Slippage <b>${esc(I.slippage_per_side)}</b> per side</span>
+    <span class="pill">Start <b>${esc(I.starting_account)}</b></span>
+  </div>
+  <div class="banner" role="note"><strong>Hypothetical performance.</strong> ${esc(data.disclaimer.hypothetical)}</div>
+</div></header>
+
+<main class="wrap">
+<section>
+  <h2>The haul at a glance</h2>
+  <p class="lead">Headline results at ${esc(I.risk_per_trade)} risk, compounding trade by trade. Win rate is low on purpose — the edge lives in the runners you actually hold.</p>
+  <div class="stats">
+    ${stats.map(s => `<div class="stat"><span class="v ${s.cls || ''}">${esc(s.v)}</span><span class="l">${esc(s.l)}</span></div>`).join('')}
+  </div>
+  <p class="note">Trade-by-trade max drawdown (simulation): ${esc(data.extra.trade_by_trade_max_drawdown_R)} R. ${esc(data.extra.trade_by_trade_max_drawdown_note || '')}</p>
+</section>
+
+<section>
+  <h2>Equity curve</h2>
+  <p class="lead">Cumulative R by month, with drawdown from the peak underneath. Flat stretches are not a bug — many months the market filter keeps you on the beach.</p>
+  <div class="chart-card">
+    ${equitySvg(data.monthly)}
+    <div class="chart-meta">
+      <span>End: <b class="pos">${esc(R['Total R'])} R</b></span>
+      <span>Best month: <b class="pos">${esc(R['Best month (R)'])} R</b></span>
+      <span>Worst month: <b class="neg">${esc(R['Worst month (R)'])} R</b></span>
+      <span>Months with a gain: <b>${esc(R['Months with a gain'])}</b></span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>The rules in plain language</h2>
+  <p class="lead">${esc(data.rules_meta.blurb)}</p>
+  <div class="grid">
+    ${groups.map(g => `
+      <div class="card">
+        <h3>${esc(g.title)}</h3>
+        <ul>
+          ${g.items.map(r => `<li>${esc(r.rule)}${r.value ? `<span class="val">· ${esc(r.value)}</span>` : ''}</li>`).join('')}
+        </ul>
+      </div>`).join('')}
+  </div>
+  ${data.rules_notes?.length ? `<div class="note">${data.rules_notes.map(n => `<p>${esc(n)}</p>`).join('')}</div>` : ''}
+</section>
+
+<section>
+  <h2>Monthly results</h2>
+  <p class="lead">One row per month. Cumulative R is the equity curve above.</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr>
+        <th>Month</th><th class="num">Trades</th><th class="num">Win rate</th><th class="num">Total R</th><th class="num">Expectancy</th><th class="num">Cumulative R</th><th class="num">Drawdown</th>
+      </tr></thead>
+      <tbody>
+        ${data.monthly.map(m => `<tr>
+          <td>${esc(m.Month)}</td>
+          <td class="num">${esc(m.Trades)}</td>
+          <td class="num">${esc(m['Win rate'])}</td>
+          ${tdNum(m['Total R'])}
+          ${tdNum(m['Expectancy (R)'])}
+          ${tdNum(m['Cumulative R'])}
+          <td class="num neg">${esc(m['Drawdown from the peak (R)'])}</td>
+        </tr>`).join('')}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2>Half-year stretches</h2>
+  <p class="lead">Every half-year in this run finished green. That is part of why v1.6 earned the longship — and part of why you should still distrust cherry-picked calm seas.</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr>
+        <th>Half-year</th><th class="num">Trades</th><th class="num">Win rate</th><th class="num">Total R</th><th class="num">Expectancy</th><th class="num">Kept overnight</th><th class="num">R from overnight</th>
+      </tr></thead>
+      <tbody>
+        ${data.half_years.map(h => `<tr>
+          <td>${esc(h['Half-year'])}</td>
+          <td class="num">${esc(h.Trades)}</td>
+          <td class="num">${esc(h['Win rate'])}</td>
+          ${tdNum(h['Total R'])}
+          ${tdNum(h['Expectancy (R)'])}
+          <td class="num">${esc(h['Kept overnight'])}</td>
+          ${tdNum(h['R from positions kept overnight'])}
+        </tr>`).join('')}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2>Risk per trade</h2>
+  <p class="lead">${esc(data.risk_table_intro || 'Same trades, different risk. Plan for the ugly reshuffled drawdown, not the lucky path history gave you.')}</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr>
+        <th>Risk per trade</th><th class="num">Ending account</th><th class="num">Yearly growth</th><th class="num">Largest DD</th><th class="num">Median DD (reshuffled)</th><th class="num">1-in-20 DD</th><th class="num">Most risk open</th>
+      </tr></thead>
+      <tbody>
+        ${data.risk_table.map(row => {
+          const highlight = row['Risk per trade'] === I.risk_per_trade;
+          return `<tr class="${highlight ? 'highlight' : ''}">
+            <td>${esc(row['Risk per trade'])}${highlight ? ' ← used above' : ''}</td>
+            <td class="num">${esc(row['Ending account'])}</td>
+            <td class="num pos">${esc(row['Yearly growth'])}</td>
+            <td class="num neg">${esc(row['Largest account drawdown'])}</td>
+            <td class="num neg">${esc(row['Median drawdown (reshuffled)'])}</td>
+            <td class="num neg">${esc(row['1-in-20 drawdown (reshuffled)'])}</td>
+            <td class="num">${esc(row['Most risk open at once'])}</td>
+          </tr>`;
+        }).join('')}
+      </tbody>
+    </table>
+  </div>
+  ${data.risk_table_source ? `<p class="note">${esc(data.risk_table_source)}</p>` : ''}
+</section>
+
+<section>
+  <h2>Best &amp; worst raids</h2>
+  <p class="lead">A few longships carried most of the gold. Respect that — and do not size as if every trade will be HOOD.</p>
+  <div class="bw">
+    <div class="card">
+      <h3 class="best">Best</h3>
+      ${best.map(t => `<div class="trade"><div><div class="sym">${esc(t.Symbol)}</div><div class="meta">${esc(t['Entry date'])} · ${esc(t['Daily setup'])}${t.Exit ? ' · ' + esc(t.Exit) : ''}</div></div><div class="pos"><b>${esc(t.R)}</b></div></div>`).join('')}
+    </div>
+    <div class="card">
+      <h3 class="worst">Worst</h3>
+      ${worst.map(t => `<div class="trade"><div><div class="sym">${esc(t.Symbol)}</div><div class="meta">${esc(t['Entry date'])} · ${esc(t['Daily setup'])}${t.Exit ? ' · ' + esc(t.Exit) : ''}</div></div><div class="neg"><b>${esc(t.R)}</b></div></div>`).join('')}
+    </div>
+  </div>
+  ${data.best_worst_note ? `<p class="note">${esc(data.best_worst_note)}</p>` : ''}
+</section>
+
+<section>
+  <details class="panel" id="trade-log">
+    <summary>Full trade log <span style="font-weight:500;color:var(--muted);font-size:14px">${data.trades.length} trades · collapsed by default</span></summary>
+    <div class="inner">
+      <div class="controls">
+        <input id="symFilter" type="search" placeholder="Filter symbol…" aria-label="Filter by symbol">
+        <select id="setupFilter" aria-label="Filter by setup">
+          <option value="">All setups</option>
+        </select>
+        <button type="button" class="ghost" id="clearFilters">Clear</button>
+      </div>
+      <div class="table-wrap" style="max-height:480px;overflow:auto">
+        <table id="tradesTable">
+          <thead><tr>
+            <th data-sort="Entry date">Entry</th>
+            <th data-sort="Symbol">Symbol</th>
+            <th data-sort="Daily setup">Setup</th>
+            <th data-sort="Fill time (ET)">Fill</th>
+            <th data-sort="Kept overnight">Overnight</th>
+            <th data-sort="Exit date">Exit date</th>
+            <th data-sort="Exit">Exit</th>
+            <th class="num" data-sort="Days held">Days</th>
+            <th class="num" data-sort="R">R</th>
+          </tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p class="note" id="tradeCount"></p>
+    </div>
+  </details>
+</section>
+
+<section>
+  <h2>Rule-variant comparison</h2>
+  <p class="lead">Nearby cousins of v1.6 on the same three-year stretch. Close scores do not mean the rules are interchangeable — half-year shape matters.</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr>
+        <th>Rule set</th><th class="num">Trades</th><th class="num">Win %</th><th class="num">Total R</th><th class="num">Max DD (R)</th><th class="num">Months ↑</th><th class="num">Worst month</th>
+      </tr></thead>
+      <tbody>
+        ${data.comparison.map((row, i) => `<tr class="${i === 0 ? 'highlight' : ''}">
+          <td>${esc(row['Rule set'])}</td>
+          <td class="num">${esc(row.Trades)}</td>
+          <td class="num">${esc(row['Win %'])}</td>
+          ${tdNum(row['Total R'])}
+          <td class="num neg">${esc(row['Max drawdown (R)'])}</td>
+          <td class="num">${esc(row['Months with a gain'])}</td>
+          ${tdNum(row['Worst month (R)'])}
+        </tr>`).join('')}
+      </tbody>
+    </table>
+  </div>
+  ${data.comparison_note ? `<p class="note">${esc(data.comparison_note)}</p>` : ''}
+</section>
+
+<section>
+  <h2>Version history</h2>
+  <p class="lead">Every rule change gets a new number. Read the scars before you polish the axe.</p>
+  <div class="version">
+    ${data.version_history.map(v => `
+      <div class="vrow">
+        <div class="top"><span class="ver">v${esc(v.Version)}</span><span class="date">${esc(v.Date)}</span></div>
+        <p>${esc(v['What changed'])}</p>
+      </div>`).join('')}
+  </div>
+</section>
+
+<section>
+  <div class="trust">
+    <h2>How far to trust this</h2>
+    <p class="hypo">${esc(data.disclaimer.hypothetical)}</p>
+    <ol>
+      ${data.caveats.map(c => `<li>${esc(c)}</li>`).join('')}
+    </ol>
+    <p class="note" style="margin-top:18px;color:#c4a0a8">Simulated backtest · not actual trading · past results do not guarantee future results · not investment advice.</p>
+  </div>
+</section>
+</main>`;
+
+    wireTrades(data.trades);
+  }
+
+  function wireTrades(trades) {
+    const tbody = document.querySelector('#tradesTable tbody');
+    const symFilter = document.getElementById('symFilter');
+    const setupFilter = document.getElementById('setupFilter');
+    const clearBtn = document.getElementById('clearFilters');
+    const countEl = document.getElementById('tradeCount');
+    let sortKey = 'Entry date';
+    let sortDir = 1;
+
+    const setups = [...new Set(trades.map(t => t['Daily setup']).filter(Boolean))].sort();
+    setups.forEach(s => {
+      const opt = document.createElement('option');
+      opt.value = s;
+      opt.textContent = s.length > 48 ? s.slice(0, 46) + '…' : s;
+      setupFilter.appendChild(opt);
+    });
+
+    function parseR(v) {
+      return parseFloat(String(v).replace('+', '')) || 0;
+    }
+
+    function filtered() {
+      const sym = symFilter.value.trim().toUpperCase();
+      const setup = setupFilter.value;
+      let rows = trades.filter(t => {
+        if (sym && !String(t.Symbol).toUpperCase().includes(sym)) return false;
+        if (setup && t['Daily setup'] !== setup) return false;
+        return true;
+      });
+      rows = rows.slice().sort((a, b) => {
+        let av = a[sortKey], bv = b[sortKey];
+        if (sortKey === 'R' || sortKey === 'Days held') {
+          av = parseR(av); bv = parseR(bv);
+          return (av - bv) * sortDir;
+        }
+        av = String(av || ''); bv = String(bv || '');
+        return av.localeCompare(bv) * sortDir;
+      });
+      return rows;
+    }
+
+    function paint() {
+      const rows = filtered();
+      tbody.innerHTML = rows.map(t => `<tr>
+        <td>${esc(t['Entry date'])}</td>
+        <td><b>${esc(t.Symbol)}</b></td>
+        <td>${esc(t['Daily setup'])}</td>
+        <td>${esc(t['Fill time (ET)'])}</td>
+        <td>${esc(t['Kept overnight'])}</td>
+        <td>${esc(t['Exit date'])}</td>
+        <td>${esc(t.Exit)}</td>
+        <td class="num">${esc(t['Days held'])}</td>
+        ${tdNum(t.R)}
+      </tr>`).join('');
+      countEl.textContent = `Showing ${rows.length} of ${trades.length} trades.`;
+    }
+
+    document.querySelectorAll('#tradesTable th[data-sort]').forEach(th => {
+      th.style.cursor = 'pointer';
+      th.title = 'Sort';
+      th.addEventListener('click', () => {
+        const key = th.getAttribute('data-sort');
+        if (sortKey === key) sortDir *= -1;
+        else { sortKey = key; sortDir = key === 'R' ? -1 : 1; }
+        paint();
+      });
+    });
+
+    symFilter.addEventListener('input', paint);
+    setupFilter.addEventListener('change', paint);
+    clearBtn.addEventListener('click', () => {
+      symFilter.value = '';
+      setupFilter.value = '';
+      paint();
+    });
+    paint();
+  }
+
+  fetch('data/backtest.json')
+    .then(r => { if (!r.ok) throw new Error(r.statusText); return r.json(); })
+    .then(render)
+    .catch(err => {
+      app.innerHTML = `<p class="error">Could not load backtest data (${esc(err.message)}). Check data/backtest.json.</p>`;
+    });
+})();
+</script>
+<script data-goatcounter="https://tiltkiller.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
