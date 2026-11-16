@@ -209,13 +209,15 @@ footer .disc{max-width:760px}
 
 <!--
   OWNER EDIT — research credit (change text in #research-credit only).
-  Uses the owner's wording for the model. Do not claim Anthropic endorses
-  or partners with TiltKiller. Do not expand claims beyond this element.
+  Quote Anthropic’s published model description (linked). Do not claim
+  Anthropic endorses or partners with TiltKiller.
 -->
 <div id="research-credit" hidden
   data-model-name="Fable 5.2"
   data-maker="Anthropic"
-  data-model-blurb="Anthropic's smartest model"></div>
+  data-model-label="Claude Fable 5.2"
+  data-model-quote="our most capable model for technical work, setting a new bar in coding, finance, and the sciences."
+  data-model-quote-url="https://www.anthropic.com/claude/fable"></div>
 
 <div id="app"><p class="loading">Loading the backtest…</p></div>
 
@@ -238,7 +240,9 @@ footer .disc{max-width:760px}
     return {
       modelName: el?.dataset.modelName || 'Fable 5.2',
       maker: el?.dataset.maker || 'Anthropic',
-      modelBlurb: el?.dataset.modelBlurb || "Anthropic's smartest model",
+      modelLabel: el?.dataset.modelLabel || 'Claude Fable 5.2',
+      modelQuote: el?.dataset.modelQuote || 'our most capable model for technical work, setting a new bar in coding, finance, and the sciences.',
+      modelQuoteUrl: el?.dataset.modelQuoteUrl || 'https://www.anthropic.com/claude/fable',
     };
   }
 
@@ -250,14 +254,14 @@ footer .disc{max-width:760px}
   }
 
   function howBuiltBlock() {
-    const { modelName, maker } = researchCredit();
+    const { modelName, modelLabel, modelQuote, modelQuoteUrl } = researchCredit();
     return `
 <aside class="how-built" aria-label="How this was built">
   <div class="hb-top">
     <h2>How this was built</h2>
     <span class="model-badge">${anthropicMarkSvg()}${esc(modelName)}</span>
   </div>
-  <p>Every rule was tested across three years of market data — one change at a time — research built with <strong>${esc(modelName)}</strong> by ${esc(maker)}. The owner made the trading calls.</p>
+  <p>Every rule was tested across three years of market data — one change at a time. Research built with <strong>${esc(modelLabel)}</strong>, which Anthropic calls <a href="${esc(modelQuoteUrl)}" target="_blank" rel="noopener">&ldquo;${esc(modelQuote)}&rdquo;</a>. The owner made the trading calls.</p>
   <a class="hb-cta" href="/how-we-built">Read how we built the rules →</a>
 </aside>`;
   }
