@@ -40,6 +40,7 @@ h1{font-size:clamp(30px,5vw,50px);line-height:1.1;margin:18px 0 12px}h1 span{col
 .how-built .hb-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
 .how-built h2{font-size:18px;margin:0;text-align:left;font-weight:700}
 .model-badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;letter-spacing:.03em;color:var(--blue);border:1px solid rgba(56,189,248,.4);background:rgba(56,189,248,.08);padding:5px 11px;border-radius:999px}
+.model-badge .anthropic-mark{height:0.95em;width:auto;flex:none;display:block;color:currentColor}
 .how-built p{margin:0;color:var(--muted);font-size:14.5px;line-height:1.55}
 .how-built p strong{color:var(--text);font-weight:600}
 .how-built .hb-note{margin-top:10px;font-size:13px;color:#9aa3b5}
@@ -177,8 +178,9 @@ footer .disc{max-width:760px}
 .dstat span:last-child{font-weight:700;font-variant-numeric:tabular-nums}
 .risk-cta{margin-top:22px;text-align:center;padding:22px 16px;border-radius:16px;background:linear-gradient(180deg,rgba(56,189,248,.1),rgba(56,189,248,.03));border:1px solid rgba(56,189,248,.28)}
 .risk-cta p{margin:0 0 14px;color:var(--text);font-size:16px}
-.soon{display:inline-block;padding:14px 22px;border-radius:12px;border:1px solid rgba(56,189,248,.4);background:rgba(56,189,248,.08);color:var(--text);font-weight:650;font-size:15px;line-height:1.35}
+.soon{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 22px;border-radius:12px;border:1px solid rgba(56,189,248,.4);background:rgba(56,189,248,.08);color:var(--text);font-weight:650;font-size:15px;line-height:1.35}
 .soon strong{color:var(--blue);font-weight:750}
+.soon .discord-mark{width:1.15em;height:1.15em;flex:none;display:block}
 .risk-table-note{margin-top:16px}
 @media(max-width:900px){.charts-2,.dollar-grid{grid-template-columns:1fr}.big-metrics{grid-template-columns:repeat(2,1fr)}.tradeoff{grid-template-columns:1fr;}.toff-mid{padding:2px 0}}
 @media(max-width:860px){.stats{grid-template-columns:repeat(2,1fr)}.bw{grid-template-columns:1fr}}
@@ -240,15 +242,22 @@ footer .disc{max-width:760px}
     };
   }
 
+  function anthropicMarkSvg() {
+    return '<svg class="anthropic-mark" viewBox="0 0 92 64" width="14" height="10" role="img" aria-label="Anthropic" xmlns="http://www.w3.org/2000/svg"><title>Anthropic</title>' +
+      '<path fill="currentColor" d="M65.92 0H51.9314L77.44 64H91.4286L65.92 0Z"/>' +
+      '<path fill="currentColor" d="M25.5086 0L0 64H14.2629L19.4798 50.56H46.166L51.3829 64H65.6457L40.1371 0H25.5086ZM24.0933 38.6743L32.8229 16.1829L41.5525 38.6743H24.0933Z"/>' +
+      '</svg>';
+  }
+
   function howBuiltBlock() {
-    const { modelName } = researchCredit();
+    const { modelName, maker } = researchCredit();
     return `
 <aside class="how-built" aria-label="How this was built">
   <div class="hb-top">
     <h2>How this was built</h2>
-    <span class="model-badge">${esc(modelName)}</span>
+    <span class="model-badge">${anthropicMarkSvg()}${esc(modelName)}</span>
   </div>
-  <p>Every rule was tested across three years of market data — one change at a time — with help from an AI research analyst. The owner made the trading calls.</p>
+  <p>Every rule was tested across three years of market data — one change at a time — research built with <strong>${esc(modelName)}</strong> by ${esc(maker)}. The owner made the trading calls.</p>
   <a class="hb-cta" href="/how-we-built">Read how we built the rules →</a>
 </aside>`;
   }
@@ -744,7 +753,7 @@ footer .disc{max-width:760px}
 
     <div class="risk-cta">
       <p>Ready for clear alerts with a risk you chose on purpose? Alerts will be delivered in Discord.</p>
-      <span class="soon" role="status"><strong>Trade alerts in Discord — opening soon</strong></span>
+      <span class="soon" role="status"><svg class="discord-mark" viewBox="0 0 24 24" width="16" height="16" role="img" aria-label="Discord" xmlns="http://www.w3.org/2000/svg"><title>Discord</title><path fill="#5865F2" d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg><strong>Trade alerts in Discord — opening soon</strong></span>
     </div>
   </div>
 </section>
