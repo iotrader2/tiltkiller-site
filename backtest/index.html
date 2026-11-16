@@ -245,28 +245,110 @@ footer .disc{max-width:760px}
     });
   }
 
-  // Rewrite retired product/setup labels before they hit the DOM (split so page source stays clean).
+  // Plain-language rewrites for newer traders (no indicator jargon in the DOM).
+  function plainSetup(s) {
+    const t = String(s || '').trim();
+    if (!t) return t;
+    if (/^trend\s*leader$/i.test(t) || /^leader$/i.test(t)) return 'Leader';
+    if (/trend\s*leader/i.test(t)) return 'Leader';
+    return 'Pullback';
+  }
+
   function scrubLabels(s) {
     if (s == null) return s;
     const n = 'cross' + 'back';
     const N = 'Cross' + 'back';
     let t = String(s);
-    t = t.replace(new RegExp('6\\s*EMA\\s+' + n, 'gi'), 'a 15-minute candle closes back above its 6 EMA');
-    t = t.replace(new RegExp('EMA\\s+' + N, 'gi'), 'EMA Bounce');
+
+    // Comparison rule-set rows
+    t = t.replace(/Trend Leader names only/gi, 'Leaders only');
+    t = t.replace(/v1\.5:\s*no 50-day rule/gi, 'v1.5: without the longer-term trend filter');
+    t = t.replace(/Pattern names not below all of the 10 EMA, 20 EMA and 50-day average/gi, 'Pullbacks that stay in an overall uptrend');
+    t = t.replace(/Pattern names:\s*10 EMA > 20 EMA > 50-day average/gi, 'Pullbacks only in strong uptrends');
+    t = t.replace(/Pattern names above the daily 20 EMA/gi, 'Pullbacks in a short-term uptrend');
+
+    // Version history / notes
+    t = t.replace(/Pattern-setup names need the buy above the prior-day 50-day average, and names under it are left off the watchlist \(Trend Leaders already meet it\)\./gi,
+      'Pullback trades need the stock in a longer-term uptrend; leaders already qualify.');
+    t = t.replace(/Take a long only when the stock is stronger than QQQ since the open:[^.]*\./gi,
+      'Only take trades when the stock is beating the market since the open.');
+    t = t.replace(/stronger than QQQ since the open/gi, 'beating the market since the open');
+
+    // Setup-like strings → Leader / Pullback
+    if (/Trend Leader|EMA|Moving Average Undercut|Delayed High Volume|High Tight Flag|Wedge Pop/i.test(t)
+        && !/v1\.|this document|Pullbacks |Leaders only|without the longer/i.test(t)
+        && t.length < 140) {
+      return plainSetup(t);
+    }
+
+    // Strip leftover indicator jargon if any slips through
+    t = t.replace(/\b\d+-day(?:\s+moving)?\s+averages?\b/gi, 'trend');
+    t = t.replace(/\b(?:prior-day|daily|the)\s+\d+-day(?:\s+average)?\b/gi, 'longer-term trend');
+    t = t.replace(/\b\d+\s*EMA\b/gi, 'trend');
+    t = t.replace(/\bEMA\b/gi, 'trend');
+    t = t.replace(/\bATR\b/gi, 'volatility');
+    t = t.replace(/\bRS(?:\s+at)?\s*P?\d+\b/gi, 'strength');
+    t = t.replace(/\bQQQ\b/g, 'the market');
+    t = t.replace(/\bSPY\b/g, 'the market');
+    t = t.replace(/Moving Average Undercut and Rally(?:\s*\(\d+-day\))?/gi, 'Pullback');
+    t = t.replace(/Trend Leaders?/gi, 'Leaders');
+    t = t.replace(/Delayed High Volume Close/gi, 'Pullback');
+    t = t.replace(/High Tight Flag/gi, 'Pullback');
+    t = t.replace(/Wedge Pop/gi, 'Pullback');
+    t = t.replace(/50-day rule/gi, 'longer-term trend filter');
+    t = t.replace(/50-day average/gi, 'longer-term trend');
+
+    // Retired product name
     t = t.replace(new RegExp(N + '\\s+trading\\s+rules', 'gi'), 'TiltKiller trading rules');
     t = t.replace(new RegExp(n + '\\s+rules', 'gi'), 'trading rules');
     t = t.replace(new RegExp('Results:\\s*' + n, 'gi'), 'Results: trading');
-    t = t.replace(new RegExp('s_ema-' + n, 'gi'), 's_ema-bounce');
-    t = t.replace(new RegExp('cross[\\s_-]*back', 'gi'), 'bounce');
+    t = t.replace(new RegExp('s_ema-' + n, 'gi'), 'pattern');
+    t = t.replace(new RegExp('cross[\\s_-]*back', 'gi'), 'pullback');
     return t;
   }
 
-  const GROUP_MAP = [
-    { key: 'market', title: 'Market filter', match: g => g.startsWith('Market filter') },
-    { key: 'names', title: 'Which names', match: g => g.startsWith('Which names') },
-    { key: 'entry', title: 'Entry', match: g => g.startsWith('Entry (') },
-    { key: 'stop', title: 'Stop', match: g => g === 'Stop' },
-    { key: 'exits', title: 'Exits & holds', match: g => g.startsWith('Entry day') || g.startsWith('Held position') || g === 'Limits' },
+  const PLAIN_RULES = [
+    {
+      title: 'Market filter',
+      items: [
+        'Only trades when the overall market is in an uptrend',
+        'If the market looks weak, no new long alerts that day',
+      ],
+    },
+    {
+      title: 'Which names',
+      items: [
+        'Focuses on strong, heavily traded leading stocks',
+        'Leaders: stocks already trending with the strongest groups',
+        'Pullbacks: quality names that dip and turn back up',
+        'Skips thin, quiet names — volume has to be there',
+      ],
+    },
+    {
+      title: 'Entry',
+      items: [
+        'Buys when a stock turns back up early in the session',
+        'Alerts land in Discord from the open through 10:45 ET',
+        'You see the stock, the entry, and the stop in one message',
+      ],
+    },
+    {
+      title: 'Stop',
+      items: [
+        'Every trade has a set stop, so you know your risk up front',
+        'Position size comes from that stop — not from gut feel',
+        'If the stop is too wide or too tight, the trade is skipped',
+      ],
+    },
+    {
+      title: 'Exits & holds',
+      items: [
+        'Winners can be held overnight; losers are cut quickly',
+        'No overnight hold into an earnings report',
+        'At most a few new trades a day — quality over quantity',
+        'Long trades only',
+      ],
+    },
   ];
 
   function esc(s) {
@@ -300,13 +382,6 @@ footer .disc{max-width:760px}
   function fmtPctNeg(n) {
     // CSV already stores drawdowns as negative; display with minus
     return (n > 0 ? '-' : n < 0 ? '-' : '') + Math.abs(n).toFixed(1) + '%';
-  }
-
-  function groupRules(rules) {
-    return GROUP_MAP.map(g => ({
-      ...g,
-      items: rules.filter(r => g.match(r.group)),
-    })).filter(g => g.items.length);
   }
 
   function animateValue(el, from, to, duration, formatter) {
@@ -544,7 +619,6 @@ footer .disc{max-width:760px}
   function render(data) {
     const R = data.results;
     const I = data.input;
-    const groups = groupRules(data.rules);
     const best = data.best_and_worst.filter(t => t.kind === 'Best').slice(0, 10);
     const worst = data.best_and_worst.filter(t => t.kind === 'Worst').slice(0, 10);
     const riskRows = data.risk_table;
@@ -712,15 +786,14 @@ footer .disc{max-width:760px}
   <h2>The rules in plain language</h2>
   <p class="lead">Rules v${esc(data.meta.version)} as the alerts follow them. Tested from ${esc(data.meta.period.replace(/ \(three years\)/, ''))}. Get the alert, know the entry and the stop, size it to your risk.</p>
   <div class="grid">
-    ${groups.map(g => `
+    ${PLAIN_RULES.map(g => `
       <div class="card">
         <h3>${esc(g.title)}</h3>
         <ul>
-          ${g.items.map(r => `<li>${esc(r.rule)}${r.value ? `<span class="val">· ${esc(r.value)}</span>` : ''}</li>`).join('')}
+          ${g.items.map(item => `<li>${esc(item)}</li>`).join('')}
         </ul>
       </div>`).join('')}
   </div>
-  ${plainNotes(data.rules_notes).length ? `<div class="note">${plainNotes(data.rules_notes).map(n => `<p>${esc(n)}</p>`).join('')}</div>` : ''}
 </section>
 
 <section>
@@ -775,11 +848,11 @@ footer .disc{max-width:760px}
   <div class="bw">
     <div class="card">
       <h3 class="best">Best</h3>
-      ${best.map(t => `<div class="trade"><div><div class="sym">${esc(t.Symbol)}</div><div class="meta">${esc(t['Entry date'])} · ${esc(t['Daily setup'])}${t.Exit ? ' · ' + esc(t.Exit) : ''}</div></div><div class="pos"><b>${esc(t.R)}</b></div></div>`).join('')}
+      ${best.map(t => `<div class="trade"><div><div class="sym">${esc(t.Symbol)}</div><div class="meta">${esc(t['Entry date'])} · ${esc(plainSetup(t['Daily setup']))}${t.Exit ? ' · ' + esc(t.Exit) : ''}</div></div><div class="pos"><b>${esc(t.R)}</b></div></div>`).join('')}
     </div>
     <div class="card">
       <h3 class="worst">Worst</h3>
-      ${worst.map(t => `<div class="trade"><div><div class="sym">${esc(t.Symbol)}</div><div class="meta">${esc(t['Entry date'])} · ${esc(t['Daily setup'])}${t.Exit ? ' · ' + esc(t.Exit) : ''}</div></div><div class="neg"><b>${esc(t.R)}</b></div></div>`).join('')}
+      ${worst.map(t => `<div class="trade"><div><div class="sym">${esc(t.Symbol)}</div><div class="meta">${esc(t['Entry date'])} · ${esc(plainSetup(t['Daily setup']))}${t.Exit ? ' · ' + esc(t.Exit) : ''}</div></div><div class="neg"><b>${esc(t.R)}</b></div></div>`).join('')}
     </div>
   </div>
   ${data.best_worst_note ? `<p class="note">${esc(data.best_worst_note)}</p>` : ''}
@@ -989,11 +1062,11 @@ footer .disc{max-width:760px}
     let sortKey = 'Entry date';
     let sortDir = 1;
 
-    const setups = [...new Set(trades.map(t => t['Daily setup']).filter(Boolean))].sort();
+    const setups = [...new Set(trades.map(t => plainSetup(t['Daily setup'])).filter(Boolean))].sort();
     setups.forEach(s => {
       const opt = document.createElement('option');
       opt.value = s;
-      opt.textContent = scrubLabels(s.length > 48 ? s.slice(0, 46) + '…' : s);
+      opt.textContent = s;
       setupFilter.appendChild(opt);
     });
 
@@ -1006,7 +1079,7 @@ footer .disc{max-width:760px}
       const setup = setupFilter.value;
       let rows = trades.filter(t => {
         if (sym && !String(t.Symbol).toUpperCase().includes(sym)) return false;
-        if (setup && t['Daily setup'] !== setup) return false;
+        if (setup && plainSetup(t['Daily setup']) !== setup) return false;
         return true;
       });
       rows = rows.slice().sort((a, b) => {
@@ -1026,7 +1099,7 @@ footer .disc{max-width:760px}
       tbody.innerHTML = rows.map(t => `<tr>
         <td>${esc(t['Entry date'])}</td>
         <td><b>${esc(t.Symbol)}</b></td>
-        <td>${esc(t['Daily setup'])}</td>
+        <td>${esc(plainSetup(t['Daily setup']))}</td>
         <td>${esc(t['Fill time (ET)'])}</td>
         <td>${esc(t['Kept overnight'])}</td>
         <td>${esc(t['Exit date'])}</td>

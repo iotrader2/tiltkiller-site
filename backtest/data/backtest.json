@@ -47,13 +47,13 @@
   },
   "caveats": [
     "The result rests on a few large runners. HOOD (+59R, bought 2025-05-19) and MARA (+43R, bought 2023-11-27) are 32% of the total.",
-    "Many months have no trades (QQQ under its 10 EMA) or lose. Expect long flat stretches between runners.",
+    "Pullback",
     "The rules were chosen by comparing many variants on this same three-year period, so the figures are optimistic.",
     "Held days use daily bars: a day that trades both the stop and a higher price is counted as stopped.",
     "Not modelled: the 15:45 sell time (the backtest sells at the close), commissions, buying power, names added mid-session. The universe is today's list, so delisted names are missing.",
-    "Source: Alpaca 15-minute and daily bars, the scanner daily scan as of each previous close, Yahoo Finance earnings dates; backend/research/bounce_runner.py run 2026-11-16 with KEEP_UP=1 KEEP_DOWN=0 RISK_ATR_MAX=0.25 REGIME=1 REGIME_PRIOR=1 INV_NONE=1 QQQ_COND=close10 LEADER=1 LEADER_ATR=5 LEADER_RISK_ATR=0.35 MIN_ADV=300e6 MIN_ATR=3 SETUP_ONLY=s_ema-bounce,s_mur20 RAISE_AFTER=5 FILTER='rs_intraday > 0 and (ext_s50 > 0 or leader)' (row: extension cap off, at most 3 new trades a day)."
+    "Source: Alpaca 15-minute and daily bars, the scanner daily scan as of each previous close, Yahoo Finance earnings dates; backend/research/pullback_runner.py run 2026-11-16 with KEEP_UP=1 KEEP_DOWN=0 RISK_ATR_MAX=0.25 REGIME=1 REGIME_PRIOR=1 INV_NONE=1 QQQ_COND=close10 LEADER=1 LEADER_ATR=5 LEADER_RISK_ATR=0.35 MIN_ADV=300e6 MIN_ATR=3 SETUP_ONLY=pattern,s_mur20 RAISE_AFTER=5 FILTER='rs_intraday > 0 and (ext_s50 > 0 or leader)' (row: extension cap off, at most 3 new trades a day)."
   ],
-  "risk_table_source": "Source: backend/research/bounce_sizing.py on the same run. The account rows above (and the Trades tab) compound trade by trade in order of entry instead, so they differ a little.",
+  "risk_table_source": "Source: backend/research/pullback_sizing.py on the same run. The account rows above (and the Trades tab) compound trade by trade in order of entry instead, so they differ a little.",
   "risk_table": [
     {
       "Risk per trade": "0.10%",
@@ -127,14 +127,14 @@
   "rules": [
     {
       "n": 1,
-      "group": "Market filter (QQQ daily chart)",
-      "rule": "No new long trades unless QQQ closed above its daily 10 EMA the previous day. On those days the watchlist holds no long names",
+      "group": "Market filter (the market daily chart)",
+      "rule": "Pullback",
       "value": "uptrend only"
     },
     {
       "n": 2,
       "group": "Which names: pattern setups (daily scan, as of the previous close)",
-      "rule": "Stock or ETF with an EMA Bounce or a 20-day Moving Average Undercut and Rally on the daily chart (other setups are switched off)",
+      "rule": "Pullback",
       "value": "2 setups"
     },
     {
@@ -152,7 +152,7 @@
     {
       "n": 5,
       "group": "Which names: pattern setups (daily scan, as of the previous close)",
-      "rule": "Daily ATR above",
+      "rule": "Daily volatility above",
       "value": "3%"
     },
     {
@@ -164,44 +164,44 @@
     {
       "n": 7,
       "group": "Which names: pattern setups (daily scan, as of the previous close)",
-      "rule": "No extension cap (the buy may be any distance above the daily 10 EMA)",
+      "rule": "Pullback",
       "value": "off"
     },
     {
       "n": 8,
       "group": "Which names: pattern setups (daily scan, as of the previous close)",
-      "rule": "The buy is above the prior-day 50-day average; names under it are not on the watchlist",
+      "rule": "The buy is above the prior-day longer-term trend; names under it are not on the watchlist",
       "value": "above 50-day"
     },
     {
       "n": 9,
-      "group": "Which names: Trend Leader group",
-      "rule": "RS at P70 or better, daily 10 EMA above the 20 EMA above the 50-day average, close above the 50-day average",
-      "value": "Trend Leader"
+      "group": "Leader",
+      "rule": "Pullback",
+      "value": "Leader"
     },
     {
       "n": 10,
-      "group": "Which names: Trend Leader group",
-      "rule": "Daily ATR at least",
+      "group": "Leader",
+      "rule": "Daily volatility at least",
       "value": "5%"
     },
     {
       "n": 11,
-      "group": "Which names: Trend Leader group",
+      "group": "Leader",
       "rule": "Average dollar volume at least",
       "value": "$300M"
     },
     {
       "n": 12,
-      "group": "Which names: Trend Leader group",
+      "group": "Leader",
       "rule": "No theme rank, no chart pattern and no name cap required",
       "value": ""
     },
     {
       "n": 13,
       "group": "Entry (15-minute chart)",
-      "rule": "A candle closes above the 6 EMA after the prior candle closed at or below it",
-      "value": "a 15-minute candle closes back above its 6 EMA"
+      "rule": "Pullback",
+      "value": "Pullback"
     },
     {
       "n": 14,
@@ -212,8 +212,8 @@
     {
       "n": 15,
       "group": "Entry (15-minute chart)",
-      "rule": "It also closes above the 15-minute 20 EMA",
-      "value": "20 EMA"
+      "rule": "Pullback",
+      "value": "Pullback"
     },
     {
       "n": 16,
@@ -236,7 +236,7 @@
     {
       "n": 19,
       "group": "Entry (15-minute chart)",
-      "rule": "The stock is stronger than QQQ since the open: its % move from today's open to the buy price minus QQQ's % move from its open to the trigger candle's close is above this many points; otherwise skip",
+      "rule": "The stock is stronger than the market since the open: its % move from today's open to the buy price minus the market's % move from its open to the trigger candle's close is above this many points; otherwise skip",
       "value": "0 points"
     },
     {
@@ -248,13 +248,13 @@
     {
       "n": 21,
       "group": "Stop",
-      "rule": "Pattern setups: skip when the stop is further from the buy than this share of the 14-day daily ATR",
+      "rule": "Pattern setups: skip when the stop is further from the buy than this share of the 14-day daily volatility",
       "value": "0.25"
     },
     {
       "n": 22,
       "group": "Stop",
-      "rule": "Trend Leaders: the same limit",
+      "rule": "Leader",
       "value": "0.35"
     },
     {
@@ -272,7 +272,7 @@
     {
       "n": 25,
       "group": "Entry day, 15:45 ET",
-      "rule": "QQQ's 15:45 price is above its daily 10 EMA (counting that price as today's close): keep the whole position",
+      "rule": "Pullback",
       "value": "hold all"
     },
     {
@@ -290,7 +290,7 @@
     {
       "n": 28,
       "group": "Entry day, 15:45 ET",
-      "rule": "The stock is stronger than QQQ since the open: its % move from today's open to the buy price minus QQQ's % move from its open to the trigger candle's close is above this many points; otherwise skip",
+      "rule": "The stock is stronger than the market since the open: its % move from today's open to the buy price minus the market's % move from its open to the trigger candle's close is above this many points; otherwise skip",
       "value": "0 points"
     },
     {
@@ -338,7 +338,7 @@
   ],
   "rules_notes": [
     "The backtest matches the app except: sells are at the 4:00 close instead of 15:45, and the 150-name cap is not applied.",
-    "The two pattern setups and the stronger-than-QQQ rule were chosen after comparing many variants on this same period, so the total is optimistic; the rule's case rests on every half-year being positive.",
+    "The two pattern setups and the stronger-than-the market rule were chosen after comparing many variants on this same period, so the total is optimistic; the rule's case rests on every half-year being positive.",
     "Risk per trade is not a rule of the app; the account columns use the risk on the Results tab.",
     "Risk per trade on the Results and Trades tabs: 0.20% of the account, compounding trade by trade in order of entry; with several positions open at once the real path differs a little."
   ],
@@ -830,7 +830,7 @@
       "2026-05 to 2026-11": "+9.6"
     },
     {
-      "Rule set": "v1.5: no 50-day rule",
+      "Rule set": "v1.5: without the longer-term trend filter",
       "Trades": "403",
       "Win %": "23.8",
       "Total R": "+319.8",
@@ -845,7 +845,7 @@
       "2026-05 to 2026-11": "+9.6"
     },
     {
-      "Rule set": "Pattern names not below all of the 10 EMA, 20 EMA and 50-day average",
+      "Rule set": "Pullbacks that stay in an overall uptrend",
       "Trades": "401",
       "Win %": "23.7",
       "Total R": "+320.0",
@@ -860,7 +860,7 @@
       "2026-05 to 2026-11": "+9.6"
     },
     {
-      "Rule set": "Pattern names: 10 EMA > 20 EMA > 50-day average",
+      "Rule set": "Pullbacks only in strong uptrends",
       "Trades": "392",
       "Win %": "23.5",
       "Total R": "+317.9",
@@ -875,7 +875,7 @@
       "2026-05 to 2026-11": "+5.3"
     },
     {
-      "Rule set": "Pattern names above the daily 20 EMA",
+      "Rule set": "Pullbacks in a short-term uptrend",
       "Trades": "397",
       "Win %": "23.9",
       "Total R": "+306.3",
@@ -890,7 +890,7 @@
       "2026-05 to 2026-11": "+9.6"
     },
     {
-      "Rule set": "Trend Leader names only",
+      "Rule set": "Leaders only",
       "Trades": "313",
       "Win %": "24.6",
       "Total R": "+302.2",
@@ -935,12 +935,12 @@
     {
       "Version": "1.5",
       "Date": "2026-11-16",
-      "What changed": "Take a long only when the stock is stronger than QQQ since the open: its move from today's open to the buy price minus QQQ's move from its open to the trigger candle's close must be above 0 points. Backtest: +319.8R with a 25.4R drawdown and every half-year positive, against +372.1R, 44.3R and three losing half-years for 1.4."
+      "What changed": "Only take trades when the stock is beating the market since the open. Backtest: +319.8R with a 25.4R drawdown and every half-year positive, against +372.1R, 44.3R and three losing half-years for 1.4."
     },
     {
       "Version": "1.6",
       "Date": "2026-11-16",
-      "What changed": "Pattern-setup names need the buy above the prior-day 50-day average, and names under it are left off the watchlist (Trend Leaders already meet it). Backtest unchanged in practice: +319.8R, 25.4R drawdown (8 trades dropped, -1.5R between them); the watchlist is shorter."
+      "What changed": "Pullback trades need the stock in a longer-term uptrend; leaders already qualify. Backtest unchanged in practice: +319.8R, 25.4R drawdown (8 trades dropped, -1.5R between them); the watchlist is shorter."
     }
   ],
   "best_worst_note": "R after 0.03% slippage per side (simulation output).",
@@ -949,7 +949,7 @@
       "kind": "Best",
       "Entry date": "2025-05-19",
       "Symbol": "HOOD",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Kept overnight": "Yes",
       "Exit date": "2025-07-30",
       "Exit": "before earnings",
@@ -959,7 +959,7 @@
       "kind": "Best",
       "Entry date": "2023-11-27",
       "Symbol": "MARA",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Kept overnight": "Yes",
       "Exit date": "2024-01-02",
       "Exit": "stop",
@@ -969,7 +969,7 @@
       "kind": "Best",
       "Entry date": "2023-11-24",
       "Symbol": "AFRM",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Kept overnight": "Yes",
       "Exit date": "2024-01-02",
       "Exit": "stop (gap)",
@@ -979,7 +979,7 @@
       "kind": "Best",
       "Entry date": "2026-04-07",
       "Symbol": "JBL",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Kept overnight": "Yes",
       "Exit date": "2026-04-28",
       "Exit": "stop",
@@ -989,7 +989,7 @@
       "kind": "Best",
       "Entry date": "2024-11-22",
       "Symbol": "PLTR",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Kept overnight": "Yes",
       "Exit date": "2024-12-31",
       "Exit": "stop",
@@ -999,7 +999,7 @@
       "kind": "Best",
       "Entry date": "2024-02-05",
       "Symbol": "QCOM",
-      "Daily setup": "Moving Average Undercut and Rally (20-day)",
+      "Daily setup": "Pullback",
       "Kept overnight": "Yes",
       "Exit date": "2024-03-14",
       "Exit": "stop",
@@ -1009,7 +1009,7 @@
       "kind": "Best",
       "Entry date": "2025-08-25",
       "Symbol": "BE",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Kept overnight": "Yes",
       "Exit date": "2025-09-24",
       "Exit": "stop (gap)",
@@ -1019,7 +1019,7 @@
       "kind": "Best",
       "Entry date": "2025-09-29",
       "Symbol": "CLSK",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Kept overnight": "Yes",
       "Exit date": "2025-10-17",
       "Exit": "stop (gap)",
@@ -1029,7 +1029,7 @@
       "kind": "Best",
       "Entry date": "2024-11-07",
       "Symbol": "MSTR",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Kept overnight": "Yes",
       "Exit date": "2024-11-26",
       "Exit": "stop",
@@ -1039,7 +1039,7 @@
       "kind": "Best",
       "Entry date": "2025-11-11",
       "Symbol": "REGN",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Kept overnight": "Yes",
       "Exit date": "2025-12-02",
       "Exit": "stop (gap)",
@@ -1049,7 +1049,7 @@
       "kind": "Best",
       "Entry date": "2026-05-19",
       "Symbol": "ALAB",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Kept overnight": "Yes",
       "Exit date": "2026-06-05",
       "Exit": "stop",
@@ -1059,7 +1059,7 @@
       "kind": "Best",
       "Entry date": "2026-04-13",
       "Symbol": "ARM",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Kept overnight": "Yes",
       "Exit date": "2026-05-05",
       "Exit": "before earnings",
@@ -1069,7 +1069,7 @@
       "kind": "Best",
       "Entry date": "2026-04-07",
       "Symbol": "KEYS",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Kept overnight": "Yes",
       "Exit date": "2026-04-28",
       "Exit": "stop",
@@ -1079,7 +1079,7 @@
       "kind": "Best",
       "Entry date": "2026-04-07",
       "Symbol": "STX",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Kept overnight": "Yes",
       "Exit date": "2026-04-28",
       "Exit": "before earnings",
@@ -1089,7 +1089,7 @@
       "kind": "Best",
       "Entry date": "2025-10-03",
       "Symbol": "IREN",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Kept overnight": "Yes",
       "Exit date": "2025-10-17",
       "Exit": "stop",
@@ -1099,7 +1099,7 @@
       "kind": "Worst",
       "Entry date": "2025-09-09",
       "Symbol": "NIO",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Kept overnight": "Yes",
       "Exit date": "2025-09-10",
       "Exit": "stop (gap)",
@@ -1109,7 +1109,7 @@
       "kind": "Worst",
       "Entry date": "2026-08-04",
       "Symbol": "CRM",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Kept overnight": "Yes",
       "Exit date": "2026-08-06",
       "Exit": "stop (gap)",
@@ -1119,7 +1119,7 @@
       "kind": "Worst",
       "Entry date": "2026-08-04",
       "Symbol": "NOW",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Kept overnight": "Yes",
       "Exit date": "2026-08-06",
       "Exit": "stop (gap)",
@@ -1129,7 +1129,7 @@
       "kind": "Worst",
       "Entry date": "2026-03-18",
       "Symbol": "COHR",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Kept overnight": "Yes",
       "Exit date": "2026-03-19",
       "Exit": "stop (gap)",
@@ -1139,7 +1139,7 @@
       "kind": "Worst",
       "Entry date": "2024-12-26",
       "Symbol": "MRVL",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Kept overnight": "Yes",
       "Exit date": "2024-12-27",
       "Exit": "stop (gap)",
@@ -1149,7 +1149,7 @@
       "kind": "Worst",
       "Entry date": "2026-03-18",
       "Symbol": "CIEN",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Kept overnight": "Yes",
       "Exit date": "2026-03-19",
       "Exit": "stop (gap)",
@@ -1159,7 +1159,7 @@
       "kind": "Worst",
       "Entry date": "2024-12-03",
       "Symbol": "CRWD",
-      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "Pullback",
       "Kept overnight": "No",
       "Exit date": "",
       "Exit": "",
@@ -1169,7 +1169,7 @@
       "kind": "Worst",
       "Entry date": "2024-11-07",
       "Symbol": "DAL",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Kept overnight": "No",
       "Exit date": "",
       "Exit": "",
@@ -1179,7 +1179,7 @@
       "kind": "Worst",
       "Entry date": "2024-08-21",
       "Symbol": "CVNA",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Kept overnight": "No",
       "Exit date": "",
       "Exit": "",
@@ -1189,7 +1189,7 @@
       "kind": "Worst",
       "Entry date": "2025-10-03",
       "Symbol": "KGC",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Kept overnight": "No",
       "Exit date": "",
       "Exit": "",
@@ -1199,7 +1199,7 @@
       "kind": "Worst",
       "Entry date": "2026-10-09",
       "Symbol": "FIX",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Kept overnight": "Yes",
       "Exit date": "2026-10-12",
       "Exit": "stop (gap)",
@@ -1209,7 +1209,7 @@
       "kind": "Worst",
       "Entry date": "2025-08-14",
       "Symbol": "FIX",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Kept overnight": "No",
       "Exit date": "",
       "Exit": "",
@@ -1219,7 +1219,7 @@
       "kind": "Worst",
       "Entry date": "2024-12-18",
       "Symbol": "DDOG",
-      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "Pullback",
       "Kept overnight": "No",
       "Exit date": "",
       "Exit": "",
@@ -1229,7 +1229,7 @@
       "kind": "Worst",
       "Entry date": "2024-12-05",
       "Symbol": "CRWD",
-      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "Pullback",
       "Kept overnight": "No",
       "Exit date": "",
       "Exit": "",
@@ -1239,7 +1239,7 @@
       "kind": "Worst",
       "Entry date": "2026-08-11",
       "Symbol": "PAYX",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Kept overnight": "Yes",
       "Exit date": "2026-08-12",
       "Exit": "stop (gap)",
@@ -1250,7 +1250,7 @@
     {
       "Entry date": "2023-11-07",
       "Symbol": "MSTR",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1261,7 +1261,7 @@
     {
       "Entry date": "2023-11-10",
       "Symbol": "SPOT",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1272,7 +1272,7 @@
     {
       "Entry date": "2023-11-13",
       "Symbol": "SPOT",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1283,7 +1283,7 @@
     {
       "Entry date": "2023-11-15",
       "Symbol": "ANET",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1294,7 +1294,7 @@
     {
       "Entry date": "2023-11-16",
       "Symbol": "MSTR",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1305,7 +1305,7 @@
     {
       "Entry date": "2023-11-21",
       "Symbol": "PANW",
-      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1316,7 +1316,7 @@
     {
       "Entry date": "2023-11-24",
       "Symbol": "AFRM",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "Yes",
       "Exit date": "2024-01-02",
@@ -1327,7 +1327,7 @@
     {
       "Entry date": "2023-11-27",
       "Symbol": "MARA",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "Yes",
       "Exit date": "2024-01-02",
@@ -1338,7 +1338,7 @@
     {
       "Entry date": "2023-11-29",
       "Symbol": "COIN",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1349,7 +1349,7 @@
     {
       "Entry date": "2023-12-20",
       "Symbol": "CVNA",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1360,7 +1360,7 @@
     {
       "Entry date": "2023-12-21",
       "Symbol": "UPST",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1371,7 +1371,7 @@
     {
       "Entry date": "2023-12-27",
       "Symbol": "SNAP",
-      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1382,7 +1382,7 @@
     {
       "Entry date": "2023-12-28",
       "Symbol": "TTD",
-      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1393,7 +1393,7 @@
     {
       "Entry date": "2024-01-09",
       "Symbol": "CLSK",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1404,7 +1404,7 @@
     {
       "Entry date": "2024-01-09",
       "Symbol": "MARA",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1415,7 +1415,7 @@
     {
       "Entry date": "2024-01-16",
       "Symbol": "AFRM",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1426,7 +1426,7 @@
     {
       "Entry date": "2024-01-29",
       "Symbol": "SMCI",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1437,7 +1437,7 @@
     {
       "Entry date": "2024-02-05",
       "Symbol": "QCOM",
-      "Daily setup": "Moving Average Undercut and Rally (20-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:00",
       "Kept overnight": "Yes",
       "Exit date": "2024-03-14",
@@ -1448,7 +1448,7 @@
     {
       "Entry date": "2024-02-07",
       "Symbol": "NFLX",
-      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1459,7 +1459,7 @@
     {
       "Entry date": "2024-02-23",
       "Symbol": "DECK",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "9:45",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1470,7 +1470,7 @@
     {
       "Entry date": "2024-02-23",
       "Symbol": "ARM",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2024-03-05",
@@ -1481,7 +1481,7 @@
     {
       "Entry date": "2024-03-01",
       "Symbol": "COIN",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "Yes",
       "Exit date": "2024-03-14",
@@ -1492,7 +1492,7 @@
     {
       "Entry date": "2024-03-01",
       "Symbol": "MSTR",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "Yes",
       "Exit date": "2024-03-19",
@@ -1503,7 +1503,7 @@
     {
       "Entry date": "2024-03-01",
       "Symbol": "NET",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "Yes",
       "Exit date": "2024-03-04",
@@ -1514,7 +1514,7 @@
     {
       "Entry date": "2024-03-07",
       "Symbol": "CVNA",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1525,7 +1525,7 @@
     {
       "Entry date": "2024-03-13",
       "Symbol": "PLTR",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "Yes",
       "Exit date": "2024-03-14",
@@ -1536,7 +1536,7 @@
     {
       "Entry date": "2024-03-13",
       "Symbol": "ANET",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2024-03-15",
@@ -1547,7 +1547,7 @@
     {
       "Entry date": "2024-03-13",
       "Symbol": "CRWD",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1558,7 +1558,7 @@
     {
       "Entry date": "2024-03-20",
       "Symbol": "CLSK",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "Yes",
       "Exit date": "2024-04-01",
@@ -1569,7 +1569,7 @@
     {
       "Entry date": "2024-03-20",
       "Symbol": "MSTR",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1580,7 +1580,7 @@
     {
       "Entry date": "2024-03-22",
       "Symbol": "NVDA",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "Yes",
       "Exit date": "2024-03-27",
@@ -1591,7 +1591,7 @@
     {
       "Entry date": "2024-03-25",
       "Symbol": "MSTR",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "9:45",
       "Kept overnight": "Yes",
       "Exit date": "2024-03-28",
@@ -1602,7 +1602,7 @@
     {
       "Entry date": "2024-03-25",
       "Symbol": "CRWD",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1613,7 +1613,7 @@
     {
       "Entry date": "2024-04-10",
       "Symbol": "HOOD",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1624,7 +1624,7 @@
     {
       "Entry date": "2024-04-30",
       "Symbol": "VRT",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1635,7 +1635,7 @@
     {
       "Entry date": "2024-05-03",
       "Symbol": "SPOT",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1646,7 +1646,7 @@
     {
       "Entry date": "2024-05-07",
       "Symbol": "VRT",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1657,7 +1657,7 @@
     {
       "Entry date": "2024-05-07",
       "Symbol": "GE",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:15",
       "Kept overnight": "Yes",
       "Exit date": "2024-05-08",
@@ -1668,7 +1668,7 @@
     {
       "Entry date": "2024-05-07",
       "Symbol": "DELL",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1679,7 +1679,7 @@
     {
       "Entry date": "2024-05-08",
       "Symbol": "VRT",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "Yes",
       "Exit date": "2024-05-09",
@@ -1690,7 +1690,7 @@
     {
       "Entry date": "2024-05-08",
       "Symbol": "NEM",
-      "Daily setup": "Delayed High Volume Close; EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1701,7 +1701,7 @@
     {
       "Entry date": "2024-05-14",
       "Symbol": "VRT",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:15",
       "Kept overnight": "Yes",
       "Exit date": "2024-05-17",
@@ -1712,7 +1712,7 @@
     {
       "Entry date": "2024-05-14",
       "Symbol": "SNAP",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1723,7 +1723,7 @@
     {
       "Entry date": "2024-05-16",
       "Symbol": "MPWR",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1734,7 +1734,7 @@
     {
       "Entry date": "2024-05-17",
       "Symbol": "BIDU",
-      "Daily setup": "Delayed High Volume Close; EMA Bounce; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1745,7 +1745,7 @@
     {
       "Entry date": "2024-05-20",
       "Symbol": "BABA",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1756,7 +1756,7 @@
     {
       "Entry date": "2024-05-21",
       "Symbol": "VST",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "9:45",
       "Kept overnight": "Yes",
       "Exit date": "2024-06-03",
@@ -1767,7 +1767,7 @@
     {
       "Entry date": "2024-05-21",
       "Symbol": "BX",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2024-05-22",
@@ -1778,7 +1778,7 @@
     {
       "Entry date": "2024-06-04",
       "Symbol": "HOOD",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1789,7 +1789,7 @@
     {
       "Entry date": "2024-06-06",
       "Symbol": "AMD",
-      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (20-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1800,7 +1800,7 @@
     {
       "Entry date": "2024-06-07",
       "Symbol": "MSTR",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "9:45",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1811,7 +1811,7 @@
     {
       "Entry date": "2024-06-10",
       "Symbol": "FSLR",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1822,7 +1822,7 @@
     {
       "Entry date": "2024-06-10",
       "Symbol": "DECK",
-      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1833,7 +1833,7 @@
     {
       "Entry date": "2024-06-14",
       "Symbol": "NVDA",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1844,7 +1844,7 @@
     {
       "Entry date": "2024-06-18",
       "Symbol": "NVDA",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "Yes",
       "Exit date": "2024-06-20",
@@ -1855,7 +1855,7 @@
     {
       "Entry date": "2024-06-20",
       "Symbol": "CVNA",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "9:45",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1866,7 +1866,7 @@
     {
       "Entry date": "2024-06-21",
       "Symbol": "HOOD",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "Yes",
       "Exit date": "2024-06-24",
@@ -1877,7 +1877,7 @@
     {
       "Entry date": "2024-06-26",
       "Symbol": "DELL",
-      "Daily setup": "Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1888,7 +1888,7 @@
     {
       "Entry date": "2024-07-03",
       "Symbol": "CVNA",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1899,7 +1899,7 @@
     {
       "Entry date": "2024-07-05",
       "Symbol": "SHOP",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1910,7 +1910,7 @@
     {
       "Entry date": "2024-07-08",
       "Symbol": "ELF",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1921,7 +1921,7 @@
     {
       "Entry date": "2024-07-15",
       "Symbol": "ON",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1932,7 +1932,7 @@
     {
       "Entry date": "2024-08-13",
       "Symbol": "NEM",
-      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1943,7 +1943,7 @@
     {
       "Entry date": "2024-08-14",
       "Symbol": "GEV",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2024-08-23",
@@ -1954,7 +1954,7 @@
     {
       "Entry date": "2024-08-20",
       "Symbol": "MPWR",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1965,7 +1965,7 @@
     {
       "Entry date": "2024-08-21",
       "Symbol": "CVNA",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1976,7 +1976,7 @@
     {
       "Entry date": "2024-08-22",
       "Symbol": "VST",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2024-08-28",
@@ -1987,7 +1987,7 @@
     {
       "Entry date": "2024-08-23",
       "Symbol": "PLTR",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "9:45",
       "Kept overnight": "No",
       "Exit date": "",
@@ -1998,7 +1998,7 @@
     {
       "Entry date": "2024-08-23",
       "Symbol": "UPST",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "Yes",
       "Exit date": "2024-09-03",
@@ -2009,7 +2009,7 @@
     {
       "Entry date": "2024-09-17",
       "Symbol": "AFRM",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2020,7 +2020,7 @@
     {
       "Entry date": "2024-09-23",
       "Symbol": "AFRM",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "9:45",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2031,7 +2031,7 @@
     {
       "Entry date": "2024-10-11",
       "Symbol": "TCOM",
-      "Daily setup": "Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:15",
       "Kept overnight": "Yes",
       "Exit date": "2024-10-14",
@@ -2042,7 +2042,7 @@
     {
       "Entry date": "2024-10-11",
       "Symbol": "FUTU",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2024-10-14",
@@ -2053,7 +2053,7 @@
     {
       "Entry date": "2024-10-16",
       "Symbol": "JD",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "9:45",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2064,7 +2064,7 @@
     {
       "Entry date": "2024-10-22",
       "Symbol": "TCOM",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2075,7 +2075,7 @@
     {
       "Entry date": "2024-10-22",
       "Symbol": "FUTU",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2086,7 +2086,7 @@
     {
       "Entry date": "2024-10-22",
       "Symbol": "HOOD",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:15",
       "Kept overnight": "Yes",
       "Exit date": "2024-10-23",
@@ -2097,7 +2097,7 @@
     {
       "Entry date": "2024-10-23",
       "Symbol": "PLTR",
-      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2108,7 +2108,7 @@
     {
       "Entry date": "2024-10-25",
       "Symbol": "FUTU",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "9:45",
       "Kept overnight": "Yes",
       "Exit date": "2024-11-06",
@@ -2119,7 +2119,7 @@
     {
       "Entry date": "2024-10-28",
       "Symbol": "JD",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "9:45",
       "Kept overnight": "Yes",
       "Exit date": "2024-10-29",
@@ -2130,7 +2130,7 @@
     {
       "Entry date": "2024-11-07",
       "Symbol": "MSTR",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "Yes",
       "Exit date": "2024-11-26",
@@ -2141,7 +2141,7 @@
     {
       "Entry date": "2024-11-07",
       "Symbol": "DAL",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2152,7 +2152,7 @@
     {
       "Entry date": "2024-11-14",
       "Symbol": "CVNA",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2163,7 +2163,7 @@
     {
       "Entry date": "2024-11-14",
       "Symbol": "ALAB",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2174,7 +2174,7 @@
     {
       "Entry date": "2024-11-15",
       "Symbol": "IONQ",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2024-11-18",
@@ -2185,7 +2185,7 @@
     {
       "Entry date": "2024-11-15",
       "Symbol": "UPST",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2196,7 +2196,7 @@
     {
       "Entry date": "2024-11-22",
       "Symbol": "TWLO",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:15",
       "Kept overnight": "Yes",
       "Exit date": "2024-11-27",
@@ -2207,7 +2207,7 @@
     {
       "Entry date": "2024-11-22",
       "Symbol": "SOFI",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2024-11-26",
@@ -2218,7 +2218,7 @@
     {
       "Entry date": "2024-11-22",
       "Symbol": "PLTR",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2024-12-31",
@@ -2229,7 +2229,7 @@
     {
       "Entry date": "2024-11-26",
       "Symbol": "TSLA",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2240,7 +2240,7 @@
     {
       "Entry date": "2024-11-27",
       "Symbol": "COIN",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "9:45",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2251,7 +2251,7 @@
     {
       "Entry date": "2024-12-02",
       "Symbol": "COIN",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "9:45",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2262,7 +2262,7 @@
     {
       "Entry date": "2024-12-02",
       "Symbol": "HOOD",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2273,7 +2273,7 @@
     {
       "Entry date": "2024-12-03",
       "Symbol": "COIN",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "9:45",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2284,7 +2284,7 @@
     {
       "Entry date": "2024-12-03",
       "Symbol": "CRWD",
-      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2295,7 +2295,7 @@
     {
       "Entry date": "2024-12-03",
       "Symbol": "MDB",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "Yes",
       "Exit date": "2024-12-09",
@@ -2306,7 +2306,7 @@
     {
       "Entry date": "2024-12-04",
       "Symbol": "RKLB",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2317,7 +2317,7 @@
     {
       "Entry date": "2024-12-05",
       "Symbol": "CRWD",
-      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2328,7 +2328,7 @@
     {
       "Entry date": "2024-12-05",
       "Symbol": "ZS",
-      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (20-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2339,7 +2339,7 @@
     {
       "Entry date": "2024-12-09",
       "Symbol": "LUNR",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "9:45",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2350,7 +2350,7 @@
     {
       "Entry date": "2024-12-10",
       "Symbol": "IONQ",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2361,7 +2361,7 @@
     {
       "Entry date": "2024-12-11",
       "Symbol": "MARA",
-      "Daily setup": "Moving Average Undercut and Rally (20-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "9:45",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2372,7 +2372,7 @@
     {
       "Entry date": "2024-12-11",
       "Symbol": "WDAY",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2383,7 +2383,7 @@
     {
       "Entry date": "2024-12-12",
       "Symbol": "RDDT",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2394,7 +2394,7 @@
     {
       "Entry date": "2024-12-12",
       "Symbol": "SHOP",
-      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2405,7 +2405,7 @@
     {
       "Entry date": "2024-12-12",
       "Symbol": "HOOD",
-      "Daily setup": "Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2024-12-18",
@@ -2416,7 +2416,7 @@
     {
       "Entry date": "2024-12-16",
       "Symbol": "WDAY",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2427,7 +2427,7 @@
     {
       "Entry date": "2024-12-17",
       "Symbol": "WDAY",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:00",
       "Kept overnight": "Yes",
       "Exit date": "2024-12-18",
@@ -2438,7 +2438,7 @@
     {
       "Entry date": "2024-12-17",
       "Symbol": "OKTA",
-      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2449,7 +2449,7 @@
     {
       "Entry date": "2024-12-18",
       "Symbol": "DDOG",
-      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2460,7 +2460,7 @@
     {
       "Entry date": "2024-12-18",
       "Symbol": "XYZ",
-      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2471,7 +2471,7 @@
     {
       "Entry date": "2024-12-24",
       "Symbol": "RDDT",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "Yes",
       "Exit date": "2024-12-27",
@@ -2482,7 +2482,7 @@
     {
       "Entry date": "2024-12-24",
       "Symbol": "UPST",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "Yes",
       "Exit date": "2024-12-26",
@@ -2493,7 +2493,7 @@
     {
       "Entry date": "2024-12-26",
       "Symbol": "LULU",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "9:45",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2504,7 +2504,7 @@
     {
       "Entry date": "2024-12-26",
       "Symbol": "ULTA",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:00",
       "Kept overnight": "Yes",
       "Exit date": "2024-12-27",
@@ -2515,7 +2515,7 @@
     {
       "Entry date": "2024-12-26",
       "Symbol": "MRVL",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2024-12-27",
@@ -2526,7 +2526,7 @@
     {
       "Entry date": "2025-01-22",
       "Symbol": "TSLA",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2537,7 +2537,7 @@
     {
       "Entry date": "2025-01-23",
       "Symbol": "APP",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2548,7 +2548,7 @@
     {
       "Entry date": "2025-01-31",
       "Symbol": "IONQ",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "9:45",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2559,7 +2559,7 @@
     {
       "Entry date": "2025-02-03",
       "Symbol": "TLN",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2025-02-04",
@@ -2570,7 +2570,7 @@
     {
       "Entry date": "2025-02-05",
       "Symbol": "HUBS",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "9:45",
       "Kept overnight": "Yes",
       "Exit date": "2025-02-12",
@@ -2581,7 +2581,7 @@
     {
       "Entry date": "2025-02-05",
       "Symbol": "MDB",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:00",
       "Kept overnight": "Yes",
       "Exit date": "2025-02-07",
@@ -2592,7 +2592,7 @@
     {
       "Entry date": "2025-02-05",
       "Symbol": "PLTR",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2603,7 +2603,7 @@
     {
       "Entry date": "2025-02-06",
       "Symbol": "GLW",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "9:45",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2614,7 +2614,7 @@
     {
       "Entry date": "2025-02-11",
       "Symbol": "CRDO",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2625,7 +2625,7 @@
     {
       "Entry date": "2025-02-12",
       "Symbol": "VST",
-      "Daily setup": "Delayed High Volume Close; EMA Bounce; Moving Average Undercut and Rally (20-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2636,7 +2636,7 @@
     {
       "Entry date": "2025-02-12",
       "Symbol": "APP",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2647,7 +2647,7 @@
     {
       "Entry date": "2025-02-14",
       "Symbol": "CEG",
-      "Daily setup": "Moving Average Undercut and Rally (20-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2658,7 +2658,7 @@
     {
       "Entry date": "2025-02-14",
       "Symbol": "VST",
-      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2669,7 +2669,7 @@
     {
       "Entry date": "2025-02-19",
       "Symbol": "WDC",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2680,7 +2680,7 @@
     {
       "Entry date": "2025-03-25",
       "Symbol": "INTC",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "9:45",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2691,7 +2691,7 @@
     {
       "Entry date": "2025-04-16",
       "Symbol": "MCK",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2702,7 +2702,7 @@
     {
       "Entry date": "2025-04-28",
       "Symbol": "CVNA",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "9:45",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2713,7 +2713,7 @@
     {
       "Entry date": "2025-04-28",
       "Symbol": "DLTR",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2724,7 +2724,7 @@
     {
       "Entry date": "2025-04-28",
       "Symbol": "GEV",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2735,7 +2735,7 @@
     {
       "Entry date": "2025-05-08",
       "Symbol": "HCA",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2746,7 +2746,7 @@
     {
       "Entry date": "2025-05-19",
       "Symbol": "HOOD",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "Yes",
       "Exit date": "2025-07-30",
@@ -2757,7 +2757,7 @@
     {
       "Entry date": "2025-05-22",
       "Symbol": "OKLO",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "Yes",
       "Exit date": "2025-06-04",
@@ -2768,7 +2768,7 @@
     {
       "Entry date": "2025-05-23",
       "Symbol": "RGTI",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2779,7 +2779,7 @@
     {
       "Entry date": "2025-05-28",
       "Symbol": "ALAB",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2790,7 +2790,7 @@
     {
       "Entry date": "2025-05-28",
       "Symbol": "RGTI",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2801,7 +2801,7 @@
     {
       "Entry date": "2025-05-30",
       "Symbol": "NRG",
-      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2812,7 +2812,7 @@
     {
       "Entry date": "2025-06-04",
       "Symbol": "ELF",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "Yes",
       "Exit date": "2025-06-05",
@@ -2823,7 +2823,7 @@
     {
       "Entry date": "2025-06-09",
       "Symbol": "CRDO",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2834,7 +2834,7 @@
     {
       "Entry date": "2025-06-11",
       "Symbol": "RIOT",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2845,7 +2845,7 @@
     {
       "Entry date": "2025-06-11",
       "Symbol": "ASTS",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2856,7 +2856,7 @@
     {
       "Entry date": "2025-06-17",
       "Symbol": "RKLB",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2867,7 +2867,7 @@
     {
       "Entry date": "2025-06-17",
       "Symbol": "MPWR",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2878,7 +2878,7 @@
     {
       "Entry date": "2025-06-17",
       "Symbol": "ACHR",
-      "Daily setup": "Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2889,7 +2889,7 @@
     {
       "Entry date": "2025-06-24",
       "Symbol": "MCHP",
-      "Daily setup": "High Tight Flag; EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "9:45",
       "Kept overnight": "Yes",
       "Exit date": "2025-06-25",
@@ -2900,7 +2900,7 @@
     {
       "Entry date": "2025-06-24",
       "Symbol": "RKLB",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2911,7 +2911,7 @@
     {
       "Entry date": "2025-06-25",
       "Symbol": "ELF",
-      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2025-07-07",
@@ -2922,7 +2922,7 @@
     {
       "Entry date": "2025-06-26",
       "Symbol": "QUBT",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2933,7 +2933,7 @@
     {
       "Entry date": "2025-07-01",
       "Symbol": "UPST",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2944,7 +2944,7 @@
     {
       "Entry date": "2025-07-02",
       "Symbol": "QUBT",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "Yes",
       "Exit date": "2025-07-09",
@@ -2955,7 +2955,7 @@
     {
       "Entry date": "2025-07-07",
       "Symbol": "CCJ",
-      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:15",
       "Kept overnight": "Yes",
       "Exit date": "2025-07-08",
@@ -2966,7 +2966,7 @@
     {
       "Entry date": "2025-07-08",
       "Symbol": "SMCI",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "9:45",
       "Kept overnight": "Yes",
       "Exit date": "2025-07-22",
@@ -2977,7 +2977,7 @@
     {
       "Entry date": "2025-07-09",
       "Symbol": "IONQ",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "9:45",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2988,7 +2988,7 @@
     {
       "Entry date": "2025-07-10",
       "Symbol": "COIN",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -2999,7 +2999,7 @@
     {
       "Entry date": "2025-07-10",
       "Symbol": "RIOT",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "Yes",
       "Exit date": "2025-07-15",
@@ -3010,7 +3010,7 @@
     {
       "Entry date": "2025-07-10",
       "Symbol": "RGTI",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3021,7 +3021,7 @@
     {
       "Entry date": "2025-07-11",
       "Symbol": "ASTS",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "9:45",
       "Kept overnight": "Yes",
       "Exit date": "2025-07-14",
@@ -3032,7 +3032,7 @@
     {
       "Entry date": "2025-07-11",
       "Symbol": "RKLB",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3043,7 +3043,7 @@
     {
       "Entry date": "2025-07-11",
       "Symbol": "OKLO",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3054,7 +3054,7 @@
     {
       "Entry date": "2025-07-15",
       "Symbol": "COIN",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "9:45",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3065,7 +3065,7 @@
     {
       "Entry date": "2025-07-15",
       "Symbol": "ASTS",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "Yes",
       "Exit date": "2025-08-01",
@@ -3076,7 +3076,7 @@
     {
       "Entry date": "2025-07-16",
       "Symbol": "CRDO",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3087,7 +3087,7 @@
     {
       "Entry date": "2025-07-17",
       "Symbol": "CLSK",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3098,7 +3098,7 @@
     {
       "Entry date": "2025-07-17",
       "Symbol": "INTC",
-      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2025-07-24",
@@ -3109,7 +3109,7 @@
     {
       "Entry date": "2025-07-18",
       "Symbol": "OKLO",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3120,7 +3120,7 @@
     {
       "Entry date": "2025-07-23",
       "Symbol": "NBIS",
-      "Daily setup": "Delayed High Volume Close",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3131,7 +3131,7 @@
     {
       "Entry date": "2025-07-25",
       "Symbol": "MP",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3142,7 +3142,7 @@
     {
       "Entry date": "2025-07-25",
       "Symbol": "CRDO",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3153,7 +3153,7 @@
     {
       "Entry date": "2025-07-28",
       "Symbol": "MP",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3164,7 +3164,7 @@
     {
       "Entry date": "2025-07-30",
       "Symbol": "NBIS",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "9:45",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3175,7 +3175,7 @@
     {
       "Entry date": "2025-07-30",
       "Symbol": "JOBY",
-      "Daily setup": "Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3186,7 +3186,7 @@
     {
       "Entry date": "2025-07-30",
       "Symbol": "AVAV",
-      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3197,7 +3197,7 @@
     {
       "Entry date": "2025-07-31",
       "Symbol": "OKLO",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3208,7 +3208,7 @@
     {
       "Entry date": "2025-08-01",
       "Symbol": "MP",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3219,7 +3219,7 @@
     {
       "Entry date": "2025-08-05",
       "Symbol": "ALAB",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "9:45",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3230,7 +3230,7 @@
     {
       "Entry date": "2025-08-11",
       "Symbol": "RDDT",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "Yes",
       "Exit date": "2025-08-20",
@@ -3241,7 +3241,7 @@
     {
       "Entry date": "2025-08-12",
       "Symbol": "JOBY",
-      "Daily setup": "Moving Average Undercut and Rally (20-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:00",
       "Kept overnight": "Yes",
       "Exit date": "2025-08-14",
@@ -3252,7 +3252,7 @@
     {
       "Entry date": "2025-08-14",
       "Symbol": "APLD",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3263,7 +3263,7 @@
     {
       "Entry date": "2025-08-14",
       "Symbol": "FIX",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3274,7 +3274,7 @@
     {
       "Entry date": "2025-08-14",
       "Symbol": "ALB",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3285,7 +3285,7 @@
     {
       "Entry date": "2025-08-15",
       "Symbol": "RKLB",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2025-08-19",
@@ -3296,7 +3296,7 @@
     {
       "Entry date": "2025-08-18",
       "Symbol": "IREN",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2025-08-19",
@@ -3307,7 +3307,7 @@
     {
       "Entry date": "2025-08-18",
       "Symbol": "RGTI",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3318,7 +3318,7 @@
     {
       "Entry date": "2025-08-19",
       "Symbol": "MU",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3329,7 +3329,7 @@
     {
       "Entry date": "2025-08-25",
       "Symbol": "NBIS",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "Yes",
       "Exit date": "2025-08-27",
@@ -3340,7 +3340,7 @@
     {
       "Entry date": "2025-08-25",
       "Symbol": "BE",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "Yes",
       "Exit date": "2025-09-24",
@@ -3351,7 +3351,7 @@
     {
       "Entry date": "2025-08-25",
       "Symbol": "RDDT",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3362,7 +3362,7 @@
     {
       "Entry date": "2025-09-08",
       "Symbol": "WULF",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3373,7 +3373,7 @@
     {
       "Entry date": "2025-09-08",
       "Symbol": "RIOT",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2025-09-25",
@@ -3384,7 +3384,7 @@
     {
       "Entry date": "2025-09-09",
       "Symbol": "NIO",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "Yes",
       "Exit date": "2025-09-10",
@@ -3395,7 +3395,7 @@
     {
       "Entry date": "2025-09-09",
       "Symbol": "MDB",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2025-09-17",
@@ -3406,7 +3406,7 @@
     {
       "Entry date": "2025-09-09",
       "Symbol": "APP",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3417,7 +3417,7 @@
     {
       "Entry date": "2025-09-11",
       "Symbol": "RDDT",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3428,7 +3428,7 @@
     {
       "Entry date": "2025-09-15",
       "Symbol": "RDDT",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "9:45",
       "Kept overnight": "Yes",
       "Exit date": "2025-09-17",
@@ -3439,7 +3439,7 @@
     {
       "Entry date": "2025-09-16",
       "Symbol": "ALAB",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3450,7 +3450,7 @@
     {
       "Entry date": "2025-09-17",
       "Symbol": "CIFR",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3461,7 +3461,7 @@
     {
       "Entry date": "2025-09-17",
       "Symbol": "APLD",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3472,7 +3472,7 @@
     {
       "Entry date": "2025-09-18",
       "Symbol": "ECHO",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3483,7 +3483,7 @@
     {
       "Entry date": "2025-09-22",
       "Symbol": "NRG",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:15",
       "Kept overnight": "Yes",
       "Exit date": "2025-09-23",
@@ -3494,7 +3494,7 @@
     {
       "Entry date": "2025-09-25",
       "Symbol": "BIDU",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3505,7 +3505,7 @@
     {
       "Entry date": "2025-09-26",
       "Symbol": "VRT",
-      "Daily setup": "Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3516,7 +3516,7 @@
     {
       "Entry date": "2025-09-26",
       "Symbol": "BE",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "Yes",
       "Exit date": "2025-10-21",
@@ -3527,7 +3527,7 @@
     {
       "Entry date": "2025-09-29",
       "Symbol": "CLSK",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "9:45",
       "Kept overnight": "Yes",
       "Exit date": "2025-10-17",
@@ -3538,7 +3538,7 @@
     {
       "Entry date": "2025-09-29",
       "Symbol": "AVGO",
-      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (20-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3549,7 +3549,7 @@
     {
       "Entry date": "2025-09-30",
       "Symbol": "ALAB",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "9:45",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3560,7 +3560,7 @@
     {
       "Entry date": "2025-09-30",
       "Symbol": "VRT",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2025-10-21",
@@ -3571,7 +3571,7 @@
     {
       "Entry date": "2025-09-30",
       "Symbol": "ANET",
-      "Daily setup": "Moving Average Undercut and Rally (20-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3582,7 +3582,7 @@
     {
       "Entry date": "2025-10-01",
       "Symbol": "LEU",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "Yes",
       "Exit date": "2025-10-22",
@@ -3593,7 +3593,7 @@
     {
       "Entry date": "2025-10-01",
       "Symbol": "IONQ",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3604,7 +3604,7 @@
     {
       "Entry date": "2025-10-01",
       "Symbol": "ORCL",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2025-10-07",
@@ -3615,7 +3615,7 @@
     {
       "Entry date": "2025-10-02",
       "Symbol": "BMNR",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3626,7 +3626,7 @@
     {
       "Entry date": "2025-10-03",
       "Symbol": "IREN",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2025-10-17",
@@ -3637,7 +3637,7 @@
     {
       "Entry date": "2025-10-03",
       "Symbol": "KGC",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3648,7 +3648,7 @@
     {
       "Entry date": "2025-10-06",
       "Symbol": "RKLB",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2025-10-22",
@@ -3659,7 +3659,7 @@
     {
       "Entry date": "2025-10-07",
       "Symbol": "WULF",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "9:45",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3670,7 +3670,7 @@
     {
       "Entry date": "2025-10-09",
       "Symbol": "RIOT",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3681,7 +3681,7 @@
     {
       "Entry date": "2025-10-09",
       "Symbol": "MARA",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3692,7 +3692,7 @@
     {
       "Entry date": "2025-10-10",
       "Symbol": "STX",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3703,7 +3703,7 @@
     {
       "Entry date": "2025-10-14",
       "Symbol": "AVAV",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3714,7 +3714,7 @@
     {
       "Entry date": "2025-10-14",
       "Symbol": "HL",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3725,7 +3725,7 @@
     {
       "Entry date": "2025-10-14",
       "Symbol": "LITE",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3736,7 +3736,7 @@
     {
       "Entry date": "2025-10-16",
       "Symbol": "DELL",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "9:45",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3747,7 +3747,7 @@
     {
       "Entry date": "2025-10-16",
       "Symbol": "AMD",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3758,7 +3758,7 @@
     {
       "Entry date": "2025-10-20",
       "Symbol": "ARM",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "9:45",
       "Kept overnight": "Yes",
       "Exit date": "2025-10-21",
@@ -3769,7 +3769,7 @@
     {
       "Entry date": "2025-10-21",
       "Symbol": "COHR",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:15",
       "Kept overnight": "Yes",
       "Exit date": "2025-10-22",
@@ -3780,7 +3780,7 @@
     {
       "Entry date": "2025-10-21",
       "Symbol": "DELL",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:15",
       "Kept overnight": "Yes",
       "Exit date": "2025-10-22",
@@ -3791,7 +3791,7 @@
     {
       "Entry date": "2025-10-21",
       "Symbol": "LITE",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3802,7 +3802,7 @@
     {
       "Entry date": "2025-10-22",
       "Symbol": "ANET",
-      "Daily setup": "Moving Average Undercut and Rally (20-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "9:45",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3813,7 +3813,7 @@
     {
       "Entry date": "2025-10-23",
       "Symbol": "CLF",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3824,7 +3824,7 @@
     {
       "Entry date": "2025-10-23",
       "Symbol": "SOFI",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2025-10-27",
@@ -3835,7 +3835,7 @@
     {
       "Entry date": "2025-10-23",
       "Symbol": "CLSK",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2025-10-31",
@@ -3846,7 +3846,7 @@
     {
       "Entry date": "2025-10-24",
       "Symbol": "CIFR",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "9:45",
       "Kept overnight": "Yes",
       "Exit date": "2025-10-29",
@@ -3857,7 +3857,7 @@
     {
       "Entry date": "2025-10-24",
       "Symbol": "KGC",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3868,7 +3868,7 @@
     {
       "Entry date": "2025-10-27",
       "Symbol": "NVDA",
-      "Daily setup": "Moving Average Undercut and Rally (20-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "9:45",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3879,7 +3879,7 @@
     {
       "Entry date": "2025-10-27",
       "Symbol": "RGTI",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "9:45",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3890,7 +3890,7 @@
     {
       "Entry date": "2025-10-27",
       "Symbol": "ARM",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3901,7 +3901,7 @@
     {
       "Entry date": "2025-10-28",
       "Symbol": "COHR",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3912,7 +3912,7 @@
     {
       "Entry date": "2025-10-28",
       "Symbol": "NBIS",
-      "Daily setup": "Moving Average Undercut and Rally (20-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3923,7 +3923,7 @@
     {
       "Entry date": "2025-10-28",
       "Symbol": "KTOS",
-      "Daily setup": "Moving Average Undercut and Rally (20-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3934,7 +3934,7 @@
     {
       "Entry date": "2025-10-29",
       "Symbol": "LEU",
-      "Daily setup": "Moving Average Undercut and Rally (20-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3945,7 +3945,7 @@
     {
       "Entry date": "2025-10-29",
       "Symbol": "KTOS",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3956,7 +3956,7 @@
     {
       "Entry date": "2025-10-29",
       "Symbol": "HPE",
-      "Daily setup": "Moving Average Undercut and Rally (20-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3967,7 +3967,7 @@
     {
       "Entry date": "2025-10-30",
       "Symbol": "OKLO",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -3978,7 +3978,7 @@
     {
       "Entry date": "2025-10-30",
       "Symbol": "RGTI",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "Yes",
       "Exit date": "2025-11-03",
@@ -3989,7 +3989,7 @@
     {
       "Entry date": "2025-10-30",
       "Symbol": "TER",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:15",
       "Kept overnight": "Yes",
       "Exit date": "2025-11-07",
@@ -4000,7 +4000,7 @@
     {
       "Entry date": "2025-10-31",
       "Symbol": "NBIS",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "9:45",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4011,7 +4011,7 @@
     {
       "Entry date": "2025-10-31",
       "Symbol": "ASTS",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4022,7 +4022,7 @@
     {
       "Entry date": "2025-11-03",
       "Symbol": "CCJ",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4033,7 +4033,7 @@
     {
       "Entry date": "2025-11-04",
       "Symbol": "KTOS",
-      "Daily setup": "EMA Bounce; Wedge Pop",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4044,7 +4044,7 @@
     {
       "Entry date": "2025-11-04",
       "Symbol": "CLSK",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4055,7 +4055,7 @@
     {
       "Entry date": "2025-11-06",
       "Symbol": "WDC",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4066,7 +4066,7 @@
     {
       "Entry date": "2025-11-06",
       "Symbol": "GLW",
-      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (20-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4077,7 +4077,7 @@
     {
       "Entry date": "2025-11-11",
       "Symbol": "SOFI",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "Yes",
       "Exit date": "2025-11-13",
@@ -4088,7 +4088,7 @@
     {
       "Entry date": "2025-11-11",
       "Symbol": "REGN",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:15",
       "Kept overnight": "Yes",
       "Exit date": "2025-12-02",
@@ -4099,7 +4099,7 @@
     {
       "Entry date": "2025-11-13",
       "Symbol": "UPS",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "9:45",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4110,7 +4110,7 @@
     {
       "Entry date": "2025-11-13",
       "Symbol": "XPEV",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4121,7 +4121,7 @@
     {
       "Entry date": "2025-11-13",
       "Symbol": "FSLR",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4132,7 +4132,7 @@
     {
       "Entry date": "2025-11-25",
       "Symbol": "CIEN",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4143,7 +4143,7 @@
     {
       "Entry date": "2025-11-25",
       "Symbol": "EQT",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4154,7 +4154,7 @@
     {
       "Entry date": "2025-11-25",
       "Symbol": "STX",
-      "Daily setup": "Moving Average Undercut and Rally (50-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2025-12-03",
@@ -4165,7 +4165,7 @@
     {
       "Entry date": "2025-11-26",
       "Symbol": "COHR",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2025-12-12",
@@ -4176,7 +4176,7 @@
     {
       "Entry date": "2025-11-26",
       "Symbol": "WDC",
-      "Daily setup": "Moving Average Undercut and Rally (20-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4187,7 +4187,7 @@
     {
       "Entry date": "2025-11-28",
       "Symbol": "ALB",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "Yes",
       "Exit date": "2025-12-01",
@@ -4198,7 +4198,7 @@
     {
       "Entry date": "2025-12-04",
       "Symbol": "VRT",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "Yes",
       "Exit date": "2025-12-05",
@@ -4209,7 +4209,7 @@
     {
       "Entry date": "2025-12-04",
       "Symbol": "CIEN",
-      "Daily setup": "Delayed High Volume Close; EMA Bounce; Moving Average Undercut and Rally (20-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4220,7 +4220,7 @@
     {
       "Entry date": "2025-12-04",
       "Symbol": "WULF",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "Yes",
       "Exit date": "2025-12-05",
@@ -4231,7 +4231,7 @@
     {
       "Entry date": "2025-12-10",
       "Symbol": "WDC",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "9:45",
       "Kept overnight": "Yes",
       "Exit date": "2025-12-12",
@@ -4242,7 +4242,7 @@
     {
       "Entry date": "2025-12-10",
       "Symbol": "RDDT",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4253,7 +4253,7 @@
     {
       "Entry date": "2025-12-11",
       "Symbol": "STX",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2025-12-12",
@@ -4264,7 +4264,7 @@
     {
       "Entry date": "2025-12-24",
       "Symbol": "COHR",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4275,7 +4275,7 @@
     {
       "Entry date": "2025-12-29",
       "Symbol": "MU",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2025-12-31",
@@ -4286,7 +4286,7 @@
     {
       "Entry date": "2025-12-31",
       "Symbol": "AAL",
-      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (20-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4297,7 +4297,7 @@
     {
       "Entry date": "2026-01-07",
       "Symbol": "RKLB",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4308,7 +4308,7 @@
     {
       "Entry date": "2026-01-08",
       "Symbol": "HL",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4319,7 +4319,7 @@
     {
       "Entry date": "2026-01-13",
       "Symbol": "STX",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4330,7 +4330,7 @@
     {
       "Entry date": "2026-01-23",
       "Symbol": "BE",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4341,7 +4341,7 @@
     {
       "Entry date": "2026-01-28",
       "Symbol": "COHR",
-      "Daily setup": "Delayed High Volume Close; EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2026-01-29",
@@ -4352,7 +4352,7 @@
     {
       "Entry date": "2026-02-03",
       "Symbol": "APLD",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4363,7 +4363,7 @@
     {
       "Entry date": "2026-02-26",
       "Symbol": "MCK",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4374,7 +4374,7 @@
     {
       "Entry date": "2026-02-27",
       "Symbol": "NCLH",
-      "Daily setup": "Delayed High Volume Close; EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4385,7 +4385,7 @@
     {
       "Entry date": "2026-03-05",
       "Symbol": "WULF",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4396,7 +4396,7 @@
     {
       "Entry date": "2026-03-05",
       "Symbol": "WDC",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4407,7 +4407,7 @@
     {
       "Entry date": "2026-03-05",
       "Symbol": "RIOT",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4418,7 +4418,7 @@
     {
       "Entry date": "2026-03-06",
       "Symbol": "AEM",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4429,7 +4429,7 @@
     {
       "Entry date": "2026-03-10",
       "Symbol": "AKAM",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2026-03-30",
@@ -4440,7 +4440,7 @@
     {
       "Entry date": "2026-03-11",
       "Symbol": "MRVL",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "9:45",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4451,7 +4451,7 @@
     {
       "Entry date": "2026-03-11",
       "Symbol": "VRT",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4462,7 +4462,7 @@
     {
       "Entry date": "2026-03-11",
       "Symbol": "FIX",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4473,7 +4473,7 @@
     {
       "Entry date": "2026-03-12",
       "Symbol": "WPM",
-      "Daily setup": "Moving Average Undercut and Rally (20-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4484,7 +4484,7 @@
     {
       "Entry date": "2026-03-18",
       "Symbol": "CIEN",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "9:45",
       "Kept overnight": "Yes",
       "Exit date": "2026-03-19",
@@ -4495,7 +4495,7 @@
     {
       "Entry date": "2026-03-18",
       "Symbol": "COHR",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "9:45",
       "Kept overnight": "Yes",
       "Exit date": "2026-03-19",
@@ -4506,7 +4506,7 @@
     {
       "Entry date": "2026-03-18",
       "Symbol": "MU",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4517,7 +4517,7 @@
     {
       "Entry date": "2026-04-02",
       "Symbol": "DELL",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "Yes",
       "Exit date": "2026-04-15",
@@ -4528,7 +4528,7 @@
     {
       "Entry date": "2026-04-07",
       "Symbol": "JBL",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "Yes",
       "Exit date": "2026-04-28",
@@ -4539,7 +4539,7 @@
     {
       "Entry date": "2026-04-07",
       "Symbol": "STX",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2026-04-28",
@@ -4550,7 +4550,7 @@
     {
       "Entry date": "2026-04-07",
       "Symbol": "KEYS",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2026-04-28",
@@ -4561,7 +4561,7 @@
     {
       "Entry date": "2026-04-10",
       "Symbol": "VRT",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "9:45",
       "Kept overnight": "Yes",
       "Exit date": "2026-04-16",
@@ -4572,7 +4572,7 @@
     {
       "Entry date": "2026-04-10",
       "Symbol": "ECHO",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "Yes",
       "Exit date": "2026-04-21",
@@ -4583,7 +4583,7 @@
     {
       "Entry date": "2026-04-13",
       "Symbol": "SNDK",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "9:45",
       "Kept overnight": "Yes",
       "Exit date": "2026-04-15",
@@ -4594,7 +4594,7 @@
     {
       "Entry date": "2026-04-13",
       "Symbol": "ARM",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "9:45",
       "Kept overnight": "Yes",
       "Exit date": "2026-05-05",
@@ -4605,7 +4605,7 @@
     {
       "Entry date": "2026-04-13",
       "Symbol": "FIX",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "Yes",
       "Exit date": "2026-04-16",
@@ -4616,7 +4616,7 @@
     {
       "Entry date": "2026-04-15",
       "Symbol": "DOW",
-      "Daily setup": "Moving Average Undercut and Rally (20-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4627,7 +4627,7 @@
     {
       "Entry date": "2026-04-15",
       "Symbol": "COHR",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4638,7 +4638,7 @@
     {
       "Entry date": "2026-04-20",
       "Symbol": "WULF",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "Yes",
       "Exit date": "2026-04-21",
@@ -4649,7 +4649,7 @@
     {
       "Entry date": "2026-04-20",
       "Symbol": "ODFL",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:00",
       "Kept overnight": "Yes",
       "Exit date": "2026-04-24",
@@ -4660,7 +4660,7 @@
     {
       "Entry date": "2026-04-20",
       "Symbol": "DOW",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2026-04-22",
@@ -4671,7 +4671,7 @@
     {
       "Entry date": "2026-04-22",
       "Symbol": "BE",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4682,7 +4682,7 @@
     {
       "Entry date": "2026-04-23",
       "Symbol": "GLW",
-      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4693,7 +4693,7 @@
     {
       "Entry date": "2026-04-23",
       "Symbol": "NBIS",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4704,7 +4704,7 @@
     {
       "Entry date": "2026-04-23",
       "Symbol": "CRDO",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4715,7 +4715,7 @@
     {
       "Entry date": "2026-04-27",
       "Symbol": "TWLO",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4726,7 +4726,7 @@
     {
       "Entry date": "2026-04-30",
       "Symbol": "ECHO",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "9:45",
       "Kept overnight": "Yes",
       "Exit date": "2026-05-04",
@@ -4737,7 +4737,7 @@
     {
       "Entry date": "2026-04-30",
       "Symbol": "ALB",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2026-05-01",
@@ -4748,7 +4748,7 @@
     {
       "Entry date": "2026-05-01",
       "Symbol": "MRVL",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4759,7 +4759,7 @@
     {
       "Entry date": "2026-05-04",
       "Symbol": "MRVL",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4770,7 +4770,7 @@
     {
       "Entry date": "2026-05-05",
       "Symbol": "COHR",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "Yes",
       "Exit date": "2026-05-06",
@@ -4781,7 +4781,7 @@
     {
       "Entry date": "2026-05-07",
       "Symbol": "WDC",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4792,7 +4792,7 @@
     {
       "Entry date": "2026-05-11",
       "Symbol": "ENTG",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "Yes",
       "Exit date": "2026-05-12",
@@ -4803,7 +4803,7 @@
     {
       "Entry date": "2026-05-11",
       "Symbol": "ALAB",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "Yes",
       "Exit date": "2026-05-12",
@@ -4814,7 +4814,7 @@
     {
       "Entry date": "2026-05-12",
       "Symbol": "DDOG",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4825,7 +4825,7 @@
     {
       "Entry date": "2026-05-14",
       "Symbol": "WULF",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "Yes",
       "Exit date": "2026-05-15",
@@ -4836,7 +4836,7 @@
     {
       "Entry date": "2026-05-15",
       "Symbol": "NBIS",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4847,7 +4847,7 @@
     {
       "Entry date": "2026-05-18",
       "Symbol": "DVN",
-      "Daily setup": "Moving Average Undercut and Rally (20-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4858,7 +4858,7 @@
     {
       "Entry date": "2026-05-19",
       "Symbol": "ALAB",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2026-06-05",
@@ -4869,7 +4869,7 @@
     {
       "Entry date": "2026-05-21",
       "Symbol": "CLSK",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4880,7 +4880,7 @@
     {
       "Entry date": "2026-05-22",
       "Symbol": "CRCL",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "9:45",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4891,7 +4891,7 @@
     {
       "Entry date": "2026-05-22",
       "Symbol": "NXT",
-      "Daily setup": "Moving Average Undercut and Rally (20-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:00",
       "Kept overnight": "Yes",
       "Exit date": "2026-06-05",
@@ -4902,7 +4902,7 @@
     {
       "Entry date": "2026-05-22",
       "Symbol": "CLSK",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4913,7 +4913,7 @@
     {
       "Entry date": "2026-05-27",
       "Symbol": "DDOG",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4924,7 +4924,7 @@
     {
       "Entry date": "2026-05-28",
       "Symbol": "PANW",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "9:45",
       "Kept overnight": "Yes",
       "Exit date": "2026-06-02",
@@ -4935,7 +4935,7 @@
     {
       "Entry date": "2026-05-28",
       "Symbol": "CORZ",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4946,7 +4946,7 @@
     {
       "Entry date": "2026-06-01",
       "Symbol": "QBTS",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2026-06-03",
@@ -4957,7 +4957,7 @@
     {
       "Entry date": "2026-06-01",
       "Symbol": "IONQ",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4968,7 +4968,7 @@
     {
       "Entry date": "2026-06-01",
       "Symbol": "APLD",
-      "Daily setup": "Delayed High Volume Close",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2026-06-03",
@@ -4979,7 +4979,7 @@
     {
       "Entry date": "2026-06-02",
       "Symbol": "SNDK",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -4990,7 +4990,7 @@
     {
       "Entry date": "2026-06-02",
       "Symbol": "MDB",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "Yes",
       "Exit date": "2026-06-03",
@@ -5001,7 +5001,7 @@
     {
       "Entry date": "2026-06-02",
       "Symbol": "SEDG",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -5012,7 +5012,7 @@
     {
       "Entry date": "2026-06-03",
       "Symbol": "ENPH",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -5023,7 +5023,7 @@
     {
       "Entry date": "2026-06-03",
       "Symbol": "NTAP",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "Yes",
       "Exit date": "2026-06-04",
@@ -5034,7 +5034,7 @@
     {
       "Entry date": "2026-06-03",
       "Symbol": "STX",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -5045,7 +5045,7 @@
     {
       "Entry date": "2026-06-04",
       "Symbol": "RKLB",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "Yes",
       "Exit date": "2026-06-05",
@@ -5056,7 +5056,7 @@
     {
       "Entry date": "2026-06-04",
       "Symbol": "LUNR",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -5067,7 +5067,7 @@
     {
       "Entry date": "2026-06-04",
       "Symbol": "SMCI",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -5078,7 +5078,7 @@
     {
       "Entry date": "2026-06-05",
       "Symbol": "CHRW",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -5089,7 +5089,7 @@
     {
       "Entry date": "2026-06-05",
       "Symbol": "PANW",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -5100,7 +5100,7 @@
     {
       "Entry date": "2026-06-15",
       "Symbol": "CLSK",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "9:45",
       "Kept overnight": "No",
       "Exit date": "",
@@ -5111,7 +5111,7 @@
     {
       "Entry date": "2026-06-16",
       "Symbol": "MKSI",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -5122,7 +5122,7 @@
     {
       "Entry date": "2026-06-16",
       "Symbol": "HPE",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -5133,7 +5133,7 @@
     {
       "Entry date": "2026-06-17",
       "Symbol": "FIX",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "9:45",
       "Kept overnight": "No",
       "Exit date": "",
@@ -5144,7 +5144,7 @@
     {
       "Entry date": "2026-06-17",
       "Symbol": "SNOW",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -5155,7 +5155,7 @@
     {
       "Entry date": "2026-06-17",
       "Symbol": "DDOG",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -5166,7 +5166,7 @@
     {
       "Entry date": "2026-06-23",
       "Symbol": "CNC",
-      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (20-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -5177,7 +5177,7 @@
     {
       "Entry date": "2026-06-23",
       "Symbol": "SNOW",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2026-06-24",
@@ -5188,7 +5188,7 @@
     {
       "Entry date": "2026-06-30",
       "Symbol": "Q",
-      "Daily setup": "Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "9:45",
       "Kept overnight": "No",
       "Exit date": "",
@@ -5199,7 +5199,7 @@
     {
       "Entry date": "2026-06-30",
       "Symbol": "WULF",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -5210,7 +5210,7 @@
     {
       "Entry date": "2026-07-01",
       "Symbol": "DELL",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -5221,7 +5221,7 @@
     {
       "Entry date": "2026-07-02",
       "Symbol": "MU",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -5232,7 +5232,7 @@
     {
       "Entry date": "2026-07-02",
       "Symbol": "Q",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -5243,7 +5243,7 @@
     {
       "Entry date": "2026-07-02",
       "Symbol": "COHR",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -5254,7 +5254,7 @@
     {
       "Entry date": "2026-07-13",
       "Symbol": "ANET",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -5265,7 +5265,7 @@
     {
       "Entry date": "2026-08-03",
       "Symbol": "ANET",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2026-08-04",
@@ -5276,7 +5276,7 @@
     {
       "Entry date": "2026-08-04",
       "Symbol": "NOW",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:00",
       "Kept overnight": "Yes",
       "Exit date": "2026-08-06",
@@ -5287,7 +5287,7 @@
     {
       "Entry date": "2026-08-04",
       "Symbol": "CRM",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:00",
       "Kept overnight": "Yes",
       "Exit date": "2026-08-06",
@@ -5298,7 +5298,7 @@
     {
       "Entry date": "2026-08-05",
       "Symbol": "DHR",
-      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (20-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:00",
       "Kept overnight": "Yes",
       "Exit date": "2026-08-06",
@@ -5309,7 +5309,7 @@
     {
       "Entry date": "2026-08-07",
       "Symbol": "PAYX",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -5320,7 +5320,7 @@
     {
       "Entry date": "2026-08-07",
       "Symbol": "BSX",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -5331,7 +5331,7 @@
     {
       "Entry date": "2026-08-10",
       "Symbol": "BX",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:15",
       "Kept overnight": "Yes",
       "Exit date": "2026-08-18",
@@ -5342,7 +5342,7 @@
     {
       "Entry date": "2026-08-10",
       "Symbol": "APO",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:15",
       "Kept overnight": "Yes",
       "Exit date": "2026-08-18",
@@ -5353,7 +5353,7 @@
     {
       "Entry date": "2026-08-11",
       "Symbol": "PLTR",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -5364,7 +5364,7 @@
     {
       "Entry date": "2026-08-11",
       "Symbol": "PAYX",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2026-08-12",
@@ -5375,7 +5375,7 @@
     {
       "Entry date": "2026-08-11",
       "Symbol": "AJG",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2026-08-12",
@@ -5386,7 +5386,7 @@
     {
       "Entry date": "2026-08-14",
       "Symbol": "BKNG",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -5397,7 +5397,7 @@
     {
       "Entry date": "2026-08-18",
       "Symbol": "PLTR",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -5408,7 +5408,7 @@
     {
       "Entry date": "2026-08-28",
       "Symbol": "ADBE",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -5419,7 +5419,7 @@
     {
       "Entry date": "2026-08-28",
       "Symbol": "DELL",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -5430,7 +5430,7 @@
     {
       "Entry date": "2026-09-10",
       "Symbol": "NOW",
-      "Daily setup": "Moving Average Undercut and Rally (20-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -5441,7 +5441,7 @@
     {
       "Entry date": "2026-09-18",
       "Symbol": "BMNR",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "9:45",
       "Kept overnight": "Yes",
       "Exit date": "2026-09-28",
@@ -5452,7 +5452,7 @@
     {
       "Entry date": "2026-09-22",
       "Symbol": "INTC",
-      "Daily setup": "Delayed High Volume Close",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -5463,7 +5463,7 @@
     {
       "Entry date": "2026-09-24",
       "Symbol": "NET",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -5474,7 +5474,7 @@
     {
       "Entry date": "2026-09-25",
       "Symbol": "LITE",
-      "Daily setup": "Delayed High Volume Close; EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2026-09-28",
@@ -5485,7 +5485,7 @@
     {
       "Entry date": "2026-09-29",
       "Symbol": "NET",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "Yes",
       "Exit date": "2026-09-30",
@@ -5496,7 +5496,7 @@
     {
       "Entry date": "2026-09-29",
       "Symbol": "DELL",
-      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:15",
       "Kept overnight": "No",
       "Exit date": "",
@@ -5507,7 +5507,7 @@
     {
       "Entry date": "2026-09-30",
       "Symbol": "HPQ",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2026-10-09",
@@ -5518,7 +5518,7 @@
     {
       "Entry date": "2026-10-01",
       "Symbol": "BMNR",
-      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -5529,7 +5529,7 @@
     {
       "Entry date": "2026-10-01",
       "Symbol": "SWKS",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -5540,7 +5540,7 @@
     {
       "Entry date": "2026-10-06",
       "Symbol": "PSX",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:15",
       "Kept overnight": "Yes",
       "Exit date": "2026-10-22",
@@ -5551,7 +5551,7 @@
     {
       "Entry date": "2026-10-09",
       "Symbol": "FIX",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:30",
       "Kept overnight": "Yes",
       "Exit date": "2026-10-12",
@@ -5562,7 +5562,7 @@
     {
       "Entry date": "2026-10-12",
       "Symbol": "RVTY",
-      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "9:45",
       "Kept overnight": "No",
       "Exit date": "",
@@ -5573,7 +5573,7 @@
     {
       "Entry date": "2026-10-12",
       "Symbol": "MRNA",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "10:00",
       "Kept overnight": "No",
       "Exit date": "",
@@ -5584,7 +5584,7 @@
     {
       "Entry date": "2026-10-29",
       "Symbol": "MRNA",
-      "Daily setup": "Trend Leader",
+      "Daily setup": "Leader",
       "Fill time (ET)": "9:45",
       "Kept overnight": "No",
       "Exit date": "",
@@ -5595,7 +5595,7 @@
     {
       "Entry date": "2026-11-13",
       "Symbol": "AJG",
-      "Daily setup": "EMA Bounce; Moving Average Undercut and Rally (10-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "9:45",
       "Kept overnight": "No",
       "Exit date": "",
@@ -5606,7 +5606,7 @@
     {
       "Entry date": "2026-11-13",
       "Symbol": "ACN",
-      "Daily setup": "High Tight Flag; EMA Bounce; Moving Average Undercut and Rally (20-day)",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",
@@ -5617,7 +5617,7 @@
     {
       "Entry date": "2026-11-13",
       "Symbol": "EL",
-      "Daily setup": "EMA Bounce",
+      "Daily setup": "Pullback",
       "Fill time (ET)": "10:30",
       "Kept overnight": "No",
       "Exit date": "",

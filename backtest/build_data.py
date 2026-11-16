@@ -15,26 +15,90 @@ from pathlib import Path
 DATA = Path(__file__).resolve().parent / "data"
 
 
-def scrub_crossback(s: str) -> str:
-    """Rewrite every visible 'crossback' label for the public site."""
+def plain_setup(s: str) -> str:
+    t = s.strip()
+    if re.search(r"trend\s*leader", t, flags=re.I):
+        return "Leader"
+    return "Pullback"
+
+
+def scrub_public_text(s: str) -> str:
+    """Plain-language rewrites for the public site (no indicator jargon)."""
     t = s
-    t = re.sub(r"6\s*EMA\s+crossback", "a 15-minute candle closes back above its 6 EMA", t, flags=re.I)
-    t = re.sub(r"EMA\s+Crossback", "EMA Bounce", t, flags=re.I)
+    t = re.sub(r"Trend Leader names only", "Leaders only", t, flags=re.I)
+    t = re.sub(r"v1\.5:\s*no 50-day rule", "v1.5: without the longer-term trend filter", t, flags=re.I)
+    t = re.sub(
+        r"Pattern names not below all of the 10 EMA, 20 EMA and 50-day average",
+        "Pullbacks that stay in an overall uptrend",
+        t,
+        flags=re.I,
+    )
+    t = re.sub(
+        r"Pattern names:\s*10 EMA > 20 EMA > 50-day average",
+        "Pullbacks only in strong uptrends",
+        t,
+        flags=re.I,
+    )
+    t = re.sub(
+        r"Pattern names above the daily 20 EMA",
+        "Pullbacks in a short-term uptrend",
+        t,
+        flags=re.I,
+    )
+    t = re.sub(
+        r"Pattern-setup names need the buy above the prior-day 50-day average, and names under it are left off the watchlist \(Trend Leaders already meet it\)\.",
+        "Pullback trades need the stock in a longer-term uptrend; leaders already qualify.",
+        t,
+        flags=re.I,
+    )
+    t = re.sub(
+        r"Take a long only when the stock is stronger than QQQ since the open:[^.]*\.",
+        "Only take trades when the stock is beating the market since the open.",
+        t,
+        flags=re.I,
+    )
+    if re.search(
+        r"Trend Leader|EMA|Moving Average Undercut|Delayed High Volume|High Tight Flag|Wedge Pop",
+        t,
+        flags=re.I,
+    ) and len(t) < 140 and not re.search(
+        r"v1\.|this document|Pullbacks |Leaders only|without the longer", t, flags=re.I
+    ):
+        return plain_setup(t)
+
+    t = re.sub(r"\b\d+\s*EMA\b", "trend", t, flags=re.I)
+    t = re.sub(r"\bEMA\b", "trend", t, flags=re.I)
+    t = re.sub(r"\bATR\b", "volatility", t, flags=re.I)
+    t = re.sub(r"\bQQQ\b", "the market", t)
+    t = re.sub(r"\bSPY\b", "the market", t)
+    t = re.sub(r"Moving Average Undercut and Rally(?:\s*\(\d+-day\))?", "Pullback", t, flags=re.I)
+    t = re.sub(r"Trend Leaders?", "Leaders", t, flags=re.I)
+    t = re.sub(r"Delayed High Volume Close", "Pullback", t, flags=re.I)
+    t = re.sub(r"High Tight Flag", "Pullback", t, flags=re.I)
+    t = re.sub(r"Wedge Pop", "Pullback", t, flags=re.I)
+    t = re.sub(r"50-day rule", "longer-term trend filter", t, flags=re.I)
+    t = re.sub(r"50-day average", "longer-term trend", t, flags=re.I)
     t = re.sub(r"Crossback\s+trading\s+rules", "TiltKiller trading rules", t, flags=re.I)
     t = re.sub(r"crossback\s+rules", "trading rules", t, flags=re.I)
     t = re.sub(r"Results:\s*crossback", "Results: trading", t, flags=re.I)
-    t = re.sub(r"s_ema-crossback", "s_ema-bounce", t, flags=re.I)
-    t = re.sub(r"cross[\s_-]*back", "bounce", t, flags=re.I)
+    t = re.sub(r"s_ema-crossback", "pattern", t, flags=re.I)
+    t = re.sub(r"cross[\s_-]*back", "pullback", t, flags=re.I)
     return t
 
 
 def scrub_tree(obj):
     if isinstance(obj, dict):
-        return {k: scrub_tree(v) for k, v in obj.items()}
+        out = {}
+        for k, v in obj.items():
+            if k == "Daily setup" and isinstance(v, str):
+                out[k] = plain_setup(v)
+            else:
+                out[k] = scrub_tree(v)
+        return out
     if isinstance(obj, list):
         return [scrub_tree(v) for v in obj]
     if isinstance(obj, str):
-        return scrub_crossback(obj)
+        return scrub_public_text(obj)
     return obj
 
 
@@ -227,6 +291,8 @@ def main() -> None:
     blob = path.read_text(encoding="utf-8")
     if re.search(r"cross[\s_-]*back", blob, flags=re.I):
         raise SystemExit("backtest.json still contains a crossback substring after scrub")
+    if re.search(r"\bEMA\b", blob):
+        raise SystemExit("backtest.json still contains EMA after scrub")
     print(
         f"Wrote {path} ({path.stat().st_size} bytes) — "
         f"{len(out['rules'])} rules, {len(out['monthly'])} months, {len(out['trades'])} trades"
