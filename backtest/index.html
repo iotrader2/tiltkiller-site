@@ -634,6 +634,7 @@ footer .disc{max-width:760px}
   <h1>TiltKiller <span>Backtest</span></h1>
   <p class="sub">Simulated current rules · ${esc(data.meta.period)}. Same trades, different risk. You choose how hard to push — and see what that meant for the account and the drawdowns. <strong style="color:var(--text)">1R = the amount you risk on a trade</strong> (what you lose if the stop hits).</p>
   <div class="pillrow">
+    <span class="pill"><b>Rules v1.8</b></span>
     <span class="pill"><b>As of ${esc(data.meta.as_of)}</b></span>
     <span class="pill">$100k start · 3-year test</span>
     <span class="pill">Small slippage built in</span>
@@ -765,7 +766,10 @@ footer .disc{max-width:760px}
 </section>
 
 <section>
-  <h2>The haul at a glance</h2>
+  <div style="display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin:0 0 10px">
+    <h2 style="margin:0">The haul at a glance</h2>
+    <span class="pill">v1.8</span>
+  </div>
   <p class="lead">Headline results at ${esc(I.risk_per_trade)} risk per trade. Win rate is low on purpose — most of the gain comes from a few big winners you hold. Remember: <strong style="color:var(--text)">1R is the dollars you risk on one trade</strong>.</p>
   <div class="stats">
     ${stats.map(s => `<div class="stat"><span class="v ${s.cls || ''}">${esc(s.v)}</span><span class="l">${esc(s.l)}</span></div>`).join('')}
