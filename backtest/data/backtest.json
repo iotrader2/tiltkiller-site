@@ -136,7 +136,7 @@
     {
       "n": 3,
       "group": "Entry",
-      "rule": "Buys when a stock turns back up early in the session. Alerts land in Discord from the open through 10:45 ET.",
+      "rule": "Buys when a stock turns back up early in the session. Buy alerts land in Discord from the open through 10:45 ET — entry and stop in one message.",
       "value": ""
     },
     {
@@ -148,7 +148,7 @@
     {
       "n": 5,
       "group": "Exits & holds",
-      "rule": "Winners can be held overnight; losers are cut quickly. No holding through earnings: any open position is closed before the company reports. Max 3 new trades a day. Long trades only.",
+      "rule": "Alerts for the way in and the way out. Winners are held with a trailing stop, and you get an alert when it’s hit. Losers are cut quickly. No holding through earnings. Max 3 new trades a day. Long trades only.",
       "value": ""
     }
   ],
