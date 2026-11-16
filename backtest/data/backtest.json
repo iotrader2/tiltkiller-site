@@ -148,7 +148,7 @@
     {
       "n": 5,
       "group": "Exits & holds",
-      "rule": "Winners can be held overnight; losers are cut quickly. Max 3 new trades a day. Long trades only.",
+      "rule": "Winners can be held overnight; losers are cut quickly. No holding through earnings: any open position is closed before the company reports. Max 3 new trades a day. Long trades only.",
       "value": ""
     }
   ],
