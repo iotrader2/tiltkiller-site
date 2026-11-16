@@ -128,13 +128,30 @@ footer .disc{max-width:760px}
 .metric .msub{display:block;margin-top:4px;font-size:11px;color:#6b7388}
 .plan-line{margin:0 0 18px;padding:12px 14px;border-radius:12px;background:rgba(244,63,94,.07);border:1px solid #4a2530;color:#e7c4cb;font-size:14.5px;text-align:center}
 .plan-line strong{color:#fff}
-.day-cap{margin:0 0 18px;padding:18px 18px 14px;border-radius:16px;background:rgba(56,189,248,.07);border:1px solid rgba(56,189,248,.28);text-align:center}
-.day-cap .dc-kicker{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--blue);margin-bottom:8px}
-.day-cap .dc-main{margin:0 0 8px;font-size:clamp(17px,2.4vw,22px);font-weight:750;line-height:1.35;color:var(--text)}
+.risk-truth{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:0 0 18px;align-items:stretch}
+.day-cap,.gap-warn{margin:0;padding:18px 18px 14px;border-radius:16px;text-align:center;height:100%;box-sizing:border-box}
+.day-cap{background:rgba(56,189,248,.07);border:1px solid rgba(56,189,248,.28)}
+.day-cap .dc-kicker,.gap-warn .gw-kicker{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;margin-bottom:8px}
+.day-cap .dc-kicker{color:var(--blue)}
+.day-cap .dc-main{margin:0 0 8px;font-size:clamp(16px,2.2vw,20px);font-weight:750;line-height:1.35;color:var(--text)}
 .day-cap .dc-main strong{color:var(--blue)}
 .day-cap .dc-math{margin:0 0 10px;font-size:15px;color:var(--muted);font-variant-numeric:tabular-nums}
 .day-cap .dc-math b{color:var(--text);font-weight:700}
 .day-cap .dc-note{margin:0;font-size:13px;color:#9aa3b5;line-height:1.45;max-width:640px;margin-left:auto;margin-right:auto}
+.gap-warn{background:rgba(244,63,94,.08);border:1px solid #5c2434;text-align:left}
+.gap-warn .gw-kicker{color:var(--red)}
+.gap-warn .gw-main{margin:0 0 10px;font-size:15px;font-weight:650;line-height:1.45;color:var(--text)}
+.gap-warn .gw-main strong{color:#fff}
+.gap-warn .gw-note{margin:0;font-size:13.5px;color:#e7c4cb;line-height:1.5}
+.gap-warn .gw-note strong{color:#fff}
+.trust .gap-block{margin:0 0 18px;padding:14px 16px;border-radius:12px;background:rgba(0,0,0,.22);border:1px solid #5c2434}
+.trust .gap-block p{margin:0 0 8px;font-size:15px;line-height:1.5;color:#f0d6db}
+.trust .gap-block p:last-child{margin-bottom:0}
+.trust .gap-block strong{color:#fff}
+@media (max-width:820px){
+  .risk-truth{grid-template-columns:1fr}
+  .gap-warn{text-align:center}
+}
 .charts-2{display:grid;grid-template-columns:1.15fr .85fr;gap:14px}
 .mini-chart{background:rgba(7,9,13,.4);border:1px solid #243044;border-radius:16px;padding:16px 14px 12px}
 .mini-chart h3{margin:0 0 4px;font-size:15px;font-weight:650}
@@ -343,6 +360,7 @@ footer .disc{max-width:760px}
       title: 'Stop',
       items: [
         'Every trade has a set stop, so you know your risk up front',
+        'Stops aren’t guaranteed — a gap down overnight or on news can open below your stop',
         'Position size comes from that stop — not from gut feel',
         'If the stop is too wide or too tight, the trade is skipped',
       ],
@@ -351,6 +369,7 @@ footer .disc{max-width:760px}
       title: 'Exits & holds',
       items: [
         'Winners can be held overnight; losers are cut quickly',
+        'Positions held overnight can gap — the loss can be bigger than planned risk',
         'No overnight hold into an earnings report',
         'Max 3 new trades a day — so you know your risk up front',
         'Long trades only',
@@ -631,6 +650,7 @@ footer .disc{max-width:760px}
     const riskRows = data.risk_table;
     // Feature the most aggressive row (0.50%) as the default showcase.
     const defaultRisk = riskRows.some(r => r['Risk per trade'] === '0.50%') ? '0.50%' : riskRows[riskRows.length - 1]['Risk per trade'];
+    const gapExitCount = (data.trades || []).filter(t => String(t.Exit || '').toLowerCase() === 'stop (gap)').length;
 
     const stats = [
       { l: 'Trades', v: R['Trades'] },
@@ -689,11 +709,18 @@ footer .disc{max-width:760px}
       <div class="metric" data-key="p5"><span class="mv neg" id="mP5">—</span><span class="ml">1-in-20 drawdown</span><span class="msub">reshuffled 2,000 times</span></div>
     </div>
 
-    <div class="day-cap" id="dayCap" aria-live="polite">
-      <div class="dc-kicker">Built-in daily limit</div>
-      <p class="dc-main">Max <strong>3</strong> new trades a day. At <strong id="dcRisk">0.50%</strong> risk per trade, the most you put at risk on new trades in a day is <strong id="dcMaxNew">1.50%</strong>.</p>
-      <p class="dc-math">3 × <b id="dcRiskMath">0.50%</b> = <b id="dcMaxMath">1.50%</b></p>
-      <p class="dc-note">Winners held overnight can stack. Total open risk across held positions peaked at <strong id="dcOpenPeak">5.5%</strong> in this simulated run (the “most risk open at once” figure in the table below).</p>
+    <div class="risk-truth">
+      <div class="day-cap" id="dayCap" aria-live="polite">
+        <div class="dc-kicker">Built-in daily limit</div>
+        <p class="dc-main">Max <strong>3</strong> new trades a day. At <strong id="dcRisk">0.50%</strong> risk per trade, the most you put at risk on new trades in a day is <strong id="dcMaxNew">1.50%</strong>.</p>
+        <p class="dc-math">3 × <b id="dcRiskMath">0.50%</b> = <b id="dcMaxMath">1.50%</b></p>
+        <p class="dc-note">Winners held overnight can stack. Total open risk across held positions peaked at <strong id="dcOpenPeak">5.5%</strong> in this simulated run (the “most risk open at once” figure in the table below).</p>
+      </div>
+      <aside class="gap-warn" id="gapWarn" aria-label="Gap-down risk">
+        <div class="gw-kicker">Stops aren’t guaranteed</div>
+        <p class="gw-main">If a stock <strong>gaps down</strong> overnight or on news, it can open below your stop and the loss can be <strong>bigger than your planned risk</strong>. Positions held overnight carry this risk.</p>
+        <p class="gw-note">This backtest includes those cases. In the trade list, the Exit column shows them as <strong>stop (gap)</strong> — <strong id="gapCount">—</strong> trades in this run — so real gap losses are already counted in the results.</p>
+      </aside>
     </div>
 
     <p class="plan-line"><strong>Plan for the 1-in-20 drawdown</strong> — not the lucky path this one history happened to give. We reshuffled the same trades 2,000 times so you can see a tougher, more realistic drawdown. At 0.50% risk that figure is <strong>−20.3%</strong>.</p>
@@ -944,6 +971,10 @@ footer .disc{max-width:760px}
   <div class="trust">
     <h2>How far to trust this</h2>
     <p class="hypo">${esc(data.disclaimer.hypothetical)}</p>
+    <div class="gap-block" role="note">
+      <p><strong>Stops aren’t guaranteed.</strong> If a stock gaps down overnight or on news, it can open below your stop and the loss can be bigger than your planned risk. Positions held overnight carry this risk.</p>
+      <p>This backtest includes trades that exited on a gap below the stop. In the trade list, the Exit column shows them as <strong>stop (gap)</strong> (${gapExitCount} in this run), so real gap losses are already counted in the results.</p>
+    </div>
     <ol>
       ${plainCaveats(data.caveats).map(c => `<li>${esc(c)}</li>`).join('')}
     </ol>
@@ -951,6 +982,9 @@ footer .disc{max-width:760px}
   </div>
 </section>
 </main>`;
+
+    const gapCountEl = document.getElementById('gapCount');
+    if (gapCountEl) gapCountEl.textContent = String(gapExitCount);
 
     wireRisk(riskRows, defaultRisk, data.trades);
     wireTrades(data.trades);
