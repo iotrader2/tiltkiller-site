@@ -1,10 +1,8 @@
 {
   "meta": {
-    "title": "TiltKiller trading rules v1.6",
-    "sheet": "Results: trading rules v1.6",
+    "title": "TiltKiller trading rules",
     "period": "November 2023 to November 2026 (three years)",
     "r_definition": "1R is the amount you risk on a trade (what you lose if the stop hits).",
-    "version": "1.6",
     "as_of": "2026-11-16"
   },
   "input": {
@@ -50,10 +48,8 @@
     "Many months have no trades because the market was in a downtrend, or they lose. Expect long flat stretches between big winners.",
     "The rules were chosen by comparing many variants on this same three-year period, so the figures are optimistic.",
     "Held days use daily bars: a day that trades both the stop and a higher price is counted as stopped.",
-    "Not modelled: the 15:45 sell time (the backtest sells at the close), commissions, buying power, names added mid-session. The universe is today's list, so delisted names are missing.",
-    "Source: Alpaca 15-minute and daily bars, the scanner daily scan as of each previous close, Yahoo Finance earnings dates; backend/research/pullback_runner.py run 2026-11-16 with KEEP_UP=1 KEEP_DOWN=0 RISK_ATR_MAX=0.25 REGIME=1 REGIME_PRIOR=1 INV_NONE=1 QQQ_COND=close10 LEADER=1 LEADER_ATR=5 LEADER_RISK_ATR=0.35 MIN_ADV=300e6 MIN_ATR=3 SETUP_ONLY=pattern,s_mur20 RAISE_AFTER=5 FILTER='rs_intraday > 0 and (ext_s50 > 0 or leader)' (row: extension cap off, at most 3 new trades a day)."
+    "Not modelled: the 15:45 sell time (the backtest sells at the close), commissions, buying power, names added mid-session. The universe is today's list, so delisted names are missing."
   ],
-  "risk_table_source": "Source: backend/research/pullback_sizing.py on the same run. The account rows above (and the Trades tab) compound trade by trade in order of entry instead, so they differ a little.",
   "risk_table": [
     {
       "Risk per trade": "0.10%",
@@ -121,8 +117,8 @@
   ],
   "risk_table_intro": "$100k start, every trade above, positions overlapping as they did (sized at entry). The reshuffled columns replay the same trades in 2,000 random orders: plan for the 1-in-20 drawdown, not the one history happened to give.",
   "rules_meta": {
-    "title": "TiltKiller trading rules v1.6",
-    "blurb": "Version 1.6, 2026-11-16. The rules as the app runs them. Tested over November 2023 to November 2026; results are on the other tabs. Every rule change gets the next version number (Version history tab)."
+    "title": "TiltKiller trading rules",
+    "blurb": "2026-11-16. The rules as the app runs them. Tested over November 2023 to November 2026; results are on the other tabs. Every change is recorded with its full results."
   },
   "rules": [
     {
@@ -811,136 +807,6 @@
       "Expectancy (R)": "+0.13",
       "Kept overnight": "24",
       "R from positions kept overnight": "+43.4"
-    }
-  ],
-  "comparison": [
-    {
-      "Rule set": "v1.6 (this document)",
-      "Trades": "398",
-      "Win %": "23.6",
-      "Total R": "+319.8",
-      "Max drawdown (R)": "25.4",
-      "Months with a gain": "14 of 37",
-      "Worst month (R)": "-16.9",
-      "2023-11 to 2024-05": "+100.4",
-      "2024-05 to 2024-11": "+1.5",
-      "2024-11 to 2025-05": "+2.6",
-      "2025-05 to 2025-11": "+120.0",
-      "2025-11 to 2026-05": "+85.6",
-      "2026-05 to 2026-11": "+9.6"
-    },
-    {
-      "Rule set": "v1.5: without the longer-term trend filter",
-      "Trades": "403",
-      "Win %": "23.8",
-      "Total R": "+319.8",
-      "Max drawdown (R)": "25.4",
-      "Months with a gain": "14 of 37",
-      "Worst month (R)": "-16.9",
-      "2023-11 to 2024-05": "+100.4",
-      "2024-05 to 2024-11": "+1.5",
-      "2024-11 to 2025-05": "+3.0",
-      "2025-05 to 2025-11": "+119.7",
-      "2025-11 to 2026-05": "+85.6",
-      "2026-05 to 2026-11": "+9.6"
-    },
-    {
-      "Rule set": "Pullbacks that stay in an overall uptrend",
-      "Trades": "401",
-      "Win %": "23.7",
-      "Total R": "+320.0",
-      "Max drawdown (R)": "25.4",
-      "Months with a gain": "14 of 37",
-      "Worst month (R)": "-16.9",
-      "2023-11 to 2024-05": "+100.4",
-      "2024-05 to 2024-11": "+1.5",
-      "2024-11 to 2025-05": "+3.0",
-      "2025-05 to 2025-11": "+120.0",
-      "2025-11 to 2026-05": "+85.6",
-      "2026-05 to 2026-11": "+9.6"
-    },
-    {
-      "Rule set": "Pullbacks only in strong uptrends",
-      "Trades": "392",
-      "Win %": "23.5",
-      "Total R": "+317.9",
-      "Max drawdown (R)": "29.4",
-      "Months with a gain": "14 of 37",
-      "Worst month (R)": "-16.9",
-      "2023-11 to 2024-05": "+100.9",
-      "2024-05 to 2024-11": "+2.6",
-      "2024-11 to 2025-05": "+2.7",
-      "2025-05 to 2025-11": "+120.8",
-      "2025-11 to 2026-05": "+85.6",
-      "2026-05 to 2026-11": "+5.3"
-    },
-    {
-      "Rule set": "Pullbacks in a short-term uptrend",
-      "Trades": "397",
-      "Win %": "23.9",
-      "Total R": "+306.3",
-      "Max drawdown (R)": "25.4",
-      "Months with a gain": "13 of 37",
-      "Worst month (R)": "-16.9",
-      "2023-11 to 2024-05": "+76.6",
-      "2024-05 to 2024-11": "+1.5",
-      "2024-11 to 2025-05": "+3.0",
-      "2025-05 to 2025-11": "+120.0",
-      "2025-11 to 2026-05": "+95.7",
-      "2026-05 to 2026-11": "+9.6"
-    },
-    {
-      "Rule set": "Leaders only",
-      "Trades": "313",
-      "Win %": "24.6",
-      "Total R": "+302.2",
-      "Max drawdown (R)": "25.6",
-      "Months with a gain": "12 of 36",
-      "Worst month (R)": "-15.7",
-      "2023-11 to 2024-05": "+83.8",
-      "2024-05 to 2024-11": "+9.5",
-      "2024-11 to 2025-05": "+10.8",
-      "2025-05 to 2025-11": "+131.3",
-      "2025-11 to 2026-05": "+62.3",
-      "2026-05 to 2026-11": "+4.4"
-    }
-  ],
-  "comparison_note": "Simulation outputs at 0.03% slippage per side; months with no trades count as months without a gain.",
-  "version_history": [
-    {
-      "Version": "1.0",
-      "Date": "2026-11-16",
-      "What changed": "First documented version: the rules the app runs after pull requests 111, 112 and 113."
-    },
-    {
-      "Version": "1.1",
-      "Date": "2026-11-16",
-      "What changed": "Short side removed from the rules and the app (it was never backtested): no inverse-ETF trades, no short names on the watchlist, short settings off the Alerts page. Long rules and the backtest unchanged."
-    },
-    {
-      "Version": "1.2",
-      "Date": "2026-11-16",
-      "What changed": "Names you add to the watchlist yourself are written in as the one exception: the app alerts them (long, same entry and exits) although the backtest does not cover them. App and backtest unchanged."
-    },
-    {
-      "Version": "1.3",
-      "Date": "2026-11-16",
-      "What changed": "The watchlist is system-only for now: only the alerts add and remove names. Adding, removing and moving names back from Positions are switched off, names added by hand are no longer alerted and are cleared at the next post-close reset. The 1.2 exception is gone: every traded name is covered by the backtest. Backtest unchanged."
-    },
-    {
-      "Version": "1.4",
-      "Date": "2026-11-16",
-      "What changed": "At most 3 new trades a day (earliest fills first, higher daily scan score first within a candle); a later fill or a waiting alert past the cap is cancelled before it is announced. Backtest: +372.1R against +329.3R with no cap."
-    },
-    {
-      "Version": "1.5",
-      "Date": "2026-11-16",
-      "What changed": "Only take trades when the stock is beating the market since the open. Backtest: +319.8R with a 25.4R drawdown and every half-year positive, against +372.1R, 44.3R and three losing half-years for 1.4."
-    },
-    {
-      "Version": "1.6",
-      "Date": "2026-11-16",
-      "What changed": "Pullback trades need the stock in a longer-term uptrend; leaders already qualify. Backtest unchanged in practice: +319.8R, 25.4R drawdown (8 trades dropped, -1.5R between them); the watchlist is shorter."
     }
   ],
   "best_worst_note": "R after 0.03% slippage per side (simulation output).",

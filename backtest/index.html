@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>TiltKiller Backtest · Rules v1.6</title>
-<meta name="description" content="Simulated TiltKiller rules v1.6 backtest: November 2023 to November 2026. Not actual trading results.">
+<title>TiltKiller Backtest</title>
+<meta name="description" content="Simulated TiltKiller rules backtest: November 2023 to November 2026. Not actual trading results.">
 <link rel="canonical" href="https://tiltkiller.com/backtest">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://tiltkiller.com/backtest">
-<meta property="og:title" content="TiltKiller Backtest · Rules v1.6">
+<meta property="og:title" content="TiltKiller Backtest">
 <meta property="og:image" content="https://tiltkiller.com/img/ragnar-512.jpg">
 <meta name="twitter:card" content="summary">
 <link rel="icon" href="/favicon.ico" sizes="any">
@@ -92,11 +92,8 @@ details.panel .inner{padding:0 20px 20px}
 .trust .hypo{font-size:18px;font-weight:600;margin:0 0 18px;line-height:1.45}
 .trust ol{margin:0;padding-left:20px}
 .trust li{margin:0 0 10px}
-.version{display:grid;gap:10px}
-.vrow{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
-.vrow .top{display:flex;gap:12px;flex-wrap:wrap;align-items:baseline;margin-bottom:6px}
-.vrow .ver{color:var(--blue);font-weight:700}.vrow .date{color:var(--muted);font-size:13px}
-.vrow p{margin:0;font-size:14.5px}
+.how-built .hb-cta{display:inline-block;margin-top:12px;font-size:14px;font-weight:700;color:var(--blue);text-decoration:none}
+.how-built .hb-cta:hover{text-decoration:underline}
 footer{padding:40px 0;color:var(--muted);font-size:13px;border-top:1px solid var(--line);margin-top:40px}
 footer .disc{max-width:760px}
 .loading,.error{text-align:center;padding:80px 20px;color:var(--muted)}
@@ -199,6 +196,7 @@ footer .disc{max-width:760px}
   <div class="links">
     <a class="navlink" href="/rules">Rules</a>
     <a class="navlink on" href="/backtest" aria-current="page">Backtest</a>
+    <a class="navlink" href="/how-we-built">How we built</a>
   </div>
 </nav>
 </div>
@@ -239,15 +237,15 @@ footer .disc{max-width:760px}
   }
 
   function howBuiltBlock() {
-    const { modelName, maker, modelBlurb } = researchCredit();
+    const { modelName } = researchCredit();
     return `
 <aside class="how-built" aria-label="How this was built">
   <div class="hb-top">
     <h2>How this was built</h2>
     <span class="model-badge">${esc(modelName)}</span>
   </div>
-  <p>Every rule was written down, tested over three years of market data, and compared against other versions by an AI research analyst — <strong>${esc(modelName)}</strong> by ${esc(maker)}, which the owner describes as ${esc(modelBlurb)}. The owner made the trading calls.</p>
-  <p class="hb-note">Honesty check: different rule versions were compared on this same period, so the figures look a bit optimistic. The version history below shows each change was measured.</p>
+  <p>Every rule was tested across three years of market data — one change at a time — with help from an AI research analyst. The owner made the trading calls.</p>
+  <a class="hb-cta" href="/how-we-built">Read how we built the rules →</a>
 </aside>`;
   }
 
@@ -291,7 +289,9 @@ footer .disc{max-width:760px}
 
     // Comparison rule-set rows
     t = t.replace(/Trend Leader names only/gi, 'Leaders only');
-    t = t.replace(/v1\.5:\s*no 50-day rule/gi, 'v1.5: without the longer-term trend filter');
+    t = t.replace(/v\d+\.\d+:\s*no 50-day rule/gi, 'without the longer-term trend filter');
+    t = t.replace(/\bVersion\s*\d+\.\d+\b/gi, 'the current rules');
+    t = t.replace(/\bv\d+\.\d+\b/gi, '');
     t = t.replace(/Pattern names not below all of the 10 EMA, 20 EMA and 50-day average/gi, 'Pullbacks that stay in an overall uptrend');
     t = t.replace(/Pattern names:\s*10 EMA > 20 EMA > 50-day average/gi, 'Pullbacks only in strong uptrends');
     t = t.replace(/Pattern names above the daily 20 EMA/gi, 'Pullbacks in a short-term uptrend');
@@ -687,9 +687,9 @@ footer .disc{max-width:760px}
 <header class="hero"><div class="wrap">
   <img class="logo" src="/img/ragnar-160.png" alt="Ragnar, the TiltKiller Viking">
   <h1>TiltKiller <span>Backtest</span></h1>
-  <p class="sub">Simulated rules v${esc(data.meta.version)} · ${esc(data.meta.period)}. Same trades, different risk. You choose how hard to push — and see what that meant for the account and the drawdowns. <strong style="color:var(--text)">1R = the amount you risk on a trade</strong> (what you lose if the stop hits).</p>
+  <p class="sub">Simulated current rules · ${esc(data.meta.period)}. Same trades, different risk. You choose how hard to push — and see what that meant for the account and the drawdowns. <strong style="color:var(--text)">1R = the amount you risk on a trade</strong> (what you lose if the stop hits).</p>
   <div class="pillrow">
-    <span class="pill"><b>v${esc(data.meta.version)}</b> · as of ${esc(data.meta.as_of)}</span>
+    <span class="pill"><b>As of ${esc(data.meta.as_of)}</b></span>
     <span class="pill">$100k start · 3-year test</span>
     <span class="pill">Small slippage built in</span>
   </div>
@@ -841,7 +841,7 @@ footer .disc{max-width:760px}
 
 <section>
   <h2>The rules in plain language</h2>
-  <p class="lead">Rules v${esc(data.meta.version)} as the alerts follow them. Tested from ${esc(data.meta.period.replace(/ \(three years\)/, ''))}. Get the alert, know the entry and the stop, size it to your risk.</p>
+  <p class="lead">The current rules as the alerts follow them. Tested from ${esc(data.meta.period.replace(/ \(three years\)/, ''))}. Get the alert, know the entry and the stop, size it to your risk.</p>
   <div class="grid">
     ${PLAIN_RULES.map(g => `
       <div class="card">
@@ -945,42 +945,6 @@ footer .disc{max-width:760px}
       <p class="note" id="tradeCount"></p>
     </div>
   </details>
-</section>
-
-<section>
-  <h2>Rule-variant comparison</h2>
-  <p class="lead">Nearby versions of the rules on the same three-year stretch. Close scores do not mean they are the same — the path through each half-year still matters.</p>
-  <div class="table-wrap">
-    <table>
-      <thead><tr>
-        <th>Rule set</th><th class="num">Trades</th><th class="num">Win %</th><th class="num">Total R</th><th class="num">Max DD (R)</th><th class="num">Months ↑</th><th class="num">Worst month</th>
-      </tr></thead>
-      <tbody>
-        ${data.comparison.map((row, i) => `<tr class="${i === 0 ? 'highlight' : ''}">
-          <td>${esc(row['Rule set'])}</td>
-          <td class="num">${esc(row.Trades)}</td>
-          <td class="num">${esc(row['Win %'])}</td>
-          ${tdNum(row['Total R'])}
-          <td class="num neg">${esc(row['Max drawdown (R)'])}</td>
-          <td class="num">${esc(row['Months with a gain'])}</td>
-          ${tdNum(row['Worst month (R)'])}
-        </tr>`).join('')}
-      </tbody>
-    </table>
-  </div>
-  <p class="note">Simulated results. Months with no trades count as months without a gain.</p>
-</section>
-
-<section>
-  <h2>Version history</h2>
-  <p class="lead">Every rule change gets a new number. Each one was measured before it shipped.</p>
-  <div class="version">
-    ${data.version_history.map(v => `
-      <div class="vrow">
-        <div class="top"><span class="ver">v${esc(v.Version)}</span><span class="date">${esc(v.Date)}</span></div>
-        <p>${esc(v['What changed'])}</p>
-      </div>`).join('')}
-  </div>
 </section>
 
 <section>

@@ -26,7 +26,10 @@ def scrub_public_text(s: str) -> str:
     """Plain-language rewrites for the public site (no indicator jargon)."""
     t = s
     t = re.sub(r"Trend Leader names only", "Leaders only", t, flags=re.I)
-    t = re.sub(r"v1\.5:\s*no 50-day rule", "v1.5: without the longer-term trend filter", t, flags=re.I)
+    t = re.sub(r"v\d+\.\d+:\s*no 50-day rule", "without the longer-term trend filter", t, flags=re.I)
+    t = re.sub(r"\bVersion\s*\d+\.\d+\b", "the current rules", t, flags=re.I)
+    t = re.sub(r"\bv\d+\.\d+\b", "", t, flags=re.I)
+    t = re.sub(r"\s{2,}", " ", t).strip()
     t = re.sub(
         r"Pattern names not below all of the 10 EMA, 20 EMA and 50-day average",
         "Pullbacks that stay in an overall uptrend",
@@ -125,13 +128,12 @@ def read_table(name: str) -> list[dict]:
 
 def build() -> dict:
     lines = (DATA / "results.csv").read_text(encoding="utf-8").splitlines()
+    # No version / variant labels in the public JSON — those stay private.
     out: dict = {
         "meta": {
-            "title": "TiltKiller trading rules v1.6",
-            "sheet": lines[0],
+            "title": "TiltKiller trading rules",
             "period": "November 2023 to November 2026 (three years)",
             "r_definition": "1R is the amount you risk on a trade (what you lose if the stop hits).",
-            "version": "1.6",
             "as_of": "2026-11-16",
         }
     }
@@ -187,6 +189,9 @@ def build() -> dict:
         text = next(csv.reader([line]))[0].strip()
         if text.startswith("$100k start"):
             break
+        # Research Source lines stay private — not shipped in the public JSON.
+        if text.startswith("Source:"):
+            continue
         if text:
             caveats.append(text)
     out["caveats"] = caveats
@@ -199,8 +204,7 @@ def build() -> dict:
                 if not line2.strip():
                     continue
                 if line2.startswith('"Source:') or line2.startswith("Source:"):
-                    out["risk_table_source"] = next(csv.reader([line2]))[0]
-                    break
+                    break  # do not ship research Source strings
                 parts = next(csv.reader([line2]))
                 if not parts[0]:
                     continue
@@ -214,9 +218,20 @@ def build() -> dict:
             break
 
     rules_lines = (DATA / "rules.csv").read_text(encoding="utf-8").splitlines()
+    # Strip private version labels from public meta copy.
+    title = re.sub(r"\s*v\d+\.\d+\b", "", rules_lines[0], flags=re.I).strip()
+    blurb = next(csv.reader([rules_lines[1]]))[0]
+    blurb = re.sub(r"Version\s*\d+\.\d+\s*,?\s*", "", blurb, flags=re.I).strip()
+    blurb = re.sub(r"\bv\d+\.\d+\b", "", blurb, flags=re.I).strip()
+    blurb = re.sub(
+        r"Every rule change gets the next version number\s*\([^)]*\)\.?",
+        "Every change is recorded with its full results.",
+        blurb,
+        flags=re.I,
+    ).strip()
     out["rules_meta"] = {
-        "title": rules_lines[0],
-        "blurb": next(csv.reader([rules_lines[1]]))[0],
+        "title": title or "TiltKiller trading rules",
+        "blurb": blurb,
     }
     header_idx = next(i for i, l in enumerate(rules_lines) if l.startswith("#,Group,Rule"))
     rules: list[dict] = []
@@ -246,20 +261,7 @@ def build() -> dict:
 
     out["monthly"] = read_table("monthly.csv")
     out["half_years"] = read_table("half-years.csv")
-
-    comparison = []
-    for row in read_table("comparison.csv"):
-        rs = row.get("Rule set", "")
-        if not rs or rs.startswith("Simulation"):
-            continue
-        comparison.append(row)
-    out["comparison"] = comparison
-    for line in (DATA / "comparison.csv").read_text(encoding="utf-8").splitlines():
-        if line.startswith("Simulation outputs"):
-            out["comparison_note"] = line
-            break
-
-    out["version_history"] = read_table("version_history.csv")
+    # comparison.csv and version_history.csv are private — not shipped.
 
     with open(DATA / "best_and_worst.csv", newline="", encoding="utf-8") as f:
         rows = list(csv.reader(f))
