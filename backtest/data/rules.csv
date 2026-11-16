@@ -1,0 +1,45 @@
+Crossback trading rules v1.6
+"Version 1.6, 2026-11-16. The rules as the app runs them. Tested over November 2023 to November 2026; results are on the other tabs. Every rule change gets the next version number (Version history tab)."
+
+#,Group,Rule,Value
+1,Market filter (QQQ daily chart),No new long trades unless QQQ closed above its daily 10 EMA the previous day. On those days the watchlist holds no long names,uptrend only
+2,"Which names: pattern setups (daily scan, as of the previous close)",Stock or ETF with an EMA Crossback or a 20-day Moving Average Undercut and Rally on the daily chart (other setups are switched off),2 setups
+3,"Which names: pattern setups (daily scan, as of the previous close)",Its theme ranks in the top band of themes,top 25%
+4,"Which names: pattern setups (daily scan, as of the previous close)",Average dollar volume at least,$300M
+5,"Which names: pattern setups (daily scan, as of the previous close)",Daily ATR above,3%
+6,"Which names: pattern setups (daily scan, as of the previous close)","At most this many names, highest score first",150
+7,"Which names: pattern setups (daily scan, as of the previous close)",No extension cap (the buy may be any distance above the daily 10 EMA),off
+8,"Which names: pattern setups (daily scan, as of the previous close)",The buy is above the prior-day 50-day average; names under it are not on the watchlist,above 50-day
+9,Which names: Trend Leader group,"RS at P70 or better, daily 10 EMA above the 20 EMA above the 50-day average, close above the 50-day average",Trend Leader
+10,Which names: Trend Leader group,Daily ATR at least,5%
+11,Which names: Trend Leader group,Average dollar volume at least,$300M
+12,Which names: Trend Leader group,"No theme rank, no chart pattern and no name cap required"
+13,Entry (15-minute chart),A candle closes above the 6 EMA after the prior candle closed at or below it,6 EMA crossback
+14,Entry (15-minute chart),"That candle is green, with a body of at least this share of its range",50%
+15,Entry (15-minute chart),It also closes above the 15-minute 20 EMA,20 EMA
+16,Entry (15-minute chart),"It ends by the cutoff, and the buy fills on a candle starting before the cutoff",10:45 ET
+17,Entry (15-minute chart),Buy at the candle high plus,1 cent
+18,Entry (15-minute chart),The order is cancelled if the candle low trades first; at most this many fills per name a day,2
+19,Entry (15-minute chart),The stock is stronger than QQQ since the open: its % move from today's open to the buy price minus QQQ's % move from its open to the trigger candle's close is above this many points; otherwise skip,0 points
+20,Stop,Stop under the candle low by (the position is sized to this stop),1 cent
+21,Stop,Pattern setups: skip when the stop is further from the buy than this share of the 14-day daily ATR,0.25
+22,Stop,Trend Leaders: the same limit,0.35
+23,Stop,Skip a stop closer to the buy than,0.5%
+24,Stop,"After this many 15-minute candles past the trigger candle, raise the stop once to 1 cent under their lowest low",5 candles
+25,"Entry day, 15:45 ET",QQQ's 15:45 price is above its daily 10 EMA (counting that price as today's close): keep the whole position,hold all
+26,"Entry day, 15:45 ET",Otherwise sell the whole position,sell all
+27,"Entry day, 15:45 ET",An earnings report due before the next open: sell the whole position,sell all
+28,"Entry day, 15:45 ET",The stock is stronger than QQQ since the open: its % move from today's open to the buy price minus QQQ's % move from its open to the trigger candle's close is above this many points; otherwise skip,0 points
+29,Held position (later days),"At each day's 15:45 check (the entry day's included), raise the stop to 1 cent under the lowest daily low of the last N days, today included; it only moves up",5 days
+30,Held position (later days),A gap under the stop sells at the open
+31,Held position (later days),Sell at the 15:45 check before an earnings report
+32,Limits,A name with an open position takes no new trade
+33,Limits,"At most this many new trades a day, earliest fills first (higher daily scan score first within the same candle); later fills and waiting alerts are cancelled",3
+34,Limits,Long trades only: no short side,longs only
+35,Limits,"The watchlist is system-only: only the alerts add and remove names; you cannot add, remove or star names",system only
+
+Notes
+"The backtest matches the app except: sells are at the 4:00 close instead of 15:45, and the 150-name cap is not applied."
+"The two pattern setups and the stronger-than-QQQ rule were chosen after comparing many variants on this same period, so the total is optimistic; the rule's case rests on every half-year being positive."
+Risk per trade is not a rule of the app; the account columns use the risk on the Results tab.
+"Risk per trade on the Results and Trades tabs: 0.20% of the account, compounding trade by trade in order of entry; with several positions open at once the real path differs a little."

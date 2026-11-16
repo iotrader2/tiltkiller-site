@@ -1,0 +1,54 @@
+Results: crossback rules v1.6
+November 2023 to November 2026 (three years). 1R is the distance from the buy to the initial stop.
+
+Input
+Slippage per side,0.03%,Assumption: 0.03% of price on the buy and again on the sell. Change it and every figure recalculates.,Starting account,"$100,000",Source: user-provided.
+,,,Risk per trade (a full stop-out loses this share of the account),0.20%,Source: user-provided.
+Results
+Trades,398
+Winners,94
+Win rate,23.6%
+Average win (R),+5.95
+Average loss (R),-0.79
+Expectancy (R per trade),+0.80
+Total R,+319.8
+Total R before slippage,+338.9
+"Largest drawdown (R), month-end to month-end",22.5
+Months with a gain,14 of 37
+Worst month (R),-16.9
+Best month (R),+78.7
+Positions kept overnight,135
+Total R from positions kept overnight,+496.6
+Total R from trades closed on the entry day,-176.8
+Trend Leader trades,265
+Total R from Trend Leader trades,+282.3
+Total R of the 5 best trades,+192.2
+Largest single trade (R),+59.4
+Ending account,"$184,846"
+"Total return, compounded",84.8%
+Yearly return (three years),22.7%
+Largest account drawdown,-5.0%
+
+Trade-by-trade maximum drawdown (simulation output),25.4,At 0.03% slippage; does not recalculate.
+
+How far to trust this
+"The result rests on a few large runners. HOOD (+59R, bought 2025-05-19) and MARA (+43R, bought 2023-11-27) are 32% of the total."
+Many months have no trades (QQQ under its 10 EMA) or lose. Expect long flat stretches between runners.
+"The rules were chosen by comparing many variants on this same three-year period, so the figures are optimistic."
+Held days use daily bars: a day that trades both the stop and a higher price is counted as stopped.
+"Not modelled: the 15:45 sell time (the backtest sells at the close), commissions, buying power, names added mid-session. The universe is today's list, so delisted names are missing."
+"Source: Alpaca 15-minute and daily bars, the scanner daily scan as of each previous close, Yahoo Finance earnings dates; backend/research/crossback_runner.py run 2026-11-16 with KEEP_UP=1 KEEP_DOWN=0 RISK_ATR_MAX=0.25 REGIME=1 REGIME_PRIOR=1 INV_NONE=1 QQQ_COND=close10 LEADER=1 LEADER_ATR=5 LEADER_RISK_ATR=0.35 MIN_ADV=300e6 MIN_ATR=3 SETUP_ONLY=s_ema-crossback,s_mur20 RAISE_AFTER=5 FILTER='rs_intraday > 0 and (ext_s50 > 0 or leader)' (row: extension cap off, at most 3 new trades a day)."
+
+
+Risk per trade
+"$100k start, every trade above, positions overlapping as they did (sized at entry). The reshuffled columns replay the same trades in 2,000 random orders: plan for the 1-in-20 drawdown, not the one history happened to give."
+Risk per trade,Ending account,Yearly growth,Largest account drawdown,Median drawdown (reshuffled),1-in-20 drawdown (reshuffled),Most risk open at once
+0.10%,"$136,208",10.8%,-2.3%,-2.8%,-4.3%,1.1%
+0.20%,"$181,872",22.1%,-4.5%,-5.6%,-8.6%,2.2%
+0.25%,"$208,735",27.8%,-5.7%,-6.9%,-10.9%,2.8%
+0.30%,"$238,558",33.6%,-6.8%,-8.1%,-12.6%,3.3%
+0.35%,"$271,552",39.5%,-7.8%,-9.5%,-14.8%,3.9%
+0.40%,"$307,932",45.5%,-8.9%,-10.9%,-16.8%,4.4%
+0.50%,"$391,738",57.6%,-11.0%,-13.3%,-20.3%,5.5%
+
+"Source: backend/research/crossback_sizing.py on the same run. The account rows above (and the Trades tab) compound trade by trade in order of entry instead, so they differ a little."
