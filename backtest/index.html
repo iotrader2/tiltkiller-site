@@ -36,6 +36,13 @@ h1{font-size:clamp(30px,5vw,50px);line-height:1.1;margin:18px 0 12px}h1 span{col
 .pill b{color:var(--text);font-weight:600}
 .banner{max-width:820px;margin:18px auto 0;background:var(--warn);border:1px solid #5c2434;border-left:4px solid var(--red);border-radius:10px;padding:14px 18px;text-align:left;font-size:15px}
 .banner strong{color:var(--red)}
+.how-built{max-width:820px;margin:8px auto 0;padding:18px 20px;border:1px solid var(--line);border-radius:14px;background:linear-gradient(135deg,rgba(15,20,28,.95),rgba(12,18,28,.9));text-align:left}
+.how-built .hb-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.how-built h2{font-size:18px;margin:0;text-align:left;font-weight:700}
+.model-badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;letter-spacing:.03em;color:var(--blue);border:1px solid rgba(56,189,248,.4);background:rgba(56,189,248,.08);padding:5px 11px;border-radius:999px}
+.how-built p{margin:0;color:var(--muted);font-size:14.5px;line-height:1.55}
+.how-built p strong{color:var(--text);font-weight:600}
+.how-built .hb-note{margin-top:10px;font-size:13px;color:#9aa3b5}
 section{padding:48px 0}h2{font-size:28px;text-align:center;margin:0 0 10px}
 .lead{max-width:720px;margin:0 auto 28px;text-align:center;color:var(--muted);font-size:16px}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
@@ -155,6 +162,16 @@ footer .disc{max-width:760px}
 </nav>
 </div>
 
+<!--
+  OWNER EDIT — research credit (change text in #research-credit only).
+  Uses the owner's wording for the model. Do not claim Anthropic endorses
+  or partners with TiltKiller. Do not expand claims beyond this element.
+-->
+<div id="research-credit" hidden
+  data-model-name="Fable 5.2"
+  data-maker="Anthropic"
+  data-model-blurb="Anthropic's smartest model"></div>
+
 <div id="app"><p class="loading">Loading the raid log…</p></div>
 
 <footer>
@@ -169,6 +186,29 @@ footer .disc{max-width:760px}
 (function () {
   const app = document.getElementById('app');
   const START_ACCOUNT = 100000;
+
+  // Reads owner-editable #research-credit (single place for model name/wording).
+  function researchCredit() {
+    const el = document.getElementById('research-credit');
+    return {
+      modelName: el?.dataset.modelName || 'Fable 5.2',
+      maker: el?.dataset.maker || 'Anthropic',
+      modelBlurb: el?.dataset.modelBlurb || "Anthropic's smartest model",
+    };
+  }
+
+  function howBuiltBlock() {
+    const { modelName, maker, modelBlurb } = researchCredit();
+    return `
+<aside class="how-built" aria-label="How this was built">
+  <div class="hb-top">
+    <h2>How this was built</h2>
+    <span class="model-badge">${esc(modelName)}</span>
+  </div>
+  <p>Every rule was coded, stress-tested across three years of 15-minute bars, and checked against rule variants by an AI research analyst — <strong>${esc(modelName)}</strong> by ${esc(maker)}, which the owner describes as ${esc(modelBlurb)}. The owner made the trading calls.</p>
+  <p class="hb-note">Honesty check from the sheet: variants were compared on this same period, so the figures are optimistic. The version history below shows each change was measured.</p>
+</aside>`;
+  }
 
   const GROUP_MAP = [
     { key: 'market', title: 'Market filter', match: g => g.startsWith('Market filter') },
@@ -416,6 +456,7 @@ footer .disc{max-width:760px}
     <span class="pill">Slippage <b>${esc(I.slippage_per_side)}</b> / side</span>
   </div>
   <div class="banner" role="note"><strong>Hypothetical performance.</strong> ${esc(data.disclaimer.hypothetical)}</div>
+  ${howBuiltBlock()}
 </div></header>
 
 <main class="wrap">
