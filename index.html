@@ -43,12 +43,19 @@ footer{padding:40px 0;color:var(--muted);font-size:13px;border-top:1px solid #1b
 .alerts{text-align:center}.alerts .steps{list-style:none;padding:0;max-width:640px;margin:0 auto;text-align:left}
 .alerts .steps li{background:var(--card);border:1px solid #1b2330;border-radius:12px;padding:16px 18px;margin:12px 0;display:flex;gap:14px;align-items:flex-start}
 .alerts .steps .n{flex:none;width:32px;height:32px;border-radius:50%;background:rgba(56,189,248,.12);color:var(--blue);font-weight:700;display:flex;align-items:center;justify-content:center}
+.no-emo{text-align:center;padding-top:28px}.no-emo .pill-theme{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--blue);border:1px solid rgba(56,189,248,.4);background:rgba(56,189,248,.08);padding:6px 12px;border-radius:999px;margin-bottom:14px}
+.no-emo h2{margin-bottom:12px}.no-emo .lead{margin-bottom:22px}
+.no-emo .checklist{list-style:none;padding:0;max-width:640px;margin:0 auto;text-align:left}
+.no-emo .checklist li{background:var(--card);border:1px solid #1b2330;border-left:3px solid var(--blue);border-radius:10px;padding:12px 16px;margin:8px 0;font-size:15.5px}
+.about-chad{max-width:720px;margin:0 auto;background:var(--card);border:1px solid #1b2330;border-radius:16px;padding:28px 24px;text-align:left}
+.about-chad h2{text-align:left;margin:0 0 12px;font-size:26px}.about-chad p{margin:0 0 12px;color:var(--muted);font-size:16.5px;line-height:1.55}.about-chad p:last-child{margin-bottom:0}.about-chad strong{color:var(--text)}
+.value-line{max-width:680px;margin:0 auto 0;text-align:center;color:var(--muted);font-size:17px;line-height:1.55}.value-line strong{color:var(--text);font-weight:600}
 </style></head><body>
 <div class="wrap"><nav><img src="img/ragnar-160.png" alt="">TiltKiller<span style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap"><a class="navlink" href="/rules">Rules</a><a class="navlink" href="/backtest">Backtest</a><a class="navlink" href="/how-we-built">How we built</a></span></nav></div>
 <header class="hero"><div class="wrap">
 <img class="logo" src="img/ragnar-160.png" alt="Ragnar, the TiltKiller Viking">
 <h1>Trade the leaders. <span>Stop blowing up.</span></h1>
-<p class="sub">TiltKiller sends trade alerts in Discord — the stock, the entry, and the stop. You choose how much to risk. Simple enough for newer traders. Strict enough to keep you honest.</p>
+<p class="sub">TiltKiller sends trade alerts in Discord — the stock, the entry, and the stop. You choose how much to risk. Built so you can trade with NO emotions: same written rules, every time.</p>
 <div class="cta-row">
   <a class="discord-btn" href="https://discord.gg/rcmJE4xKsK" target="_blank" rel="noopener">Join the Discord</a>
   <a class="ghost-btn" href="/backtest">See the backtest</a>
@@ -61,6 +68,18 @@ footer{padding:40px 0;color:var(--muted);font-size:13px;border-top:1px solid #1b
 </div>
 </div></header>
 <main class="wrap">
+<section class="no-emo">
+  <span class="pill-theme">Trade with NO emotions</span>
+  <h2>Rules in. Gut out.</h2>
+  <p class="lead">Every alert follows the same written rules. That keeps the plan steady when the market isn’t.</p>
+  <ul class="checklist">
+    <li>Same written rules on every alert — no rewriting the plan mid-trade</li>
+    <li>A set stop on every trade — risk decided before you click</li>
+    <li>Max 3 new trades a day — so you know your risk up front</li>
+    <li>No gut calls. No revenge trades. No FOMO.</li>
+  </ul>
+  <p class="value-line" style="margin-top:22px">For newer traders: keep it simple. Following a tested, rules-based system <strong>can save you years of trial and error</strong> learning how not to blow up an account — and how to get consistent. It doesn’t guarantee profits.</p>
+</section>
 <section><h2>How it works</h2>
 <p class="lead">No guesswork. A clear alert, a clear stop, and a size that matches what you're willing to lose.</p>
 <div class="grid">
@@ -79,6 +98,13 @@ footer{padding:40px 0;color:var(--muted);font-size:13px;border-top:1px solid #1b
 </section>
 <section><h2>The rules Ragnar lives by</h2><ul class="rules"><li>Only leaders in the top sectors</li><li>The stop goes in right away</li><li>Size from your risk, not your gut</li><li>Hold the winners</li><li>No trading in the opening chaos</li></ul><p style="text-align:center;margin-top:22px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap"><a class="rulesbtn" href="/rules">Read the full rules &rarr;</a><a class="rulesbtn" href="/backtest">See the backtest &rarr;</a></p></section>
 <section><h2>Ragnar</h2><div class="ragnar"><img src="img/ragnar-512.jpg" alt="Ragnar"><p style="font-size:19px">Meet Ragnar. He has strong opinions on how to trade, and he doesn't give a sh*t about your gut feeling. Neither does the market. Break a rule and he lets you know, before it costs you.</p></div></section>
+<section>
+  <div class="about-chad">
+    <h2>About the creator</h2>
+    <p><strong>Chad</strong> has been trading for 18 years. He’s a software engineer by profession — building software systems is what he does for a living.</p>
+    <p>TiltKiller is him turning those 18 years of trading lessons into a rules-based system: clear alerts, written rules, and a stop on every trade — so you can stay disciplined when emotion wants to take over.</p>
+  </div>
+</section>
 <section class="cta"><h2>Stop trading on tilt. Join the Discord.</h2>
 <p>Clear alerts. Clear risk. A Viking who won't let you wing it.</p>
 <a class="discord-btn" href="https://discord.gg/rcmJE4xKsK" target="_blank" rel="noopener">Join the Discord</a>
