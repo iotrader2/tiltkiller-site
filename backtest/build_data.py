@@ -57,13 +57,29 @@ def scrub_public_text(s: str) -> str:
         t,
         flags=re.I,
     )
+    t = re.sub(
+        r"Many months have no trades \(QQQ under its 10 EMA\) or lose\.\s*Expect long flat stretches between runners\.",
+        "Many months have no trades because the market was in a downtrend, or they lose. Expect long flat stretches between big winners.",
+        t,
+        flags=re.I,
+    )
+    t = re.sub(r"QQQ under its 10 EMA", "the market in a downtrend", t, flags=re.I)
+    t = re.sub(
+        r"No new long trades unless QQQ closed above its daily 10 EMA[^.]*\.",
+        "No new long trades when the overall market looks weak.",
+        t,
+        flags=re.I,
+    )
+    t = re.sub(r"Market filter \(QQQ daily chart\)", "Market filter", t, flags=re.I)
     if re.search(
         r"Trend Leader|EMA|Moving Average Undercut|Delayed High Volume|High Tight Flag|Wedge Pop",
         t,
         flags=re.I,
     ) and len(t) < 140 and not re.search(
-        r"v1\.|this document|Pullbacks |Leaders only|without the longer", t, flags=re.I
-    ):
+        r"v1\.|this document|Pullbacks |Leaders only|without the longer|Many months|downtrend|Expect long",
+        t,
+        flags=re.I,
+    ) and "." not in t:
         return plain_setup(t)
 
     t = re.sub(r"\b\d+\s*EMA\b", "trend", t, flags=re.I)

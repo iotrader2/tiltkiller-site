@@ -47,7 +47,7 @@
   },
   "caveats": [
     "The result rests on a few large runners. HOOD (+59R, bought 2025-05-19) and MARA (+43R, bought 2023-11-27) are 32% of the total.",
-    "Pullback",
+    "Many months have no trades because the market was in a downtrend, or they lose. Expect long flat stretches between big winners.",
     "The rules were chosen by comparing many variants on this same three-year period, so the figures are optimistic.",
     "Held days use daily bars: a day that trades both the stop and a higher price is counted as stopped.",
     "Not modelled: the 15:45 sell time (the backtest sells at the close), commissions, buying power, names added mid-session. The universe is today's list, so delisted names are missing.",
@@ -127,8 +127,8 @@
   "rules": [
     {
       "n": 1,
-      "group": "Market filter (the market daily chart)",
-      "rule": "Pullback",
+      "group": "Market filter",
+      "rule": "No new long trades when the overall market looks weak. On those days the watchlist holds no long names",
       "value": "uptrend only"
     },
     {
