@@ -128,6 +128,13 @@ footer .disc{max-width:760px}
 .metric .msub{display:block;margin-top:4px;font-size:11px;color:#6b7388}
 .plan-line{margin:0 0 18px;padding:12px 14px;border-radius:12px;background:rgba(244,63,94,.07);border:1px solid #4a2530;color:#e7c4cb;font-size:14.5px;text-align:center}
 .plan-line strong{color:#fff}
+.day-cap{margin:0 0 18px;padding:18px 18px 14px;border-radius:16px;background:rgba(56,189,248,.07);border:1px solid rgba(56,189,248,.28);text-align:center}
+.day-cap .dc-kicker{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--blue);margin-bottom:8px}
+.day-cap .dc-main{margin:0 0 8px;font-size:clamp(17px,2.4vw,22px);font-weight:750;line-height:1.35;color:var(--text)}
+.day-cap .dc-main strong{color:var(--blue)}
+.day-cap .dc-math{margin:0 0 10px;font-size:15px;color:var(--muted);font-variant-numeric:tabular-nums}
+.day-cap .dc-math b{color:var(--text);font-weight:700}
+.day-cap .dc-note{margin:0;font-size:13px;color:#9aa3b5;line-height:1.45;max-width:640px;margin-left:auto;margin-right:auto}
 .charts-2{display:grid;grid-template-columns:1.15fr .85fr;gap:14px}
 .mini-chart{background:rgba(7,9,13,.4);border:1px solid #243044;border-radius:16px;padding:16px 14px 12px}
 .mini-chart h3{margin:0 0 4px;font-size:15px;font-weight:650}
@@ -345,7 +352,7 @@ footer .disc{max-width:760px}
       items: [
         'Winners can be held overnight; losers are cut quickly',
         'No overnight hold into an earnings report',
-        'At most a few new trades a day — quality over quantity',
+        'Max 3 new trades a day — so you know your risk up front',
         'Long trades only',
       ],
     },
@@ -682,6 +689,13 @@ footer .disc{max-width:760px}
       <div class="metric" data-key="p5"><span class="mv neg" id="mP5">—</span><span class="ml">1-in-20 drawdown</span><span class="msub">reshuffled 2,000 times</span></div>
     </div>
 
+    <div class="day-cap" id="dayCap" aria-live="polite">
+      <div class="dc-kicker">Built-in daily limit</div>
+      <p class="dc-main">Max <strong>3</strong> new trades a day. At <strong id="dcRisk">0.50%</strong> risk per trade, the most you put at risk on new trades in a day is <strong id="dcMaxNew">1.50%</strong>.</p>
+      <p class="dc-math">3 × <b id="dcRiskMath">0.50%</b> = <b id="dcMaxMath">1.50%</b></p>
+      <p class="dc-note">Winners held overnight can stack. Total open risk across held positions peaked at <strong id="dcOpenPeak">5.5%</strong> in this simulated run (the “most risk open at once” figure in the table below).</p>
+    </div>
+
     <p class="plan-line"><strong>Plan for the 1-in-20 drawdown</strong> — not the lucky path this one history happened to give. We reshuffled the same trades 2,000 times so you can see a tougher, more realistic drawdown. At 0.50% risk that figure is <strong>−20.3%</strong>.</p>
 
     <div class="dollar-block" id="dollarBlock">
@@ -970,6 +984,30 @@ footer .disc{max-width:760px}
       p5: parsePct(byRisk[initialRisk]['1-in-20 drawdown (reshuffled)']),
     };
 
+    function fmtRiskPct(n) {
+      // Match picker style: 0.10% → 0.30%, 0.50% → 1.50%.
+      return (Math.round(n * 100) / 100).toFixed(2) + '%';
+    }
+
+    function paintDayCap(risk, row) {
+      const per = parsePct(risk); // 0.50 from "0.50%"
+      const maxNew = per * 3;
+      const perLabel = risk;
+      const maxLabel = fmtRiskPct(maxNew);
+      const openPeak = row['Most risk open at once'] || '—';
+      const dcRisk = document.getElementById('dcRisk');
+      const dcMaxNew = document.getElementById('dcMaxNew');
+      const dcRiskMath = document.getElementById('dcRiskMath');
+      const dcMaxMath = document.getElementById('dcMaxMath');
+      const dcOpenPeak = document.getElementById('dcOpenPeak');
+      if (!dcRisk) return;
+      dcRisk.textContent = perLabel;
+      dcMaxNew.textContent = maxLabel;
+      dcRiskMath.textContent = perLabel;
+      dcMaxMath.textContent = maxLabel;
+      dcOpenPeak.textContent = openPeak;
+    }
+
     function paintDollar(risk, row) {
       const built = dollarEquitySvg(trades, risk);
       dollarChart.innerHTML = built.svg;
@@ -994,6 +1032,7 @@ footer .disc{max-width:760px}
       } else {
         dollarDiffNote.textContent = `Curve ending: ${fmtMoney(curveEnd)} (trade-by-trade compound).`;
       }
+      paintDayCap(risk, row);
     }
 
     function paint(risk, animate) {
