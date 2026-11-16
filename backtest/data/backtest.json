@@ -15,28 +15,28 @@
     "risk_per_trade_label": "Risk per trade (a full stop-out loses this share of the account)"
   },
   "results": {
-    "Trades": "398",
-    "Winners": "94",
+    "Trades": "390",
+    "Winners": "92",
     "Win rate": "23.6%",
-    "Average win (R)": "+5.95",
+    "Average win (R)": "+6.06",
     "Average loss (R)": "-0.79",
-    "Expectancy (R per trade)": "+0.80",
-    "Total R": "+319.8",
-    "Total R before slippage": "+338.9",
+    "Expectancy (R per trade)": "+0.83",
+    "Total R": "+324.0",
+    "Total R before slippage": "+343.1",
     "Largest drawdown (R), month-end to month-end": "22.5",
     "Months with a gain": "14 of 37",
     "Worst month (R)": "-16.9",
     "Best month (R)": "+78.7",
     "Positions kept overnight": "135",
     "Total R from positions kept overnight": "+496.6",
-    "Total R from trades closed on the entry day": "-176.8",
-    "Trend Leader trades": "265",
-    "Total R from Trend Leader trades": "+282.3",
+    "Total R from trades closed on the entry day": "-172.6",
+    "Trend Leader trades": "262",
+    "Total R from Trend Leader trades": "+283.3",
     "Total R of the 5 best trades": "+192.2",
     "Largest single trade (R)": "+59.4",
-    "Ending account": "$184,846",
-    "Total return, compounded": "84.8%",
-    "Yearly return (three years)": "22.7%",
+    "Ending account": "$186,422",
+    "Total return, compounded": "86.4%",
+    "Yearly return (three years)": "22.9%",
     "Largest account drawdown": "-5.0%"
   },
   "extra": {
@@ -53,65 +53,65 @@
   "risk_table": [
     {
       "Risk per trade": "0.10%",
-      "Ending account": "$136,208",
-      "Yearly growth": "10.8%",
+      "Ending account": "$136,786",
+      "Yearly growth": "11.0%",
       "Largest account drawdown": "-2.3%",
-      "Median drawdown (reshuffled)": "-2.8%",
+      "Median drawdown (reshuffled)": "-2.7%",
       "1-in-20 drawdown (reshuffled)": "-4.3%",
       "Most risk open at once": "1.1%"
     },
     {
       "Risk per trade": "0.20%",
-      "Ending account": "$181,872",
-      "Yearly growth": "22.1%",
+      "Ending account": "$183,417",
+      "Yearly growth": "22.4%",
       "Largest account drawdown": "-4.5%",
-      "Median drawdown (reshuffled)": "-5.6%",
-      "1-in-20 drawdown (reshuffled)": "-8.6%",
+      "Median drawdown (reshuffled)": "-5.4%",
+      "1-in-20 drawdown (reshuffled)": "-8.3%",
       "Most risk open at once": "2.2%"
     },
     {
       "Risk per trade": "0.25%",
-      "Ending account": "$208,735",
-      "Yearly growth": "27.8%",
+      "Ending account": "$210,953",
+      "Yearly growth": "28.3%",
       "Largest account drawdown": "-5.7%",
-      "Median drawdown (reshuffled)": "-6.9%",
-      "1-in-20 drawdown (reshuffled)": "-10.9%",
+      "Median drawdown (reshuffled)": "-6.8%",
+      "1-in-20 drawdown (reshuffled)": "-10.7%",
       "Most risk open at once": "2.8%"
     },
     {
       "Risk per trade": "0.30%",
-      "Ending account": "$238,558",
-      "Yearly growth": "33.6%",
+      "Ending account": "$241,601",
+      "Yearly growth": "34.2%",
       "Largest account drawdown": "-6.8%",
-      "Median drawdown (reshuffled)": "-8.1%",
-      "1-in-20 drawdown (reshuffled)": "-12.6%",
+      "Median drawdown (reshuffled)": "-8.0%",
+      "1-in-20 drawdown (reshuffled)": "-12.5%",
       "Most risk open at once": "3.3%"
     },
     {
       "Risk per trade": "0.35%",
-      "Ending account": "$271,552",
-      "Yearly growth": "39.5%",
+      "Ending account": "$275,595",
+      "Yearly growth": "40.2%",
       "Largest account drawdown": "-7.8%",
-      "Median drawdown (reshuffled)": "-9.5%",
-      "1-in-20 drawdown (reshuffled)": "-14.8%",
+      "Median drawdown (reshuffled)": "-9.3%",
+      "1-in-20 drawdown (reshuffled)": "-14.3%",
       "Most risk open at once": "3.9%"
     },
     {
       "Risk per trade": "0.40%",
-      "Ending account": "$307,932",
-      "Yearly growth": "45.5%",
+      "Ending account": "$313,175",
+      "Yearly growth": "46.3%",
       "Largest account drawdown": "-8.9%",
-      "Median drawdown (reshuffled)": "-10.9%",
-      "1-in-20 drawdown (reshuffled)": "-16.8%",
+      "Median drawdown (reshuffled)": "-10.5%",
+      "1-in-20 drawdown (reshuffled)": "-16.0%",
       "Most risk open at once": "4.4%"
     },
     {
       "Risk per trade": "0.50%",
-      "Ending account": "$391,738",
-      "Yearly growth": "57.6%",
+      "Ending account": "$400,085",
+      "Yearly growth": "58.8%",
       "Largest account drawdown": "-11.0%",
-      "Median drawdown (reshuffled)": "-13.3%",
-      "1-in-20 drawdown (reshuffled)": "-20.3%",
+      "Median drawdown (reshuffled)": "-13.0%",
+      "1-in-20 drawdown (reshuffled)": "-19.6%",
       "Most risk open at once": "5.5%"
     }
   ],
@@ -171,21 +171,21 @@
       "Winners": "0",
       "Win rate": "0.0%",
       "Total R": "-3.3",
-      "Expectancy (R)": "-0.83",
+      "Expectancy (R)": "-0.82",
       "Cumulative R": "+66.9",
       "Kept overnight": "0",
       "Drawdown from the peak (R)": "3.3"
     },
     {
       "Month": "Jan 2024",
-      "Trades": "4",
-      "Winners": "1",
-      "Win rate": "25.0%",
-      "Total R": "-1.2",
-      "Expectancy (R)": "-0.29",
-      "Cumulative R": "+65.7",
+      "Trades": "3",
+      "Winners": "0",
+      "Win rate": "0.0%",
+      "Total R": "-2.2",
+      "Expectancy (R)": "-0.72",
+      "Cumulative R": "+64.7",
       "Kept overnight": "0",
-      "Drawdown from the peak (R)": "4.5"
+      "Drawdown from the peak (R)": "5.5"
     },
     {
       "Month": "Feb 2024",
@@ -193,8 +193,8 @@
       "Winners": "2",
       "Win rate": "50.0%",
       "Total R": "+22.4",
-      "Expectancy (R)": "+5.59",
-      "Cumulative R": "+88.1",
+      "Expectancy (R)": "+5.60",
+      "Cumulative R": "+87.1",
       "Kept overnight": "2",
       "Drawdown from the peak (R)": "0.0"
     },
@@ -205,7 +205,7 @@
       "Win rate": "50.0%",
       "Total R": "+16.9",
       "Expectancy (R)": "+1.41",
-      "Cumulative R": "+105.0",
+      "Cumulative R": "+104.0",
       "Kept overnight": "8",
       "Drawdown from the peak (R)": "0.0"
     },
@@ -216,7 +216,7 @@
       "Win rate": "0.0%",
       "Total R": "-2.1",
       "Expectancy (R)": "-1.04",
-      "Cumulative R": "+102.9",
+      "Cumulative R": "+101.9",
       "Kept overnight": "0",
       "Drawdown from the peak (R)": "2.1"
     },
@@ -227,7 +227,7 @@
       "Win rate": "23.1%",
       "Total R": "-6.2",
       "Expectancy (R)": "-0.48",
-      "Cumulative R": "+96.7",
+      "Cumulative R": "+95.7",
       "Kept overnight": "5",
       "Drawdown from the peak (R)": "8.3"
     },
@@ -238,7 +238,7 @@
       "Win rate": "30.0%",
       "Total R": "-3.4",
       "Expectancy (R)": "-0.34",
-      "Cumulative R": "+93.3",
+      "Cumulative R": "+92.3",
       "Kept overnight": "2",
       "Drawdown from the peak (R)": "11.7"
     },
@@ -249,7 +249,7 @@
       "Win rate": "0.0%",
       "Total R": "-1.7",
       "Expectancy (R)": "-0.43",
-      "Cumulative R": "+91.6",
+      "Cumulative R": "+90.5",
       "Kept overnight": "0",
       "Drawdown from the peak (R)": "13.4"
     },
@@ -260,9 +260,9 @@
       "Win rate": "28.6%",
       "Total R": "-4.4",
       "Expectancy (R)": "-0.63",
-      "Cumulative R": "+87.2",
+      "Cumulative R": "+86.1",
       "Kept overnight": "3",
-      "Drawdown from the peak (R)": "17.8"
+      "Drawdown from the peak (R)": "17.9"
     },
     {
       "Month": "Sep 2024",
@@ -271,7 +271,7 @@
       "Win rate": "0.0%",
       "Total R": "-1.8",
       "Expectancy (R)": "-0.89",
-      "Cumulative R": "+85.4",
+      "Cumulative R": "+84.3",
       "Kept overnight": "0",
       "Drawdown from the peak (R)": "19.6"
     },
@@ -282,9 +282,9 @@
       "Win rate": "33.3%",
       "Total R": "-0.8",
       "Expectancy (R)": "-0.09",
-      "Cumulative R": "+84.6",
+      "Cumulative R": "+83.5",
       "Kept overnight": "5",
-      "Drawdown from the peak (R)": "20.4"
+      "Drawdown from the peak (R)": "20.5"
     },
     {
       "Month": "Nov 2024",
@@ -293,7 +293,7 @@
       "Win rate": "36.4%",
       "Total R": "+39.5",
       "Expectancy (R)": "+3.59",
-      "Cumulative R": "+124.1",
+      "Cumulative R": "+123.0",
       "Kept overnight": "5",
       "Drawdown from the peak (R)": "0.0"
     },
@@ -302,11 +302,11 @@
       "Trades": "25",
       "Winners": "6",
       "Win rate": "24.0%",
-      "Total R": "-10.8",
+      "Total R": "-10.7",
       "Expectancy (R)": "-0.43",
-      "Cumulative R": "+113.3",
+      "Cumulative R": "+112.3",
       "Kept overnight": "7",
-      "Drawdown from the peak (R)": "10.8"
+      "Drawdown from the peak (R)": "10.7"
     },
     {
       "Month": "Jan 2025",
@@ -315,20 +315,20 @@
       "Win rate": "33.3%",
       "Total R": "-1.7",
       "Expectancy (R)": "-0.57",
-      "Cumulative R": "+111.6",
+      "Cumulative R": "+110.6",
       "Kept overnight": "0",
       "Drawdown from the peak (R)": "12.4"
     },
     {
       "Month": "Feb 2025",
-      "Trades": "11",
-      "Winners": "3",
-      "Win rate": "27.3%",
-      "Total R": "-1.7",
-      "Expectancy (R)": "-0.16",
-      "Cumulative R": "+109.9",
+      "Trades": "9",
+      "Winners": "2",
+      "Win rate": "22.2%",
+      "Total R": "-1.1",
+      "Expectancy (R)": "-0.13",
+      "Cumulative R": "+109.4",
       "Kept overnight": "3",
-      "Drawdown from the peak (R)": "14.2"
+      "Drawdown from the peak (R)": "13.6"
     },
     {
       "Month": "Mar 2025",
@@ -337,9 +337,9 @@
       "Win rate": "0.0%",
       "Total R": "-0.7",
       "Expectancy (R)": "-0.74",
-      "Cumulative R": "+109.2",
+      "Cumulative R": "+108.7",
       "Kept overnight": "0",
-      "Drawdown from the peak (R)": "14.9"
+      "Drawdown from the peak (R)": "14.3"
     },
     {
       "Month": "Apr 2025",
@@ -347,10 +347,10 @@
       "Winners": "0",
       "Win rate": "0.0%",
       "Total R": "-3.5",
-      "Expectancy (R)": "-0.88",
-      "Cumulative R": "+105.6",
+      "Expectancy (R)": "-0.89",
+      "Cumulative R": "+105.1",
       "Kept overnight": "0",
-      "Drawdown from the peak (R)": "18.4"
+      "Drawdown from the peak (R)": "17.9"
     },
     {
       "Month": "May 2025",
@@ -359,7 +359,7 @@
       "Win rate": "28.6%",
       "Total R": "+67.1",
       "Expectancy (R)": "+9.58",
-      "Cumulative R": "+172.7",
+      "Cumulative R": "+172.2",
       "Kept overnight": "2",
       "Drawdown from the peak (R)": "0.0"
     },
@@ -370,7 +370,7 @@
       "Win rate": "27.3%",
       "Total R": "-4.5",
       "Expectancy (R)": "-0.41",
-      "Cumulative R": "+168.2",
+      "Cumulative R": "+167.7",
       "Kept overnight": "3",
       "Drawdown from the peak (R)": "4.5"
     },
@@ -381,18 +381,18 @@
       "Win rate": "16.0%",
       "Total R": "-7.0",
       "Expectancy (R)": "-0.28",
-      "Cumulative R": "+161.1",
+      "Cumulative R": "+160.7",
       "Kept overnight": "7",
       "Drawdown from the peak (R)": "11.6"
     },
     {
       "Month": "Aug 2025",
-      "Trades": "14",
+      "Trades": "13",
       "Winners": "3",
-      "Win rate": "21.4%",
-      "Total R": "+14.6",
-      "Expectancy (R)": "+1.04",
-      "Cumulative R": "+175.7",
+      "Win rate": "23.1%",
+      "Total R": "+15.6",
+      "Expectancy (R)": "+1.20",
+      "Cumulative R": "+176.3",
       "Kept overnight": "6",
       "Drawdown from the peak (R)": "0.0"
     },
@@ -403,7 +403,7 @@
       "Win rate": "30.0%",
       "Total R": "+44.4",
       "Expectancy (R)": "+2.22",
-      "Cumulative R": "+220.2",
+      "Cumulative R": "+220.7",
       "Kept overnight": "8",
       "Drawdown from the peak (R)": "0.0"
     },
@@ -414,18 +414,18 @@
       "Win rate": "20.0%",
       "Total R": "+9.5",
       "Expectancy (R)": "+0.24",
-      "Cumulative R": "+229.7",
+      "Cumulative R": "+230.2",
       "Kept overnight": "12",
       "Drawdown from the peak (R)": "0.0"
     },
     {
       "Month": "Nov 2025",
-      "Trades": "16",
+      "Trades": "15",
       "Winners": "2",
-      "Win rate": "12.5%",
-      "Total R": "+18.2",
-      "Expectancy (R)": "+1.14",
-      "Cumulative R": "+247.9",
+      "Win rate": "13.3%",
+      "Total R": "+19.2",
+      "Expectancy (R)": "+1.28",
+      "Cumulative R": "+249.5",
       "Kept overnight": "5",
       "Drawdown from the peak (R)": "0.0"
     },
@@ -436,7 +436,7 @@
       "Win rate": "22.2%",
       "Total R": "-2.8",
       "Expectancy (R)": "-0.31",
-      "Cumulative R": "+245.1",
+      "Cumulative R": "+246.7",
       "Kept overnight": "5",
       "Drawdown from the peak (R)": "2.8"
     },
@@ -447,31 +447,31 @@
       "Win rate": "0.0%",
       "Total R": "-2.0",
       "Expectancy (R)": "-0.41",
-      "Cumulative R": "+243.0",
+      "Cumulative R": "+244.6",
       "Kept overnight": "1",
       "Drawdown from the peak (R)": "4.9"
     },
     {
       "Month": "Feb 2026",
-      "Trades": "3",
+      "Trades": "2",
       "Winners": "0",
       "Win rate": "0.0%",
-      "Total R": "-0.8",
-      "Expectancy (R)": "-0.26",
-      "Cumulative R": "+242.3",
+      "Total R": "-0.3",
+      "Expectancy (R)": "-0.15",
+      "Cumulative R": "+244.3",
       "Kept overnight": "0",
-      "Drawdown from the peak (R)": "5.6"
+      "Drawdown from the peak (R)": "5.2"
     },
     {
       "Month": "Mar 2026",
-      "Trades": "12",
+      "Trades": "10",
       "Winners": "3",
-      "Win rate": "25.0%",
-      "Total R": "-4.7",
-      "Expectancy (R)": "-0.39",
-      "Cumulative R": "+237.6",
+      "Win rate": "30.0%",
+      "Total R": "-2.6",
+      "Expectancy (R)": "-0.26",
+      "Cumulative R": "+241.8",
       "Kept overnight": "3",
-      "Drawdown from the peak (R)": "10.3"
+      "Drawdown from the peak (R)": "7.7"
     },
     {
       "Month": "Apr 2026",
@@ -480,7 +480,7 @@
       "Win rate": "33.3%",
       "Total R": "+78.7",
       "Expectancy (R)": "+3.75",
-      "Cumulative R": "+316.2",
+      "Cumulative R": "+320.4",
       "Kept overnight": "14",
       "Drawdown from the peak (R)": "0.0"
     },
@@ -491,7 +491,7 @@
       "Win rate": "27.8%",
       "Total R": "+23.3",
       "Expectancy (R)": "+1.29",
-      "Cumulative R": "+339.5",
+      "Cumulative R": "+343.7",
       "Kept overnight": "7",
       "Drawdown from the peak (R)": "0.0"
     },
@@ -502,7 +502,7 @@
       "Win rate": "8.3%",
       "Total R": "-16.9",
       "Expectancy (R)": "-0.70",
-      "Cumulative R": "+322.6",
+      "Cumulative R": "+326.8",
       "Kept overnight": "6",
       "Drawdown from the peak (R)": "16.9"
     },
@@ -513,18 +513,18 @@
       "Win rate": "0.0%",
       "Total R": "-4.8",
       "Expectancy (R)": "-0.96",
-      "Cumulative R": "+317.8",
+      "Cumulative R": "+322.0",
       "Kept overnight": "0",
       "Drawdown from the peak (R)": "21.7"
     },
     {
       "Month": "Aug 2026",
       "Trades": "15",
-      "Winners": "4",
-      "Win rate": "26.7%",
+      "Winners": "3",
+      "Win rate": "20.0%",
       "Total R": "-0.8",
       "Expectancy (R)": "-0.05",
-      "Cumulative R": "+317.1",
+      "Cumulative R": "+321.2",
       "Kept overnight": "8",
       "Drawdown from the peak (R)": "22.5"
     },
@@ -535,7 +535,7 @@
       "Win rate": "37.5%",
       "Total R": "+0.2",
       "Expectancy (R)": "+0.02",
-      "Cumulative R": "+317.2",
+      "Cumulative R": "+321.4",
       "Kept overnight": "4",
       "Drawdown from the peak (R)": "22.3"
     },
@@ -546,9 +546,9 @@
       "Win rate": "14.3%",
       "Total R": "+2.3",
       "Expectancy (R)": "+0.33",
-      "Cumulative R": "+319.6",
+      "Cumulative R": "+323.8",
       "Kept overnight": "2",
-      "Drawdown from the peak (R)": "19.9"
+      "Drawdown from the peak (R)": "20.0"
     },
     {
       "Month": "Nov 2026",
@@ -557,7 +557,7 @@
       "Win rate": "66.7%",
       "Total R": "+0.2",
       "Expectancy (R)": "+0.06",
-      "Cumulative R": "+319.8",
+      "Cumulative R": "+324.0",
       "Kept overnight": "0",
       "Drawdown from the peak (R)": "19.8"
     }
@@ -565,11 +565,11 @@
   "half_years": [
     {
       "Half-year": "2023-11 to 2024-05",
-      "Trades": "39",
-      "Winners": "12",
-      "Win rate": "30.8%",
-      "Total R": "+100.4",
-      "Expectancy (R)": "+2.57",
+      "Trades": "38",
+      "Winners": "11",
+      "Win rate": "28.9%",
+      "Total R": "+99.4",
+      "Expectancy (R)": "+2.62",
       "Kept overnight": "13",
       "R from positions kept overnight": "+117.9"
     },
@@ -579,37 +579,37 @@
       "Winners": "12",
       "Win rate": "27.9%",
       "Total R": "+1.5",
-      "Expectancy (R)": "+0.04",
+      "Expectancy (R)": "+0.03",
       "Kept overnight": "15",
       "R from positions kept overnight": "+18.0"
     },
     {
       "Half-year": "2024-11 to 2025-05",
-      "Trades": "54",
-      "Winners": "13",
-      "Win rate": "24.1%",
-      "Total R": "+2.6",
-      "Expectancy (R)": "+0.05",
+      "Trades": "52",
+      "Winners": "12",
+      "Win rate": "23.1%",
+      "Total R": "+3.2",
+      "Expectancy (R)": "+0.06",
       "Kept overnight": "14",
       "R from positions kept overnight": "+29.3"
     },
     {
       "Half-year": "2025-05 to 2025-11",
-      "Trades": "121",
+      "Trades": "120",
       "Winners": "26",
-      "Win rate": "21.5%",
-      "Total R": "+120.0",
-      "Expectancy (R)": "+0.99",
+      "Win rate": "21.7%",
+      "Total R": "+121.0",
+      "Expectancy (R)": "+1.01",
       "Kept overnight": "38",
       "R from positions kept overnight": "+180.0"
     },
     {
       "Half-year": "2025-11 to 2026-05",
-      "Trades": "68",
+      "Trades": "64",
       "Winners": "14",
-      "Win rate": "20.6%",
-      "Total R": "+85.6",
-      "Expectancy (R)": "+1.26",
+      "Win rate": "21.9%",
+      "Total R": "+89.2",
+      "Expectancy (R)": "+1.39",
       "Kept overnight": "31",
       "R from positions kept overnight": "+108.0"
     },
@@ -1103,17 +1103,6 @@
       "Exit": "",
       "Days held": "0",
       "R": "-0.73"
-    },
-    {
-      "Entry date": "2024-01-29",
-      "Symbol": "SMCI",
-      "Daily setup": "Leader",
-      "Fill time (ET)": "10:15",
-      "Kept overnight": "No",
-      "Exit date": "",
-      "Exit": "",
-      "Days held": "0",
-      "R": "+1.00"
     },
     {
       "Entry date": "2024-02-05",
@@ -2315,28 +2304,6 @@
       "R": "-0.46"
     },
     {
-      "Entry date": "2025-02-12",
-      "Symbol": "APP",
-      "Daily setup": "Pullback",
-      "Fill time (ET)": "10:30",
-      "Kept overnight": "No",
-      "Exit date": "",
-      "Exit": "",
-      "Days held": "0",
-      "R": "-1.05"
-    },
-    {
-      "Entry date": "2025-02-14",
-      "Symbol": "CEG",
-      "Daily setup": "Pullback",
-      "Fill time (ET)": "10:00",
-      "Kept overnight": "No",
-      "Exit date": "",
-      "Exit": "",
-      "Days held": "0",
-      "R": "+0.47"
-    },
-    {
       "Entry date": "2025-02-14",
       "Symbol": "VST",
       "Daily setup": "Pullback",
@@ -2896,17 +2863,6 @@
       "Exit": "",
       "Days held": "0",
       "R": "+0.25"
-    },
-    {
-      "Entry date": "2025-08-05",
-      "Symbol": "ALAB",
-      "Daily setup": "Leader",
-      "Fill time (ET)": "9:45",
-      "Kept overnight": "No",
-      "Exit date": "",
-      "Exit": "",
-      "Days held": "0",
-      "R": "-1.03"
     },
     {
       "Entry date": "2025-08-11",
@@ -3713,17 +3669,6 @@
     },
     {
       "Entry date": "2025-11-04",
-      "Symbol": "KTOS",
-      "Daily setup": "Pullback",
-      "Fill time (ET)": "10:30",
-      "Kept overnight": "No",
-      "Exit date": "",
-      "Exit": "",
-      "Days held": "0",
-      "R": "-1.05"
-    },
-    {
-      "Entry date": "2025-11-04",
       "Symbol": "CLSK",
       "Daily setup": "Leader",
       "Fill time (ET)": "10:30",
@@ -4053,17 +3998,6 @@
       "R": "-0.03"
     },
     {
-      "Entry date": "2026-02-27",
-      "Symbol": "NCLH",
-      "Daily setup": "Pullback",
-      "Fill time (ET)": "10:30",
-      "Kept overnight": "No",
-      "Exit date": "",
-      "Exit": "",
-      "Days held": "0",
-      "R": "-0.47"
-    },
-    {
       "Entry date": "2026-03-05",
       "Symbol": "WULF",
       "Daily setup": "Leader",
@@ -4152,17 +4086,6 @@
       "R": "+0.60"
     },
     {
-      "Entry date": "2026-03-12",
-      "Symbol": "WPM",
-      "Daily setup": "Pullback",
-      "Fill time (ET)": "10:15",
-      "Kept overnight": "No",
-      "Exit date": "",
-      "Exit": "",
-      "Days held": "0",
-      "R": "-1.08"
-    },
-    {
       "Entry date": "2026-03-18",
       "Symbol": "CIEN",
       "Daily setup": "Leader",
@@ -4183,17 +4106,6 @@
       "Exit": "stop (gap)",
       "Days held": "1",
       "R": "-1.65"
-    },
-    {
-      "Entry date": "2026-03-18",
-      "Symbol": "MU",
-      "Daily setup": "Leader",
-      "Fill time (ET)": "10:00",
-      "Kept overnight": "No",
-      "Exit date": "",
-      "Exit": "",
-      "Days held": "0",
-      "R": "-1.04"
     },
     {
       "Entry date": "2026-04-02",
