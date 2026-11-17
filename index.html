@@ -54,12 +54,21 @@ footer{padding:40px 0;color:var(--muted);font-size:13px;border-top:1px solid #1b
 .products .card .status{display:inline-block;margin-top:14px;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);border:1px solid #1b2330;background:rgba(15,20,28,.8);padding:5px 10px;border-radius:999px}
 .products .card .status.soonish{color:var(--blue);border-color:rgba(56,189,248,.35);background:rgba(56,189,248,.08)}
 .products-layout{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,.85fr);gap:18px;align-items:start}
-.product-backtester{align-self:start}
+.products-right{display:flex;flex-direction:column;gap:14px;align-self:start;min-width:0}
 .product-backtester .feature-list{list-style:none;padding:0;margin:12px 0 0}
 .product-backtester .feature-list li{position:relative;padding:7px 0 7px 14px;border-top:1px solid #1b2330;color:var(--muted);font-size:14px;line-height:1.45}
 .product-backtester .feature-list li:first-child{border-top:0;padding-top:0}
 .product-backtester .feature-list li:before{content:"";position:absolute;left:0;top:calc(0.75em + 2px);width:5px;height:5px;border-radius:50%;background:rgba(56,189,248,.7)}
 .product-backtester .feature-list li:first-child:before{top:0.55em}
+.how-built{padding:16px 16px 14px;border:1px solid #1b2330;border-radius:14px;background:linear-gradient(135deg,rgba(15,20,28,.95),rgba(12,18,28,.9));text-align:left}
+.how-built .hb-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.how-built h2{font-size:15px;margin:0;text-align:left;font-weight:700}
+.model-badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;letter-spacing:.03em;color:var(--blue);border:1px solid rgba(56,189,248,.4);background:rgba(56,189,248,.08);padding:4px 9px;border-radius:999px}
+.model-badge .anthropic-mark{height:0.9em;width:auto;flex:none;display:block;color:currentColor}
+.how-built p{margin:0;color:var(--muted);font-size:13px;line-height:1.5}
+.how-built p strong{color:var(--text);font-weight:600}
+.how-built .hb-cta{display:inline-block;margin-top:10px;font-size:13px;font-weight:700;color:var(--blue);text-decoration:none}
+.how-built .hb-cta:hover{text-decoration:underline}
 .product-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:8px}
 .product-head strong{margin:0}
 .product-head .status{margin-top:0}
@@ -73,6 +82,17 @@ footer{padding:40px 0;color:var(--muted);font-size:13px;border-top:1px solid #1b
 @media(max-width:800px){.products-layout{grid-template-columns:1fr}}
 </style></head><body>
 <div class="wrap"><nav><img src="img/ragnar-160.png" alt="">TiltKiller<span style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap"><a class="navlink" href="/rules">Rules</a><a class="navlink" href="/backtest">Backtest</a><a class="navlink" href="/how-we-built">How we built</a></span></nav></div>
+<!--
+  OWNER EDIT — research credit (change text in #research-credit only).
+  Quote Anthropic’s published model description (linked). Do not claim
+  Anthropic endorses or partners with TiltKiller.
+-->
+<div id="research-credit" hidden
+  data-model-name="Fable 5.2"
+  data-maker="Anthropic"
+  data-model-label="Claude Fable 5.2"
+  data-model-quote="our most capable model for technical work, setting a new bar in coding, finance, and the sciences."
+  data-model-quote-url="https://www.anthropic.com/claude/fable"></div>
 <header class="hero"><div class="wrap">
 <img class="logo" src="img/ragnar-160.png" alt="Ragnar, the TiltKiller Viking">
 <span class="hero-kicker">High Growth Leaders</span>
@@ -106,16 +126,26 @@ footer{padding:40px 0;color:var(--muted);font-size:13px;border-top:1px solid #1b
         </div>
       </div>
     </div>
-    <div class="card product-backtester">
-      <div class="product-head">
-        <strong>stratBacktester</strong>
-        <span class="status soonish">Coming soon</span>
+    <div class="products-right">
+      <div class="card product-backtester">
+        <div class="product-head">
+          <strong>stratBacktester</strong>
+          <span class="status soonish">Coming soon</span>
+        </div>
+        <ul class="feature-list">
+          <li>Generate rules and backtest them on three years of 15-minute data.</li>
+          <li>Iterate incrementally to optimize parameters for total gains and minimize drawdowns, with metrics on each version.</li>
+          <li>Save version history so you can return to what worked best.</li>
+        </ul>
       </div>
-      <ul class="feature-list">
-        <li>Generate rules and backtest them on three years of 15-minute data.</li>
-        <li>Iterate incrementally to optimize parameters for total gains and minimize drawdowns, with metrics on each version.</li>
-        <li>Save version history so you can return to what worked best.</li>
-      </ul>
+      <aside class="how-built" id="how-built" aria-label="How this was built">
+        <div class="hb-top">
+          <h2>How this was built</h2>
+          <span class="model-badge" id="hb-badge"></span>
+        </div>
+        <p id="hb-copy"></p>
+        <a class="hb-cta" href="/how-we-built">Read how we built High Growth Leaders →</a>
+      </aside>
     </div>
   </div>
 </section>
@@ -148,5 +178,28 @@ footer{padding:40px 0;color:var(--muted);font-size:13px;border-top:1px solid #1b
 <footer><div class="wrap"><p><a href="https://x.com/tiltkillerapp" rel="noopener">@tiltkillerapp on X</a></p>
 <p>&copy; 2026 Innovative Objects LLC. TiltKiller is a family of trading products operated by Innovative Objects LLC.</p>
 <p class="disc">Legal stuff, translated from Old Norse: Ragnar is not a financial advisor. His only certification is in pillaging. He has lost three longships on margin, which is exactly why he built this. TiltKiller is an educational tool and does not provide financial advice. Trading involves risk of loss. No alert, rule, or deeply disappointed Viking can guarantee profits.</p></div></footer>
+<script>
+(function () {
+  const el = document.getElementById('research-credit');
+  const modelName = el?.dataset.modelName || 'Fable 5.2';
+  const modelLabel = el?.dataset.modelLabel || 'Claude Fable 5.2';
+  const modelQuote = el?.dataset.modelQuote || 'our most capable model for technical work, setting a new bar in coding, finance, and the sciences.';
+  const modelQuoteUrl = el?.dataset.modelQuoteUrl || 'https://www.anthropic.com/claude/fable';
+  const anthropicMark =
+    '<svg class="anthropic-mark" viewBox="0 0 92 64" width="14" height="10" role="img" aria-label="Anthropic" xmlns="http://www.w3.org/2000/svg"><title>Anthropic</title>' +
+    '<path fill="currentColor" d="M65.92 0H51.9314L77.44 64H91.4286L65.92 0Z"/>' +
+    '<path fill="currentColor" d="M25.5086 0L0 64H14.2629L19.4798 50.56H46.166L51.3829 64H65.6457L40.1371 0H25.5086ZM24.0933 38.6743L32.8229 16.1829L41.5525 38.6743H24.0933Z"/>' +
+    '</svg>';
+  const badge = document.getElementById('hb-badge');
+  const copy = document.getElementById('hb-copy');
+  if (badge) badge.innerHTML = anthropicMark + modelName;
+  if (copy) {
+    copy.innerHTML =
+      '<strong>stratBacktester</strong> was built with <strong>' + modelLabel + '</strong>, which Anthropic calls ' +
+      '<a href="' + modelQuoteUrl + '" target="_blank" rel="noopener">&ldquo;' + modelQuote + '&rdquo;</a>. ' +
+      'High Growth Leaders was tested in stratBacktester across three years of market data, one change at a time. The owner made the trading calls.';
+  }
+})();
+</script>
 <script data-goatcounter="https://tiltkiller.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body></html>
