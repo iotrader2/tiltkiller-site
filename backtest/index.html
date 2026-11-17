@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>TiltKiller Backtest</title>
-<meta name="description" content="Simulated TiltKiller rules backtest: November 2023 to November 2026. Not actual trading results.">
+<title>High Growth Leaders Backtest · TiltKiller</title>
+<meta name="description" content="Simulated High Growth Leaders backtest: November 2023 to November 2026. Not actual trading results.">
 <link rel="canonical" href="https://tiltkiller.com/backtest">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://tiltkiller.com/backtest">
-<meta property="og:title" content="TiltKiller Backtest">
+<meta property="og:title" content="High Growth Leaders Backtest · TiltKiller">
 <meta property="og:image" content="https://tiltkiller.com/img/ragnar-512.jpg">
 <meta name="twitter:card" content="summary">
 <link rel="icon" href="/favicon.ico" sizes="any">
@@ -224,8 +224,8 @@ footer .disc{max-width:760px}
 <footer>
   <div class="wrap">
     <p><a href="https://x.com/tiltkillerapp" rel="noopener">@tiltkillerapp on X</a></p>
-    <p>&copy; 2026 Innovative Objects LLC. TiltKiller is operated by Innovative Objects LLC.</p>
-    <p class="disc">Legal stuff, translated from Old Norse: Ragnar is not a financial advisor. His only certification is in pillaging. He has lost three longships on margin, which is exactly why he built this. TiltKiller is an educational tool and does not provide financial advice. Trading involves risk of loss. No alert, rule, or deeply disappointed Viking can guarantee profits. The backtest on this page is simulated and hypothetical.</p>
+    <p>&copy; 2026 Innovative Objects LLC. TiltKiller is a family of trading products operated by Innovative Objects LLC.</p>
+    <p class="disc">Legal stuff, translated from Old Norse: Ragnar is not a financial advisor. His only certification is in pillaging. He has lost three longships on margin, which is exactly why he built this. TiltKiller is an educational tool and does not provide financial advice. Trading involves risk of loss. No alert, rule, or deeply disappointed Viking can guarantee profits. The High Growth Leaders backtest on this page is simulated and hypothetical.</p>
   </div>
 </footer>
 
@@ -262,7 +262,7 @@ footer .disc{max-width:760px}
     <span class="model-badge">${anthropicMarkSvg()}${esc(modelName)}</span>
   </div>
   <p>Every rule was tested across three years of market data — one change at a time. Research built with <strong>${esc(modelLabel)}</strong>, which Anthropic calls <a href="${esc(modelQuoteUrl)}" target="_blank" rel="noopener">&ldquo;${esc(modelQuote)}&rdquo;</a>. The owner made the trading calls.</p>
-  <a class="hb-cta" href="/how-we-built">Read how we built the rules →</a>
+  <a class="hb-cta" href="/how-we-built">Read how we built High Growth Leaders →</a>
 </aside>`;
   }
 
@@ -631,8 +631,8 @@ footer .disc{max-width:760px}
     app.innerHTML = `
 <header class="hero"><div class="wrap">
   <img class="logo" src="/img/ragnar-160.png" alt="Ragnar, the TiltKiller Viking">
-  <h1>TiltKiller <span>Backtest</span></h1>
-  <p class="sub">Simulated current rules · ${esc(data.meta.period)}. Same trades, different risk. You choose how hard to push — and see what that meant for the account and the drawdowns. <strong style="color:var(--text)">1R = the amount you risk on a trade</strong> (what you lose if the stop hits).</p>
+  <h1>High Growth Leaders <span>Backtest</span></h1>
+  <p class="sub"><strong style="color:var(--text)">stratAlerts · High Growth Leaders</strong>. Simulated rules · ${esc(data.meta.period)}. Same trades, different risk. You choose how hard to push — and see what that meant for the account and the drawdowns. <strong style="color:var(--text)">1R = the amount you risk on a trade</strong> (what you lose if the stop hits).</p>
   <div class="pillrow">
     <span class="pill"><b>Rules v1.8</b></span>
     <span class="pill"><b>As of ${esc(data.meta.as_of)}</b></span>
@@ -641,7 +641,7 @@ footer .disc{max-width:760px}
   </div>
   <div class="no-emo-echo" role="note">
     <div class="ne-kicker">Trade with NO emotions</div>
-    <p>Every alert in this backtest follows the <strong>same written rules</strong>: a set stop on every trade, <strong>max 3 new trades a day</strong>, no gut calls, no revenge trades, no FOMO. For newer traders, a tested rules-based system <strong>can save you years of trial and error</strong> — it doesn’t guarantee profits.</p>
+    <p>Every High Growth Leaders alert in this backtest follows the <strong>same written rules</strong>: a set stop on every trade, <strong>max 3 new trades a day</strong>, no gut calls, no revenge trades, no FOMO. For newer traders, a tested rules-based system <strong>can save you years of trial and error</strong> — it doesn’t guarantee profits.</p>
   </div>
   ${howBuiltBlock()}
 </div></header>
@@ -649,9 +649,9 @@ footer .disc{max-width:760px}
 <main class="wrap">
 <section class="risk-hero" id="risk">
   <div class="risk-stage">
-    <div class="risk-kicker"><span class="sim-tag">Simulated backtest results</span></div>
+    <div class="risk-kicker"><span class="sim-tag">High Growth Leaders · simulated</span></div>
     <h2>Pick your risk. See what history said.</h2>
-    <p class="risk-copy">Same trades on a <strong>$100,000</strong> start over three years. Slide risk from <strong>0.10%</strong> to <strong>0.50%</strong> (most aggressive) and watch ending account, yearly growth, and the hard drawdowns move together. Higher risk can grow the account faster — and the drawdowns get bigger too. No promises — just the simulated results.</p>
+    <p class="risk-copy">Same High Growth Leaders trades on a <strong>$100,000</strong> start over three years. Slide risk from <strong>0.10%</strong> to <strong>0.50%</strong> (most aggressive) and watch ending account, yearly growth, and the hard drawdowns move together. Higher risk can grow the account faster — and the drawdowns get bigger too. No promises — just the simulated results.</p>
 
     <div class="risk-picker">
       <div class="seg" role="group" aria-label="Risk per trade" id="riskSeg">
@@ -770,7 +770,7 @@ footer .disc{max-width:760px}
     <h2 style="margin:0">The haul at a glance</h2>
     <span class="pill">v1.8</span>
   </div>
-  <p class="lead">Headline results at ${esc(I.risk_per_trade)} risk per trade. Win rate is low on purpose — most of the gain comes from a few big winners you hold. Remember: <strong style="color:var(--text)">1R is the dollars you risk on one trade</strong>.</p>
+  <p class="lead">High Growth Leaders headline results at ${esc(I.risk_per_trade)} risk per trade. Win rate is low on purpose — most of the gain comes from a few big winners you hold. Remember: <strong style="color:var(--text)">1R is the dollars you risk on one trade</strong>.</p>
   <div class="stats">
     ${stats.map(s => `<div class="stat"><span class="v ${s.cls || ''}">${esc(s.v)}</span><span class="l">${esc(s.l)}</span></div>`).join('')}
   </div>
@@ -779,7 +779,7 @@ footer .disc{max-width:760px}
 
 <section>
   <h2>Equity curve</h2>
-  <p class="lead">Total gain in R by month, with drawdowns from the peak underneath. Flat stretches are normal — some months the rules keep you out.</p>
+  <p class="lead">Total gain in R by month, with drawdowns from the peak underneath. Flat stretches are normal — some months High Growth Leaders keeps you out.</p>
   <div class="chart-card">
     ${equitySvg(data.monthly)}
     <div class="chart-meta">
@@ -793,7 +793,7 @@ footer .disc{max-width:760px}
 
 <section>
   <h2>The rules in plain language</h2>
-  <p class="lead">The current rules as the alerts follow them. Tested from ${esc(data.meta.period.replace(/ \(three years\)/, ''))}. Buy alert with entry and stop; sell alert when it’s time. Size it to your risk.</p>
+  <p class="lead">High Growth Leaders rules as the alerts follow them. Tested from ${esc(data.meta.period.replace(/ \(three years\)/, ''))}. Buy alert with entry and stop; sell alert when it’s time. Size it to your risk.</p>
   <div class="grid">
     ${PLAIN_RULES.map(g => `
       <div class="card">
