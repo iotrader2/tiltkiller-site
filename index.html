@@ -54,7 +54,12 @@ footer{padding:40px 0;color:var(--muted);font-size:13px;border-top:1px solid #1b
 .products .card .status{display:inline-block;margin-top:14px;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);border:1px solid #1b2330;background:rgba(15,20,28,.8);padding:5px 10px;border-radius:999px}
 .products .card .status.soonish{color:var(--blue);border-color:rgba(56,189,248,.35);background:rgba(56,189,248,.08)}
 .products-layout{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,.85fr);gap:18px;align-items:start}
-.product-builder{align-self:start}
+.product-backtester{align-self:start}
+.product-backtester .feature-list{list-style:none;padding:0;margin:12px 0 0}
+.product-backtester .feature-list li{position:relative;padding:7px 0 7px 14px;border-top:1px solid #1b2330;color:var(--muted);font-size:14px;line-height:1.45}
+.product-backtester .feature-list li:first-child{border-top:0;padding-top:0}
+.product-backtester .feature-list li:before{content:"";position:absolute;left:0;top:calc(0.75em + 2px);width:5px;height:5px;border-radius:50%;background:rgba(56,189,248,.7)}
+.product-backtester .feature-list li:first-child:before{top:0.55em}
 .product-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:8px}
 .product-head strong{margin:0}
 .product-head .status{margin-top:0}
@@ -82,7 +87,7 @@ footer{padding:40px 0;color:var(--muted);font-size:13px;border-top:1px solid #1b
 <main class="wrap">
 <section class="products" id="products">
   <h2>Products</h2>
-  <p class="lead">stratAlerts comes first. stratBuilder is coming later.</p>
+  <p class="lead">stratAlerts comes first. stratBacktester is coming later.</p>
   <div class="products-layout">
     <div class="card product-alerts">
       <div class="product-head">
@@ -101,10 +106,17 @@ footer{padding:40px 0;color:var(--muted);font-size:13px;border-top:1px solid #1b
         </div>
       </div>
     </div>
-    <div class="card product-builder">
-      <strong>stratBuilder</strong>
-      <p>Build and backtest your own strategies.</p>
-      <span class="status soonish">Coming later</span>
+    <div class="card product-backtester">
+      <div class="product-head">
+        <strong>stratBacktester</strong>
+        <span class="status soonish">Coming later</span>
+      </div>
+      <ul class="feature-list">
+        <li>Generate rules and backtest them on three years of 15-minute data.</li>
+        <li>Iterate for better returns, with metrics on each strategy.</li>
+        <li>Save version history so you can return to what worked best.</li>
+        <li>The best strategies get added to stratAlerts.</li>
+      </ul>
     </div>
   </div>
 </section>
