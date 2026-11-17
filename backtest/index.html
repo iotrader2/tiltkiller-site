@@ -43,9 +43,6 @@ h1{font-size:clamp(30px,5vw,50px);line-height:1.1;margin:18px 0 12px}h1 span{col
 .pillrow{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:0 0 8px}
 .pill{font-size:13px;color:var(--muted);border:1px solid var(--line);background:rgba(15,20,28,.7);padding:6px 12px;border-radius:999px}
 .pill b{color:var(--text);font-weight:600}
-.trust-stack{display:flex;flex-direction:column;gap:18px}
-.banner{width:100%;margin:0;background:var(--warn);border:1px solid #5c2434;border-left:4px solid var(--red);border-radius:10px;padding:14px 18px;text-align:left;font-size:15px;box-sizing:border-box}
-.banner strong{color:var(--red)}
 section{padding:48px 0}h2{font-size:28px;text-align:center;margin:0 0 10px}
 .lead{max-width:720px;margin:0 auto 28px;text-align:center;color:var(--muted);font-size:16px}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
@@ -93,6 +90,7 @@ details.panel .inner{padding:0 20px 20px}
 .trust{background:var(--warn);border:1px solid #5c2434;border-radius:16px;padding:28px 24px}
 .trust h2{text-align:left;color:var(--red);margin-bottom:12px}
 .trust .hypo{font-size:18px;font-weight:600;margin:0 0 18px;line-height:1.45}
+.trust .hypo .hypo-label{color:var(--red);font-weight:700}
 .trust ol{margin:0;padding-left:20px}
 .trust li{margin:0 0 10px}
 .no-emo-echo{max-width:820px;margin:14px auto 0;padding:16px 18px;border-radius:14px;border:1px solid rgba(56,189,248,.28);background:rgba(56,189,248,.07);text-align:left}
@@ -864,20 +862,17 @@ footer .disc{max-width:760px}
 </section>
 
 <section>
-  <div class="trust-stack">
-    <div class="banner" role="note"><strong>Hypothetical performance.</strong> ${esc(data.disclaimer.hypothetical)}</div>
-    <div class="trust">
-      <h2>How far to trust this</h2>
-      <p class="hypo">${esc(data.disclaimer.hypothetical)}</p>
-      <div class="gap-block" role="note">
-        <p><strong>Stops aren’t guaranteed.</strong> If a stock gaps down overnight or on news, it can open below your stop and the loss can be bigger than your planned risk. Positions held overnight carry this risk.</p>
-        <p>This backtest includes trades that exited on a gap below the stop. In the trade list, the Exit column shows them as <strong>stop (gap)</strong> (${gapExitCount} in this run), so real gap losses are already counted in the results.</p>
-      </div>
-      <ol>
-        ${plainCaveats().map(c => `<li>${esc(c)}</li>`).join('')}
-      </ol>
-      <p class="note" style="margin-top:18px;color:#c4a0a8">Simulated backtest · not actual trading · past results do not guarantee future results · not investment advice.</p>
+  <div class="trust">
+    <h2>How far to trust this</h2>
+    <p class="hypo"><strong class="hypo-label">Hypothetical performance.</strong> ${esc(data.disclaimer.hypothetical)}</p>
+    <div class="gap-block" role="note">
+      <p><strong>Stops aren’t guaranteed.</strong> If a stock gaps down overnight or on news, it can open below your stop and the loss can be bigger than your planned risk. Positions held overnight carry this risk.</p>
+      <p>This backtest includes trades that exited on a gap below the stop. In the trade list, the Exit column shows them as <strong>stop (gap)</strong> (${gapExitCount} in this run), so real gap losses are already counted in the results.</p>
     </div>
+    <ol>
+      ${plainCaveats().map(c => `<li>${esc(c)}</li>`).join('')}
+    </ol>
+    <p class="note" style="margin-top:18px;color:#c4a0a8">Simulated backtest · not actual trading · past results do not guarantee future results · not investment advice.</p>
   </div>
 </section>
 </main>`;
