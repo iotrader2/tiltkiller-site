@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>How We Built the Trading Rules · TiltKiller</title>
-<meta name="description" content="How TiltKiller’s trading rules were built: tested across three years of market data, one change at a time. Simulated results — not actual trading.">
+<title>How We Built High Growth Leaders · TiltKiller</title>
+<meta name="description" content="How High Growth Leaders (long only) was built: tested across three years of market data, one change at a time. Simulated results — not actual trading.">
 <link rel="canonical" href="https://tiltkiller.com/how-we-built">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://tiltkiller.com/how-we-built">
-<meta property="og:title" content="How We Built the Trading Rules · TiltKiller">
+<meta property="og:title" content="How We Built High Growth Leaders · TiltKiller">
 <meta property="og:image" content="https://tiltkiller.com/img/ragnar-512.jpg">
 <meta name="twitter:card" content="summary">
 <link rel="icon" href="/favicon.ico" sizes="any">
@@ -69,6 +69,7 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
 footer{padding:40px 0;color:var(--muted);font-size:13px;border-top:1px solid var(--line);margin-top:40px}
 footer .disc{max-width:760px}
 .date-line{color:var(--muted);font-size:14px;margin:0 0 8px}
+.hero-kicker{display:inline-block;font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--blue);border:1px solid rgba(56,189,248,.4);background:rgba(56,189,248,.08);padding:7px 14px;border-radius:999px;margin:0 0 10px}
 .about-creator{max-width:720px;margin:0 auto;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px 22px;text-align:left}
 .about-creator h2{text-align:left;margin:0 0 10px;font-size:24px}.about-creator p{margin:0 0 10px;color:var(--muted);font-size:15.5px;line-height:1.55}.about-creator p:last-child{margin-bottom:0}.about-creator strong{color:var(--text)}
 @media(max-width:640px){section{padding:36px 0}h2{font-size:24px}}
@@ -101,8 +102,9 @@ footer .disc{max-width:760px}
 <header class="hero"><div class="wrap">
   <img class="logo" src="/img/ragnar-160.png" alt="Ragnar, the TiltKiller Viking">
   <p class="date-line">November 16, 2026</p>
+  <span class="hero-kicker">High Growth Leaders · long only</span>
   <h1>Rules built by testing, <span>not by guessing.</span></h1>
-  <p class="sub">Every rule in our system earned its place. We tested it across three years of market data, changed one setting at a time, and kept only what held up in good markets and bad ones.</p>
+  <p class="sub">How we built <strong style="color:var(--text)">High Growth Leaders</strong> — the first strategy in the TiltKiller alert service. Every rule earned its place. We tested it across three years of market data, changed one setting at a time, and kept only what held up in good markets and bad ones.</p>
   <div class="credit" id="creditLine"></div>
 </div></header>
 
@@ -111,9 +113,9 @@ footer .disc{max-width:760px}
 <section>
   <h2>In short</h2>
   <div class="prose">
-    <p>Most trading rules start as an opinion. Ours started as a question: which rules would actually have worked, across many market conditions, if you had followed them exactly?</p>
+    <p>Most trading rules start as an opinion. High Growth Leaders started as a question: which rules would actually have worked, across many market conditions, if you had followed them exactly?</p>
     <p>To answer it, we rebuilt three years of the market, from November 2023 to November 2026, in 15-minute steps. We replayed every possible trade through a simulator, then changed one rule at a time and measured what happened. Each change was scored on more than profit: how deep the losing stretches got, how many months made money, and whether the result held up in every six-month period, not just one lucky stretch.</p>
-    <p>The rules you see today are the current rules. Every change is recorded with its full results, so nothing changes without evidence.</p>
+    <p>The rules you see today are the current High Growth Leaders rules (v1.8). Every change is recorded with its full results, so nothing changes without evidence.</p>
   </div>
 </section>
 
@@ -129,7 +131,7 @@ footer .disc{max-width:760px}
     <div class="card"><span class="n">6</span><h3>Demand consistency</h3><p>We split the three years into six half-years. A rule that only helped in one of them was treated as luck and left out.</p></div>
     <div class="card"><span class="n">7</span><h3>Check for mistakes</h3><p>When a result looked too good, or the app and the test disagreed, we traced it to the cause and fixed it before going on.</p></div>
     <div class="card"><span class="n">8</span><h3>Record every change</h3><p>Each accepted change is saved with its full results and every simulated trade, so nothing ships without evidence.</p></div>
-    <div class="card"><span class="n">9</span><h3>Version the rules and keep improving</h3><p>The rules are on version 1.8 today: 34 rules covering the market filter, leading groups, picking the strongest names within those groups, entries, stops and exits. We’ll keep looking for ways to make them better, but no idea gets in on a hunch: every change is run against the full three years of data and only stays if it earns its place. If it doesn’t hold up, it doesn’t ship.</p></div>
+    <div class="card"><span class="n">9</span><h3>Version the rules and keep improving</h3><p>High Growth Leaders is on version 1.8 today: 34 rules covering the market filter, leading groups, picking the strongest names within those groups, entries, stops and exits. We’ll keep looking for ways to make them better, but no idea gets in on a hunch: every change is run against the full three years of data and only stays if it earns its place. If it doesn’t hold up, it doesn’t ship.</p></div>
   </div>
 </section>
 
@@ -149,7 +151,7 @@ footer .disc{max-width:760px}
 <section>
   <h2>The numbers, with honest context</h2>
   <div class="prose" style="margin-bottom:22px">
-    <p>Over the three-year backtest, the current rules took <strong>390 trades</strong> and made <strong>+324.0R</strong> after trading costs. With 0.2% of the account risked per trade, a $100,000 account would have grown to about $186,422, a compound annual growth rate of about 22.9%. The deepest drop from a high point was about 5% of the account.</p>
+    <p>Over the three-year High Growth Leaders backtest, the current rules took <strong>390 trades</strong> and made <strong>+324.0R</strong> after trading costs. With 0.2% of the account risked per trade, a $100,000 account would have grown to about $186,422, a compound annual growth rate of about 22.9%. The deepest drop from a high point was about 5% of the account.</p>
   </div>
   <div class="table-wrap">
     <table>
@@ -172,7 +174,7 @@ footer .disc{max-width:760px}
     <li><strong>Stops aren’t guaranteed.</strong><span>If a stock gaps down overnight or on news, it can open below your stop and the loss can be bigger than your planned risk. Positions held overnight carry this risk.</span></li>
   </ul>
   <div class="cta-row">
-    <a class="ghost-btn" href="/backtest">See the full backtest</a>
+    <a class="ghost-btn" href="/backtest">See the High Growth Leaders backtest</a>
     <span class="soon" role="status"><svg class="discord-mark" viewBox="0 0 24 24" width="16" height="16" role="img" aria-label="Discord" xmlns="http://www.w3.org/2000/svg"><title>Discord</title><path fill="#5865F2" d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg><strong>Trade alerts in Discord — opening soon</strong></span>
   </div>
 </section>
@@ -200,7 +202,7 @@ footer .disc{max-width:760px}
 <section>
   <div class="about-creator">
     <h2>About the creator</h2>
-    <p><strong><a href="https://x.com/ioTrader" target="_blank" rel="noopener">ioTrader</a></strong> (<a href="https://x.com/ioTrader" target="_blank" rel="noopener">@ioTrader on X</a>) is a Senior Staff Engineer at a financial technology company. He’s been in the software industry for 28 years, and trading for 18. He built TiltKiller to automate his own process, so he doesn’t have to sit and watch every tick, and neither do you — turning those lessons into a rules-based system so trading can stay disciplined instead of emotional.</p>
+    <p><strong><a href="https://x.com/ioTrader" target="_blank" rel="noopener">ioTrader</a></strong> (<a href="https://x.com/ioTrader" target="_blank" rel="noopener">@ioTrader on X</a>) is a Senior Staff Engineer at a financial technology company. He’s been in the software industry for 28 years, and trading for 18. He built TiltKiller to automate his own process, so he doesn’t have to sit and watch every tick, and neither do you — turning those lessons into a family of trading products, starting with High Growth Leaders alerts, so trading can stay disciplined instead of emotional.</p>
   </div>
 </section>
 
@@ -215,8 +217,8 @@ footer .disc{max-width:760px}
 
 <footer><div class="wrap">
   <p><a href="https://x.com/tiltkillerapp" rel="noopener">@tiltkillerapp on X</a></p>
-  <p>&copy; 2026 Innovative Objects LLC. TiltKiller is operated by Innovative Objects LLC.</p>
-  <p class="disc">TiltKiller is an educational tool and does not provide financial advice. Trading involves risk of loss. Simulated backtests are hypothetical and do not guarantee future results.</p>
+  <p>&copy; 2026 Innovative Objects LLC. TiltKiller is a family of trading products operated by Innovative Objects LLC.</p>
+  <p class="disc">TiltKiller is an educational tool and does not provide financial advice. Trading involves risk of loss. Simulated High Growth Leaders backtests are hypothetical and do not guarantee future results.</p>
 </div></footer>
 
 <script>

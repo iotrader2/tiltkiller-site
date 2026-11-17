@@ -1,10 +1,10 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>TiltKiller · Trade the leaders. Stop blowing up.</title>
-<meta name="description" content="TiltKiller sends buy and sell alerts in Discord: the way in with entry and stop, and the way out when it's time. You pick your risk.">
+<meta name="description" content="TiltKiller is a family of trading products. First up: strategy alerts in Discord, starting with High Growth Leaders (long only). You pick your risk.">
 <link rel="icon" href="favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png"><link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png"><link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="theme-color" content="#07090d">
-<meta property="og:type" content="website"><meta property="og:url" content="https://tiltkiller.com/"><meta property="og:title" content="TiltKiller · Trade the leaders. Stop blowing up."><meta property="og:description" content="Alerts for the way in and the way out — buy with entry and stop, sell when it's time. You size it to your risk."><meta property="og:image" content="https://tiltkiller.com/img/og.jpg">
-<meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content="@tiltkillerapp"><meta name="twitter:title" content="TiltKiller · Trade the leaders. Stop blowing up."><meta name="twitter:description" content="Alerts for the way in and the way out — buy with entry and stop, sell when it's time. You size it to your risk."><meta name="twitter:image" content="https://tiltkiller.com/img/og.jpg">
+<meta property="og:type" content="website"><meta property="og:url" content="https://tiltkiller.com/"><meta property="og:title" content="TiltKiller · Trade the leaders. Stop blowing up."><meta property="og:description" content="TiltKiller strategy alerts in Discord, starting with High Growth Leaders (long only). Buy with entry and stop, sell when it's time."><meta property="og:image" content="https://tiltkiller.com/img/og.jpg">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content="@tiltkillerapp"><meta name="twitter:title" content="TiltKiller · Trade the leaders. Stop blowing up."><meta name="twitter:description" content="TiltKiller strategy alerts in Discord, starting with High Growth Leaders (long only). Buy with entry and stop, sell when it's time."><meta name="twitter:image" content="https://tiltkiller.com/img/og.jpg">
 <style>
 :root{--bg:#07090d;--card:#0f141c;--text:#e6e9ef;--muted:#8b93a7;--blue:#38bdf8;--green:#22c55e;--red:#f43f5e}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
@@ -48,23 +48,44 @@ footer{padding:40px 0;color:var(--muted);font-size:13px;border-top:1px solid #1b
 .about-creator{max-width:720px;margin:0 auto;background:var(--card);border:1px solid #1b2330;border-radius:16px;padding:28px 24px;text-align:left}
 .about-creator h2{text-align:left;margin:0 0 12px;font-size:26px}.about-creator p{margin:0 0 12px;color:var(--muted);font-size:16.5px;line-height:1.55}.about-creator p:last-child{margin-bottom:0}.about-creator strong{color:var(--text)}
 .value-line{max-width:680px;margin:0 auto 0;text-align:center;color:var(--muted);font-size:17px;line-height:1.55}.value-line strong{color:var(--text);font-weight:600}
+.hero-kicker{display:inline-block;font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--blue);border:1px solid rgba(56,189,248,.4);background:rgba(56,189,248,.08);padding:7px 14px;border-radius:999px;margin:18px 0 0}
+.products .card p{margin:0;color:var(--muted);font-size:15.5px;line-height:1.55}
+.products .card .status{display:inline-block;margin-top:14px;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);border:1px solid #1b2330;background:rgba(15,20,28,.8);padding:5px 10px;border-radius:999px}
+.products .card .status.soonish{color:var(--blue);border-color:rgba(56,189,248,.35);background:rgba(56,189,248,.08)}
 </style></head><body>
 <div class="wrap"><nav><img src="img/ragnar-160.png" alt="">TiltKiller<span style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap"><a class="navlink" href="/rules">Rules</a><a class="navlink" href="/backtest">Backtest</a><a class="navlink" href="/how-we-built">How we built</a></span></nav></div>
 <header class="hero"><div class="wrap">
 <img class="logo" src="img/ragnar-160.png" alt="Ragnar, the TiltKiller Viking">
+<span class="hero-kicker">High Growth Leaders · long only</span>
 <h1>Trade the leaders. <span>Stop blowing up.</span></h1>
-<p class="sub">Alerts for the way in and the way out. You get the buy alert with entry and stop, and a sell alert when it’s time to get out. You choose how much to risk. Built so you can trade with NO emotions: same written rules, every time.</p>
+<p class="sub">TiltKiller is a family of trading products. The first is a strategy alert service: buy and sell alerts in Discord. Its first strategy is <strong style="color:var(--text)">High Growth Leaders</strong> (long only) — you get the buy alert with entry and stop, and a sell alert when it’s time. You choose how much to risk. Same written rules, every time. More strategies will join the alert service over time.</p>
 <div class="cta-row">
   <span class="soon" role="status"><svg class="discord-mark" viewBox="0 0 24 24" width="16" height="16" role="img" aria-label="Discord" xmlns="http://www.w3.org/2000/svg"><title>Discord</title><path fill="#5865F2" d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg><strong>Trade alerts in Discord — opening soon</strong></span>
-  <a class="ghost-btn" href="/backtest">See the backtest</a>
+  <a class="ghost-btn" href="/backtest">See the High Growth Leaders backtest</a>
 </div>
 <p class="note">Buy alert in. Sell alert out. Size it to your risk.</p>
 </div></header>
 <main class="wrap">
+<section class="products">
+  <h2>Products</h2>
+  <p class="lead">TiltKiller is a family of trading products. Strategy alerts come first. A backtester is coming later.</p>
+  <div class="grid">
+    <div class="card">
+      <strong>Strategy alerts</strong>
+      <p>Buy and sell alerts in Discord. Available soon: <strong style="color:var(--text)">High Growth Leaders</strong> (long only). More strategies will be added over time.</p>
+      <span class="status soonish">Available soon</span>
+    </div>
+    <div class="card">
+      <strong>Backtester</strong>
+      <p>Build and test your own strategies. In development — coming later.</p>
+      <span class="status">Coming later</span>
+    </div>
+  </div>
+</section>
 <section class="no-emo">
   <span class="pill-theme">Trade with NO emotions</span>
   <h2>Rules in. Gut out.</h2>
-  <p class="lead">Every alert follows the same written rules. That keeps the plan steady when the market isn’t.</p>
+  <p class="lead">Every High Growth Leaders alert follows the same written rules. That keeps the plan steady when the market isn’t.</p>
   <ul class="checklist">
     <li>Alerts for the way in and the way out — buy and sell, same written rules</li>
     <li>A set stop on every trade — risk decided before you click</li>
@@ -77,11 +98,11 @@ footer{padding:40px 0;color:var(--muted);font-size:13px;border-top:1px solid #1b
 <p class="lead">No guesswork. Alerts for the way in and the way out — then a size that matches what you're willing to lose.</p>
 <div class="grid">
 <div class="card"><b>1</b><strong>Get the buy alert in Discord.</strong> You get the buy alert with entry and stop — the name, where to get in, and where the stop goes.</div>
-<div class="card"><b>2</b><strong>Size it to your risk.</strong> You pick how much of your account you're willing to lose if the stop hits. TiltKiller keeps that number honest.</div>
+<div class="card"><b>2</b><strong>Size it to your risk.</strong> You pick how much of your account you're willing to lose if the stop hits. The alert keeps that number clear.</div>
 <div class="card"><b>3</b><strong>Get the sell alert when it’s time.</strong> Winners are held with a trailing stop, and you get an alert when it’s hit — so you know when to get out.</div>
 </div></section>
-<section class="alerts"><h2>Alerts in Discord. That's the product.</h2>
-<p class="lead">Alerts for the way in and the way out. Buy alerts hit Discord in the first hour after the opening bell — we check every 15-minute candle from the open to 10:45 ET — so you know your trade, entry, and stop early. Sell alerts fire when it’s time to exit.</p>
+<section class="alerts"><h2>How the strategy alerts work</h2>
+<p class="lead">The alert service starts with High Growth Leaders. Buy alerts hit Discord in the first hour after the opening bell — we check every 15-minute candle from the open to 10:45 ET — so you know your trade, entry, and stop early. Sell alerts fire when it’s time to exit.</p>
 <ul class="steps">
 <li><span class="n">1</span><div><strong>Buy alert.</strong> You get the buy alert with entry and stop — the stock, the entry price, and the stop in one Discord message, before 10:45 ET.</div></li>
 <li><span class="n">2</span><div><strong>You size the trade.</strong> Decide how much you're okay losing if you're wrong. That amount is your 1R (the money at risk on that trade). Stop goes in right away.</div></li>
@@ -89,22 +110,22 @@ footer{padding:40px 0;color:var(--muted);font-size:13px;border-top:1px solid #1b
 </ul>
 <p style="margin-top:28px"><span class="soon" role="status"><svg class="discord-mark" viewBox="0 0 24 24" width="16" height="16" role="img" aria-label="Discord" xmlns="http://www.w3.org/2000/svg"><title>Discord</title><path fill="#5865F2" d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg><strong>Trade alerts in Discord — opening soon</strong></span></p>
 </section>
-<section><h2>The rules Ragnar lives by</h2><ul class="rules"><li>Only leaders in the top sectors</li><li>The stop goes in right away</li><li>Size from your risk, not your gut</li><li>Hold the winners</li><li>No holding through earnings</li><li>No trading in the opening chaos</li></ul><p style="text-align:center;margin-top:22px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap"><a class="rulesbtn" href="/rules">Read the full rules &rarr;</a><a class="rulesbtn" href="/backtest">See the backtest &rarr;</a></p></section>
-<section><h2>Ragnar</h2><div class="ragnar"><img src="img/ragnar-512.jpg" alt="Ragnar"><p style="font-size:19px">Trading is hard. Ragnar goes into battle so you don’t have to. He watches the market by the rules — every 15-minute candle in the first hour after the open — and sends the buy alert when a setup is ready, then the sell alert when it’s time to get out. You don’t have to stare at every tick or invent a gut call. He doesn’t give a sh*t about your feelings. Neither does the market.</p></div></section>
+<section><h2>High Growth Leaders, in brief</h2><p class="lead" style="margin-bottom:18px">The first strategy in the alert service — long only. Rules, backtest, and how-we-built pages all cover this strategy.</p><ul class="rules"><li>Only leaders in the top sectors</li><li>The stop goes in right away</li><li>Size from your risk, not your gut</li><li>Hold the winners</li><li>No holding through earnings</li><li>No trading in the opening chaos</li></ul><p style="text-align:center;margin-top:22px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap"><a class="rulesbtn" href="/rules">Read the High Growth Leaders rules &rarr;</a><a class="rulesbtn" href="/backtest">See the backtest &rarr;</a></p></section>
+<section><h2>Ragnar</h2><div class="ragnar"><img src="img/ragnar-512.jpg" alt="Ragnar"><p style="font-size:19px">Trading is hard. Ragnar goes into battle so you don’t have to. He watches the market by the High Growth Leaders rules — every 15-minute candle in the first hour after the open — and sends the buy alert when a setup is ready, then the sell alert when it’s time to get out. You don’t have to stare at every tick or invent a gut call. He doesn’t give a sh*t about your feelings. Neither does the market.</p></div></section>
 <section>
   <div class="about-creator">
     <h2>About the creator</h2>
     <p><strong><a href="https://x.com/ioTrader" target="_blank" rel="noopener">ioTrader</a></strong> (<a href="https://x.com/ioTrader" target="_blank" rel="noopener">@ioTrader on X</a>) is a Senior Staff Engineer at a financial technology company. He’s been in the software industry for 28 years, and trading for 18.</p>
-    <p>He built TiltKiller to automate his own process, so he doesn’t have to sit and watch every tick, and neither do you. It’s those 18 years of trading lessons turned into a rules-based system: clear alerts, written rules, and a stop on every trade — so you can stay disciplined when emotion wants to take over.</p>
+    <p>He built TiltKiller to automate his own process, so he doesn’t have to sit and watch every tick, and neither do you. It’s those 18 years of trading lessons turned into a family of trading products: clear alerts, written rules, and a stop on every trade — so you can stay disciplined when emotion wants to take over.</p>
   </div>
 </section>
 <section class="cta"><h2>Stop trading on tilt.</h2>
-<p>Alerts for the way in and the way out. Clear risk. A Viking who trades by the rules, not by gut.</p>
+<p>High Growth Leaders alerts for the way in and the way out. Clear risk. A Viking who trades by the rules, not by gut.</p>
 <span class="soon" role="status"><svg class="discord-mark" viewBox="0 0 24 24" width="16" height="16" role="img" aria-label="Discord" xmlns="http://www.w3.org/2000/svg"><title>Discord</title><path fill="#5865F2" d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg><strong>Trade alerts in Discord — opening soon</strong></span>
 </section>
 </main>
 <footer><div class="wrap"><p><a href="https://x.com/tiltkillerapp" rel="noopener">@tiltkillerapp on X</a></p>
-<p>&copy; 2026 Innovative Objects LLC. TiltKiller is operated by Innovative Objects LLC.</p>
+<p>&copy; 2026 Innovative Objects LLC. TiltKiller is a family of trading products operated by Innovative Objects LLC.</p>
 <p class="disc">Legal stuff, translated from Old Norse: Ragnar is not a financial advisor. His only certification is in pillaging. He has lost three longships on margin, which is exactly why he built this. TiltKiller is an educational tool and does not provide financial advice. Trading involves risk of loss. No alert, rule, or deeply disappointed Viking can guarantee profits.</p></div></footer>
 <script data-goatcounter="https://tiltkiller.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body></html>
