@@ -7,7 +7,20 @@
 :root{--bg:#07090d;--card:#0f141c;--text:#e6e9ef;--muted:#8b93a7;--blue:#38bdf8;--green:#22c55e;--red:#f43f5e}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
 a{color:var(--blue)}.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
-nav{display:flex;align-items:center;gap:10px;padding:18px 0;font-weight:700;font-size:20px}nav img{width:40px;height:40px;border-radius:50%}
+nav{display:flex;align-items:center;gap:10px;padding:18px 0;font-weight:700;font-size:20px;flex-wrap:wrap}nav img{width:40px;height:40px;border-radius:50%}
+nav .links{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.navlink{font-size:14px;font-weight:600;color:#e6e9ef;text-decoration:none;padding:8px 16px;border:1px solid rgba(56,189,248,.45);border-radius:999px;transition:all .2s}
+.navlink:hover,.navlink.on{background:rgba(56,189,248,.12);border-color:#38bdf8;color:#38bdf8}
+.crumb{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:2px 0 10px;font-size:13px;font-weight:600;color:var(--muted)}
+.crumb a{color:var(--blue);text-decoration:none}.crumb a:hover{text-decoration:underline}.crumb .sep{opacity:.55}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;padding:0 0 14px;margin:0 0 6px;border-bottom:1px solid #1b2330}
+.tab{font-size:13px;font-weight:600;color:var(--muted);text-decoration:none;padding:8px 12px;border-radius:8px;border:1px solid transparent}
+.tab:hover{color:var(--text);background:rgba(56,189,248,.06)}
+.tab.on{color:var(--blue);border-color:rgba(56,189,248,.4);background:rgba(56,189,248,.1)}
+footer .foot-links{display:flex;gap:14px;flex-wrap:wrap;margin:0 0 12px}
+footer .foot-links a{color:var(--muted);text-decoration:none;font-weight:600}
+footer .foot-links a:hover{color:var(--blue)}
+@media(max-width:560px){nav .links{width:100%;margin-left:0;gap:6px}.navlink{padding:7px 12px;font-size:13px}.tab{padding:7px 10px;font-size:12.5px}}
 .hero{position:relative;padding:70px 0 90px;text-align:center;overflow:hidden}
 .hero:before{content:"";position:absolute;inset:0;background:url(/img/hero-bg.jpg) center/cover;opacity:.07}
 .hero:after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 40%,var(--bg))}
@@ -28,7 +41,8 @@ section{padding:60px 0}h2{font-size:30px;text-align:center;margin:0 0 32px}
 .cta h2{text-align:center;margin:0 0 14px}
 footer{padding:40px 0;color:var(--muted);font-size:13px;border-top:1px solid #1b2330;margin-top:60px}footer .disc{max-width:760px}
 @media(max-width:640px){.ragnar{flex-direction:column;text-align:center}.cta{padding:24px 20px}}
-nav .home{display:flex;align-items:center;gap:10px;color:inherit;text-decoration:none}nav .back{margin-left:auto;font-size:14px;font-weight:600;color:var(--blue);text-decoration:none;border:1px solid var(--blue);border-radius:999px;padding:6px 14px}nav .back:hover{background:#38bdf822}
+nav .home{display:flex;align-items:center;gap:10px;color:inherit;text-decoration:none}
+.back{font-size:14px;font-weight:600;color:var(--blue);text-decoration:none;border:1px solid var(--blue);border-radius:999px;padding:6px 14px}.back:hover{background:#38bdf822}
 </style></head><body>
 <style>
 .hero{padding:50px 0 50px}.hero h1{font-size:clamp(32px,5vw,52px)}
@@ -43,7 +57,23 @@ nav .home{display:flex;align-items:center;gap:10px;color:inherit;text-decoration
 .cta p{color:var(--muted);margin:0 0 18px}
 @media(max-width:640px){.guide section.cta{padding:24px 20px}}
 </style></head><body>
-<div class="wrap"><nav><a class="home" href="/"><img src="/img/ragnar-160.png" alt="">TiltKiller</a><span style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;align-items:center"><a class="back" href="/backtest">Backtest</a><a class="back" href="/how-we-built">How we built</a><a class="back" href="/">&larr; Home</a></span></nav></div>
+<div class="wrap">
+<nav>
+  <a class="home" href="/"><img src="/img/ragnar-160.png" alt="">TiltKiller</a>
+  <div class="links">
+    <a class="navlink on" href="/stratalerts/" aria-current="page">stratAlerts</a>
+    <a class="navlink" href="/stratbacktest/">stratBacktest</a>
+  </div>
+</nav>
+<nav class="crumb" aria-label="Breadcrumb">
+  <a href="/stratalerts/">stratAlerts</a><span class="sep" aria-hidden="true">›</span><span>High Growth Leaders</span>
+</nav>
+<div class="tabs" role="tablist" aria-label="High Growth Leaders">
+  <a class="tab on" href="/rules/" aria-current="page">Rules</a>
+  <a class="tab" href="/backtest/">Backtest results</a>
+  <a class="tab" href="/how-we-built/">How it was tested</a>
+</div>
+</div>
 <header class="hero"><div class="wrap">
 <img class="logo" src="/img/ragnar-160.png" alt="Ragnar, the TiltKiller Viking">
 <span class="hero-kicker">High Growth Leaders</span>
@@ -80,13 +110,13 @@ nav .home{display:flex;align-items:center;gap:10px;color:inherit;text-decoration
 <p>The sweet spot is when the overall market is clearly trending the way you're trading — rising highs, rising lows, strength that keeps going. That's when the odds are most on your side. When the market is tangled, flat, or rolling over, Ragnar sits on his hands — no alert. Cash is a position of power. And when the market turns choppy, with no clear trend and rallies that fail, stay out and don't overtrade. Go sharpen your axe, walk your wolf, or row the longship around the fjord. Even Vikings waited for good weather to sail.</p></section>
 <section><h2>Why alerts with rules — not just more tickers</h2>
 <div class="ragnar" style="max-width:none"><img src="/img/ragnar-512.jpg" alt="Ragnar" style="width:120px;height:120px"><p style="font-size:18px;margin:0">More tickers are not the hard part. Following a plan is. Ragnar watches the market by the rules and sends alerts for the way in and the way out — buy with entry and stop, sell when it’s time — so you don’t have to watch every tick or invent a gut call mid-raid.</p></div></section>
-<section style="text-align:center;padding:10px 0 0"><p style="color:var(--muted);margin:0 0 14px">Want the receipts? The simulated High Growth Leaders backtest is on the next page.</p><p style="margin:0;display:flex;gap:12px;justify-content:center;flex-wrap:wrap"><a class="back" href="/backtest" style="display:inline-block">See the backtest &rarr;</a><a class="back" href="/how-we-built" style="display:inline-block">How we built High Growth Leaders &rarr;</a></p></section>
+<section style="text-align:center;padding:10px 0 0"><p style="color:var(--muted);margin:0 0 14px">Want the receipts? The simulated High Growth Leaders backtest is on the next page.</p><p style="margin:0;display:flex;gap:12px;justify-content:center;flex-wrap:wrap"><a class="back" href="/backtest/" style="display:inline-block">See the backtest &rarr;</a><a class="back" href="/how-we-built/" style="display:inline-block">How High Growth Leaders was tested &rarr;</a></p></section>
 <section class="cta"><h2>Trade alerts in Discord.</h2>
 <p>High Growth Leaders alerts for the way in and the way out — buy with entry and stop, sell when it’s time. Size it to your risk.</p>
 <span class="soon" role="status"><svg class="discord-mark" viewBox="0 0 24 24" width="16" height="16" role="img" aria-label="Discord" xmlns="http://www.w3.org/2000/svg"><title>Discord</title><path fill="#5865F2" d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg><strong>Trade alerts in Discord — opening soon</strong></span>
 </section>
 </main>
-<footer><div class="wrap"><p><a href="https://x.com/tiltkillerapp" rel="noopener">@tiltkillerapp on X</a></p>
+<footer><div class="wrap"><p class="foot-links"><a href="/stratalerts/">stratAlerts</a><a href="/stratbacktest/">stratBacktest</a><a href="https://x.com/tiltkillerapp" rel="noopener">@tiltkillerapp on X</a></p>
 <p>&copy; 2026 Innovative Objects LLC. TiltKiller is a family of trading products operated by Innovative Objects LLC.</p>
 <p class="disc">Legal stuff, translated from Old Norse: Ragnar is not a financial advisor. His only certification is in pillaging. He has lost three longships on margin, which is exactly why he built this. TiltKiller is an educational tool and does not provide financial advice. Trading involves risk of loss. No alert, rule, or deeply disappointed Viking can guarantee profits.</p></div></footer>
 <script data-goatcounter="https://tiltkiller.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>

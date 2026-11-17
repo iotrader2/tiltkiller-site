@@ -24,6 +24,15 @@ nav .home{display:flex;align-items:center;gap:10px;color:inherit;text-decoration
 nav .links{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .navlink{font-size:14px;font-weight:600;color:#e6e9ef;text-decoration:none;padding:8px 16px;border:1px solid rgba(56,189,248,.45);border-radius:999px;transition:all .2s}
 .navlink:hover,.navlink.on{background:rgba(56,189,248,.12);border-color:#38bdf8;color:#38bdf8}
+.crumb{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:2px 0 10px;font-size:13px;font-weight:600;color:var(--muted)}
+.crumb a{color:var(--blue);text-decoration:none}.crumb a:hover{text-decoration:underline}.crumb .sep{opacity:.55}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;padding:0 0 14px;margin:0 0 6px;border-bottom:1px solid var(--line)}
+.tab{font-size:13px;font-weight:600;color:var(--muted);text-decoration:none;padding:8px 12px;border-radius:8px;border:1px solid transparent}
+.tab:hover{color:var(--text);background:rgba(56,189,248,.06)}
+.tab.on{color:var(--blue);border-color:rgba(56,189,248,.4);background:rgba(56,189,248,.1)}
+footer .foot-links{display:flex;gap:14px;flex-wrap:wrap;margin:0 0 12px}
+footer .foot-links a{color:var(--muted);text-decoration:none;font-weight:600}
+footer .foot-links a:hover{color:var(--blue)}
 .hero{position:relative;padding:42px 0 28px;text-align:center;overflow:hidden}
 .hero:before{content:"";position:absolute;inset:0;background:url(/img/hero-bg.jpg) center/cover;opacity:.07}
 .hero:after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 35%,var(--bg))}
@@ -181,7 +190,9 @@ footer .disc{max-width:760px}
   .metric .mv{font-size:22px}
   .risk-stage{padding:22px 14px 16px;border-radius:18px}
   .stats{grid-template-columns:1fr 1fr}.stat .v{font-size:22px}
-  nav .links{width:100%;margin-left:0;margin-top:4px}
+  nav .links{width:100%;margin-left:0;margin-top:4px;gap:6px}
+  .navlink{padding:7px 12px;font-size:13px}
+  .tab{padding:7px 10px;font-size:12.5px}
 }
 </style>
 </head>
@@ -190,18 +201,25 @@ footer .disc{max-width:760px}
 <nav>
   <a class="home" href="/"><img src="/img/ragnar-160.png" alt="">TiltKiller</a>
   <div class="links">
-    <a class="navlink" href="/rules">Rules</a>
-    <a class="navlink on" href="/backtest" aria-current="page">Backtest</a>
-    <a class="navlink" href="/how-we-built">How we built</a>
+    <a class="navlink on" href="/stratalerts/" aria-current="page">stratAlerts</a>
+    <a class="navlink" href="/stratbacktest/">stratBacktest</a>
   </div>
 </nav>
+<nav class="crumb" aria-label="Breadcrumb">
+  <a href="/stratalerts/">stratAlerts</a><span class="sep" aria-hidden="true">›</span><span>High Growth Leaders</span>
+</nav>
+<div class="tabs" role="tablist" aria-label="High Growth Leaders">
+  <a class="tab" href="/rules/">Rules</a>
+  <a class="tab on" href="/backtest/" aria-current="page">Backtest results</a>
+  <a class="tab" href="/how-we-built/">How it was tested</a>
+</div>
 </div>
 
 <div id="app"><p class="loading">Loading the backtest…</p></div>
 
 <footer>
   <div class="wrap">
-    <p><a href="https://x.com/tiltkillerapp" rel="noopener">@tiltkillerapp on X</a></p>
+    <p class="foot-links"><a href="/stratalerts/">stratAlerts</a><a href="/stratbacktest/">stratBacktest</a><a href="https://x.com/tiltkillerapp" rel="noopener">@tiltkillerapp on X</a></p>
     <p>&copy; 2026 Innovative Objects LLC. TiltKiller is a family of trading products operated by Innovative Objects LLC.</p>
     <p class="disc">Legal stuff, translated from Old Norse: Ragnar is not a financial advisor. His only certification is in pillaging. He has lost three longships on margin, which is exactly why he built this. TiltKiller is an educational tool and does not provide financial advice. Trading involves risk of loss. No alert, rule, or deeply disappointed Viking can guarantee profits. The High Growth Leaders backtest on this page is simulated and hypothetical.</p>
   </div>

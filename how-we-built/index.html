@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>How We Built High Growth Leaders · TiltKiller</title>
-<meta name="description" content="How High Growth Leaders was built: tested across three years of market data, one change at a time. Simulated results — not actual trading.">
+<title>How High Growth Leaders Was Tested · TiltKiller</title>
+<meta name="description" content="How High Growth Leaders was researched and tested in stratBacktest across three years of market data, one change at a time. Simulated results — not actual trading.">
 <link rel="canonical" href="https://tiltkiller.com/how-we-built">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://tiltkiller.com/how-we-built">
-<meta property="og:title" content="How We Built High Growth Leaders · TiltKiller">
+<meta property="og:title" content="How High Growth Leaders Was Tested · TiltKiller">
 <meta property="og:image" content="https://tiltkiller.com/img/ragnar-512.jpg">
 <meta name="twitter:card" content="summary">
 <link rel="icon" href="/favicon.ico" sizes="any">
@@ -24,6 +24,16 @@ nav .home{display:flex;align-items:center;gap:10px;color:inherit;text-decoration
 nav .links{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .navlink{font-size:14px;font-weight:600;color:#e6e9ef;text-decoration:none;padding:8px 16px;border:1px solid rgba(56,189,248,.45);border-radius:999px;transition:all .2s}
 .navlink:hover,.navlink.on{background:rgba(56,189,248,.12);border-color:#38bdf8;color:#38bdf8}
+.crumb{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:2px 0 10px;font-size:13px;font-weight:600;color:var(--muted)}
+.crumb a{color:var(--blue);text-decoration:none}.crumb a:hover{text-decoration:underline}.crumb .sep{opacity:.55}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;padding:0 0 14px;margin:0 0 6px;border-bottom:1px solid var(--line)}
+.tab{font-size:13px;font-weight:600;color:var(--muted);text-decoration:none;padding:8px 12px;border-radius:8px;border:1px solid transparent}
+.tab:hover{color:var(--text);background:rgba(56,189,248,.06)}
+.tab.on{color:var(--blue);border-color:rgba(56,189,248,.4);background:rgba(56,189,248,.1)}
+footer .foot-links{display:flex;gap:14px;flex-wrap:wrap;margin:0 0 12px}
+footer .foot-links a{color:var(--muted);text-decoration:none;font-weight:600}
+footer .foot-links a:hover{color:var(--blue)}
+@media(max-width:560px){nav .links{width:100%;margin-left:0;gap:6px}.navlink{padding:7px 12px;font-size:13px}.tab{padding:7px 10px;font-size:12.5px}}
 .hero{position:relative;padding:48px 0 36px;text-align:center;overflow:hidden}
 .hero:before{content:"";position:absolute;inset:0;background:url(/img/hero-bg.jpg) center/cover;opacity:.07}
 .hero:after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 35%,var(--bg))}
@@ -80,11 +90,18 @@ footer .disc{max-width:760px}
 <nav>
   <a class="home" href="/"><img src="/img/ragnar-160.png" alt="">TiltKiller</a>
   <div class="links">
-    <a class="navlink" href="/rules">Rules</a>
-    <a class="navlink" href="/backtest">Backtest</a>
-    <a class="navlink on" href="/how-we-built" aria-current="page">How we built</a>
+    <a class="navlink on" href="/stratalerts/" aria-current="page">stratAlerts</a>
+    <a class="navlink" href="/stratbacktest/">stratBacktest</a>
   </div>
 </nav>
+<nav class="crumb" aria-label="Breadcrumb">
+  <a href="/stratalerts/">stratAlerts</a><span class="sep" aria-hidden="true">›</span><span>High Growth Leaders</span>
+</nav>
+<div class="tabs" role="tablist" aria-label="High Growth Leaders">
+  <a class="tab" href="/rules/">Rules</a>
+  <a class="tab" href="/backtest/">Backtest results</a>
+  <a class="tab on" href="/how-we-built/" aria-current="page">How it was tested</a>
+</div>
 </div>
 
 <!--
@@ -103,8 +120,8 @@ footer .disc{max-width:760px}
   <img class="logo" src="/img/ragnar-160.png" alt="Ragnar, the TiltKiller Viking">
   <p class="date-line">November 16, 2026</p>
   <span class="hero-kicker">High Growth Leaders</span>
-  <h1>Rules built by testing, <span>not by guessing.</span></h1>
-  <p class="sub">How we built <strong style="color:var(--text)">High Growth Leaders</strong>, a <strong style="color:var(--text)">stratAlerts</strong> strategy. Every rule earned its place. We tested it across three years of market data, changed one setting at a time, and kept only what held up in good markets and bad ones.</p>
+  <h1>How High Growth Leaders was <span>tested.</span></h1>
+  <p class="sub"><strong style="color:var(--text)">High Growth Leaders</strong>, a <strong style="color:var(--text)">stratAlerts</strong> strategy, was researched and tested in <strong style="color:var(--text)">stratBacktest</strong>. Every rule earned its place. We tested it across three years of market data, changed one setting at a time, and kept only what held up in good markets and bad ones.</p>
   <div class="credit" id="creditLine"></div>
 </div></header>
 
@@ -174,7 +191,7 @@ footer .disc{max-width:760px}
     <li><strong>Stops aren’t guaranteed.</strong><span>If a stock gaps down overnight or on news, it can open below your stop and the loss can be bigger than your planned risk. Positions held overnight carry this risk.</span></li>
   </ul>
   <div class="cta-row">
-    <a class="ghost-btn" href="/backtest">See the High Growth Leaders backtest</a>
+    <a class="ghost-btn" href="/backtest/">See the High Growth Leaders backtest</a>
     <span class="soon" role="status"><svg class="discord-mark" viewBox="0 0 24 24" width="16" height="16" role="img" aria-label="Discord" xmlns="http://www.w3.org/2000/svg"><title>Discord</title><path fill="#5865F2" d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg><strong>Trade alerts in Discord — opening soon</strong></span>
   </div>
 </section>
@@ -216,7 +233,7 @@ footer .disc{max-width:760px}
 </main>
 
 <footer><div class="wrap">
-  <p><a href="https://x.com/tiltkillerapp" rel="noopener">@tiltkillerapp on X</a></p>
+  <p class="foot-links"><a href="/stratalerts/">stratAlerts</a><a href="/stratbacktest/">stratBacktest</a><a href="https://x.com/tiltkillerapp" rel="noopener">@tiltkillerapp on X</a></p>
   <p>&copy; 2026 Innovative Objects LLC. TiltKiller is a family of trading products operated by Innovative Objects LLC.</p>
   <p class="disc">TiltKiller is an educational tool and does not provide financial advice. Trading involves risk of loss. Simulated High Growth Leaders backtests are hypothetical and do not guarantee future results.</p>
 </div></footer>
@@ -237,9 +254,9 @@ footer .disc{max-width:760px}
   if (line) {
     line.innerHTML =
       '<span class="model-badge">' + anthropicMark + modelName + '</span>' +
-      '<span class="credit-note"><strong>stratBacktester</strong> was built with <strong>' + modelLabel + '</strong>, which Anthropic calls ' +
+      '<span class="credit-note"><strong>stratBacktest</strong> was built with <strong>' + modelLabel + '</strong>, which Anthropic calls ' +
       '<a href="' + modelQuoteUrl + '" target="_blank" rel="noopener">&ldquo;' + modelQuote + '&rdquo;</a>. ' +
-      'High Growth Leaders was tested in stratBacktester.</span>';
+      'High Growth Leaders was tested in stratBacktest.</span>';
   }
 })();
 </script>
