@@ -5220,7 +5220,7 @@
     }
   ],
   "disclaimer": {
-    "title": "How far to trust this",
+    "title": "Hypothetical performance",
     "hypothetical": "This is a simulated backtest, not a record of actual trading. Past results do not guarantee future results. Nothing on this page is investment advice."
   },
   "no_margin_curves": {
