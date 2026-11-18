@@ -80,7 +80,10 @@ footer .foot-links a:hover{color:var(--blue)}
 .product-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:8px}
 .product-head strong{margin:0}
 .product-head .status{margin-top:0}
-.products .strategy-name{margin-top:12px;color:var(--text);font-weight:650;font-size:16px}
+.products .strategy-name{margin-top:12px;margin-bottom:0;color:var(--text);font-weight:650;font-size:16px}
+.strategy-tagline{display:block;margin:4px 0 0;font-size:13px;font-weight:500;color:var(--muted);line-height:1.35}
+.hero .strategy-tagline{margin:6px 0 0}
+.products .strategy-name + .strategy-tagline{margin:4px 0 0}
 .product-alerts .how-alerts{margin-top:22px;padding-top:20px;border-top:1px solid #1b2330}
 .product-alerts .how-alerts h3{margin:0 0 6px;font-size:18px;font-weight:700;color:var(--text);text-align:left}
 .product-alerts .how-alerts .how-lead{margin:0 0 16px;color:var(--muted);font-size:14.5px;line-height:1.5}
@@ -104,6 +107,7 @@ footer .foot-links a:hover{color:var(--blue)}
 <header class="hero"><div class="wrap">
 <img class="logo" src="img/ragnar-160.png" alt="Ragnar, the TiltKiller Viking">
 <span class="hero-kicker">High Growth Leaders</span>
+<span class="strategy-tagline">Long trades in highly liquid growth stocks.</span>
 <h1>Trade the leaders. <span>Stop blowing up.</span></h1>
 <p class="sub">TiltKiller is a family of trading products. The first is <strong class="pname" style="color:var(--text)">strat<span>Alerts</span></strong>: buy and sell alerts in Discord for <strong style="color:var(--text)">High Growth Leaders</strong> — entry and stop in, sell when it’s time. You choose how much to risk. Same written rules, every time.</p>
 <div class="cta-row">
@@ -122,8 +126,9 @@ footer .foot-links a:hover{color:var(--blue)}
         <strong><a href="/stratalerts/"><span class="pname">strat<span>Alerts</span></span></a></strong>
         <span class="status soonish">Available in a few weeks</span>
       </div>
-      <p>Buy and sell alerts in Discord.</p>
+      <p>Real-time buy and sell alerts in Discord, from a backtested strategy. Every buy comes with an entry and a stop, and you get a sell alert when it’s time to exit. No scanning or charting needed: just pick your risk and act on the alert.</p>
       <p class="strategy-name"><a href="/rules/">High Growth Leaders</a></p>
+      <span class="strategy-tagline">Long trades in highly liquid growth stocks.</span>
       <div class="how-alerts" id="how-it-works">
         <h3 id="how-the-alerts-work">How the alerts work</h3>
         <p class="how-lead">No guesswork. Buy alerts hit Discord in the first hour after the open — every 15-minute candle through 10:45 ET — with entry and stop. Sell alerts fire when it’s time. Size it to what you're willing to lose.</p>
