@@ -30,6 +30,11 @@ h1{font-size:clamp(30px,5vw,46px);line-height:1.1;margin:0 0 12px}
 section{padding:28px 0 48px}
 .card{max-width:560px;margin:0 auto;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 20px}
 .feature-list{list-style:none;padding:0;margin:0}
+.card-h{margin:0 0 12px;font-size:17px;color:var(--text)}
+.steps{list-style:none;padding:0;margin:0 0 18px;display:flex;flex-wrap:wrap;gap:6px}
+.steps li{display:flex;align-items:center;gap:6px;padding:5px 11px 5px 6px;border:1px solid var(--line);border-radius:999px;font-size:13px;font-weight:600;color:var(--text)}
+.steps li span{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:rgba(56,189,248,.16);color:var(--blue);font-size:11px;font-weight:700}
+.feature-list li b{color:var(--text);font-weight:600}
 .feature-list li{position:relative;padding:10px 0 10px 14px;border-top:1px solid var(--line);color:var(--muted);font-size:15px;line-height:1.45}
 .feature-list li:first-child{border-top:0;padding-top:0}
 .feature-list li:before{content:"";position:absolute;left:0;top:calc(0.85em + 2px);width:5px;height:5px;border-radius:50%;background:rgba(56,189,248,.7)}
@@ -83,10 +88,16 @@ footer .foot-links a:hover{color:var(--blue)}
 <main class="wrap">
 <section>
   <div class="card">
+    <h2 class="card-h">Build a strategy in seven steps</h2>
+    <ol class="steps"><li><span>1</span>Universe</li><li><span>2</span>Market filter</li><li><span>3</span>Setups</li><li><span>4</span>Entry</li><li><span>5</span>Stop</li><li><span>6</span>Exits</li><li><span>7</span>Limits and size</li></ol>
     <ul class="feature-list">
-      <li>Generate rules and backtest them on three years of 15-minute data.</li>
-      <li>Iterate incrementally to optimize parameters for total gains and minimize drawdowns, with metrics on each version.</li>
-      <li>Save version history so you can return to what worked best.</li>
+      <li><b>Backtest it on three years of market data</b>, daily bars and 15-minute bars, across every stock or TiltKiller’s 662 theme stocks.</li>
+      <li><b>Compare side by side on every step.</b> Run several values of one setting at once, see total R and drawdown for each, and keep the winner with one click.</li>
+      <li><b>Read the results in R:</b> total R, win rate, average trade, max drawdown, months up, and year by year.</li>
+      <li><b>Look at every trade on a marked-up chart.</b> A sortable, searchable trade table with the entry, exit and stop drawn on each chart; flip through trades with the arrow keys.</li>
+      <li><b>Review trades.</b> Flag the good ones and the bad ones, and get suggested rule changes that drop the bad trades and keep the good ones, with the R each change would have made.</li>
+      <li><b>See the impact on your account:</b> an equity curve at your account size and risk per trade.</li>
+      <li><b>Save every version with its metrics.</b> Switch between versions to re-run them, compare them, and go back to what worked best.</li>
     </ul>
   </div>
   <aside class="how-built" id="how-built" aria-label="How this was built">
