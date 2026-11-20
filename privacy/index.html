@@ -56,31 +56,58 @@ footer .foot-links a:hover{color:var(--blue)}
 <header class="hero"><div class="wrap">
   <p class="date-line">Effective date: November 20, 2026</p>
   <h1>Privacy Policy</h1>
-  <p class="sub">What information we collect, how we use it, and how you can ask us to delete it.</p>
+  <p class="sub">What we collect, why, who handles it, and how to have it deleted.</p>
 </div></header>
 
 <main class="wrap">
 <section class="prose">
   <h2>Who we are</h2>
   <p>TiltKiller is operated by Innovative Objects LLC, an Arizona limited liability company, doing business as TiltKiller. You can reach us at <a href="mailto:tiltkillerapp@gmail.com">tiltkillerapp@gmail.com</a>.</p>
-  <p>Our products are:</p>
+  <p>This policy covers tiltkiller.com and our products:</p>
   <ul>
-    <li><span class="pname">strat<span>Alerts</span></span>, a strategy trade alerts service. Status: Coming soon.</li>
-    <li><span class="pname">strat<span>Backtest</span></span>, a backtesting tool. Status: Coming soon / private beta.</li>
+    <li><span class="pname">strat<span>Alerts</span></span>, a strategy trade alerts service (coming soon).</li>
+    <li><span class="pname">strat<span>Backtest</span></span>, a strategy backtesting app, in an invite-only beta.</li>
   </ul>
 
   <h2>Information we collect</h2>
-  <p>If you join the waitlist, we collect the email address you submit. Waitlist signups are handled by FormSubmit.</p>
-  <p>If you create a <span class="pname">strat<span>Backtest</span></span> account, we collect your email address. If you sign in with Google, we also receive your name and profile photo. We only request the Google permissions we need to sign you in: openid, email, and profile.</p>
-  <p>We email sign-in codes through Resend. Account sign-in is handled by Neon Auth. App data you create in <span class="pname">strat<span>Backtest</span></span> — such as saved strategies, drafts, backtest runs, and settings — is stored in a Neon Postgres database.</p>
-  <p>This website is hosted on GitHub Pages. The <span class="pname">strat<span>Backtest</span></span> app is hosted on Vercel, and the backtest API runs on a Cloudflare worker.</p>
+  <p><b>Waitlist.</b> If you join a waitlist on this site, we collect the email address you submit. Waitlist sign-ups are handled by FormSubmit.</p>
+  <p><b>Your <span class="pname">strat<span>Backtest</span></span> account.</b> You can sign in with an emailed code or with Google. Either way, we receive your email address and the name on your account. With Google, we also receive your profile photo; we don't show or use it. We ask Google only for the permissions needed to sign you in: <code>openid</code>, <code>email</code>, and <code>profile</code>. We never get your Google password, and we can't read your Gmail, contacts, or files.</p>
+  <p><b>Asking for beta access.</b> If you sign in before you're invited, you can ask to be let in. We keep your name, email, the messages you write (your 20 most recent, up to 500 characters each), how many times you asked, and when. We keep this even if we say "not now", so we can see interest and let you in later.</p>
+  <p><b>What you build.</b> The strategies you create and save, their versions, and which version you tagged are stored with your account. Admins of TiltKiller can see every strategy saved in <span class="pname">strat<span>Backtest</span></span>, to run and support the service. Other users can't see yours.</p>
+  <p><b>Kept in your browser.</b> Some things stay only in your browser's local storage and are not sent to us: unsaved drafts, trades you flag for review, the account value you enter on the Impact on Account tab, and similar display settings. Signing in also stores a session cookie so you stay signed in.</p>
+  <p><b>Usage and logs.</b> Our hosting providers record standard request logs, such as IP address, browser type, and the time of a request, to keep the service running and secure. We don't use advertising trackers or third-party analytics.</p>
 
   <h2>How we use your information</h2>
-  <p>We use this information only to run the service and to contact you about it. We do not sell your personal data, and we do not use it for ads.</p>
-  <p>Google user data is used only to sign you in. TiltKiller’s use of information received from Google APIs adheres to the <a href="https://developers.google.com/terms/api-services-user-data-policy" rel="noopener">Google API Services User Data Policy</a>, including the Limited Use requirements.</p>
+  <p>We use this information only to run <span class="pname">strat<span>Backtest</span></span>: to sign you in, decide who has beta access, save and run your strategies, and contact you about the service (for example, sign-in codes or letting you know you've been invited). We do not sell your personal data, and we do not use it for ads.</p>
+  <p>Google user data is used only to sign you in. TiltKiller’s use and transfer of information received from Google APIs adheres to the <a href="https://developers.google.com/terms/api-services-user-data-policy" rel="noopener">Google API Services User Data Policy</a>, including the Limited Use requirements.</p>
 
-  <h2>Deleting your account and data</h2>
-  <p>You can ask us to delete your account and the personal data we hold about you by emailing <a href="mailto:tiltkillerapp@gmail.com">tiltkillerapp@gmail.com</a>.</p>
+  <h2>Who handles it for us</h2>
+  <p>We use these providers to run the service. They process data only on our behalf:</p>
+  <ul>
+    <li><b>Neon</b>: account sign-in (Neon Auth) and the database (Neon Postgres) that holds your account, strategies, and access requests.</li>
+    <li><b>Resend</b>: sends sign-in codes and service emails.</li>
+    <li><b>Vercel</b>: hosts the <span class="pname">strat<span>Backtest</span></span> app.</li>
+    <li><b>Cloudflare</b>: runs the <span class="pname">strat<span>Backtest</span></span> API and backtests.</li>
+    <li><b>GitHub Pages</b>: hosts this website.</li>
+    <li><b>FormSubmit</b>: handles waitlist sign-ups.</li>
+    <li><b>Google</b>: only if you choose Sign in with Google.</li>
+  </ul>
+  <p>Backtests use market price data from a market data provider. We send it ticker symbols and dates, not your personal data.</p>
+
+  <h2>How long we keep it</h2>
+  <p>We keep your account and saved strategies while your account is open. We keep access requests (described above) until you ask us to delete them. Request logs are kept by our hosting providers for their standard periods.</p>
+
+  <h2>Your choices</h2>
+  <p>You can ask us for a copy of your data, to correct it, or to delete your account and everything we hold about you, including your saved strategies and access requests, by emailing <a href="mailto:tiltkillerapp@gmail.com">tiltkillerapp@gmail.com</a>. We'll do it within 30 days. You can also clear what's kept in your browser at any time by clearing this site's data in your browser settings. If you signed in with Google, you can remove TiltKiller's access in your Google Account under Security, Third-party apps.</p>
+
+  <h2>Security</h2>
+  <p>Data is sent over HTTPS. Each user's strategies are kept separate in the database, so the app can only read the strategies of the signed-in user (and admins). No system is perfectly secure, so we can't guarantee absolute security.</p>
+
+  <h2>Children</h2>
+  <p>TiltKiller is not meant for anyone under 18, and we don't knowingly collect data from children.</p>
+
+  <h2>Changes</h2>
+  <p>If we change this policy, we'll update the date at the top of this page. If a change matters to how we use your data, we'll tell signed-up users by email before it takes effect.</p>
 </section>
 </main>
 
