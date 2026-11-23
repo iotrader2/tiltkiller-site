@@ -80,6 +80,8 @@ footer .foot-links a:hover{color:var(--blue)}
 .product-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:8px}
 .product-head strong{margin:0}
 .product-head .status{margin-top:0}
+a.status{text-decoration:none}
+a.status:hover{border-color:var(--blue)}
 .products .strategy-name{margin-top:12px;margin-bottom:0;color:var(--text);font-weight:650;font-size:16px}
 .strategy-tagline{display:block;margin:4px 0 0;font-size:13px;font-weight:500;color:var(--muted);line-height:1.35}
 .hero .strategy-tagline{margin:6px 0 0}
@@ -119,7 +121,7 @@ footer .foot-links a:hover{color:var(--blue)}
 <main class="wrap">
 <section class="products" id="products">
   <h2>Products</h2>
-  <p class="lead">stratBacktest is in beta. stratAlerts is coming soon.</p>
+  <p class="lead">stratBacktest is <a href="https://backtest.tiltkiller.com">in beta</a>. stratAlerts is coming soon.</p>
   <div class="products-layout">
     <div class="card product-alerts">
       <div class="product-head">
@@ -143,7 +145,7 @@ footer .foot-links a:hover{color:var(--blue)}
       <div class="card product-backtester">
         <div class="product-head">
           <strong><a href="/stratbacktest/"><span class="pname">strat<span>Backtest</span></span></a></strong>
-          <span class="status soonish">In beta</span>
+          <a class="status soonish" href="https://backtest.tiltkiller.com">In beta</a>
         </div>
         <ul class="feature-list">
           <li>Generate rules and backtest them on three years of 15-minute data.</li>
