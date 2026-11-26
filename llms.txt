@@ -7,7 +7,9 @@
 - [TiltKiller](https://tiltkiller.com/): Home page for the product family.
 - [stratBacktest](https://tiltkiller.com/stratbacktest/): Marketing page for the stock strategy backtester. Build a strategy in seven steps, backtest it on three years of market data, and test progressive exposure. In beta.
 - [Open stratBacktest (in beta)](https://backtest.tiltkiller.com/): The app itself. Closed beta; sign-in required.
-- [Backtesting and progressive exposure](https://tiltkiller.com/backtesting-and-progressive-exposure/): Plain-language explainer of backtesting and of progressive exposure: raising or lowering risk per trade as recent results improve or worsen. Risk examples top out at 0.5% per trade.
+- [Backtesting and progressive exposure](https://tiltkiller.com/backtesting-and-progressive-exposure/): Plain-language explainer of backtesting and of progressive exposure: raising or lowering risk per trade as recent results improve or worsen. Includes a simulated $100,000 account run, cash only, with progressive exposure (hypothetical backtest, not live trading), shown with its largest drop, its longest stretch below a peak and its month-by-month results. Risk examples top out at 0.5% per trade.
+- [stratBacktest vs TradingView Strategy Tester](https://tiltkiller.com/stratbacktest-vs-tradingview/): November 2026 comparison of stratBacktest and TradingView's Strategy Tester (Pine Script). What each is for, and who should use which.
+- [TrendSpider alternatives for swing traders](https://tiltkiller.com/trendspider-alternatives/): November 2026 look at TrendSpider's no-code Strategy Tester and stratBacktest as a focused alternative for backtesting a stock strategy without coding.
 - [High Growth Leaders rules](https://tiltkiller.com/rules/): The written rules behind High Growth Leaders, long trades in liquid growth stocks. Uses a fixed risk per trade you choose (typically 0.1% to 0.5%), not progressive exposure.
 - [stratAlerts](https://tiltkiller.com/stratalerts/): Rules-based buy and sell alerts in Discord, starting with High Growth Leaders. Coming soon.
 

@@ -90,6 +90,36 @@ details.faq{border-top:1px solid var(--line);padding:12px 0}details.faq:last-of-
 details.faq summary{cursor:pointer;font-weight:650;color:var(--text);font-size:17px}details.faq p{margin:10px 0 0}
 .byline{color:var(--muted);font-size:14px;margin-top:26px}
 
+/* impact css */
+.table-wrap{overflow-x:auto;margin:6px 0 16px;-webkit-overflow-scrolling:touch}
+table.compare{border-collapse:collapse;width:100%;min-width:560px;font-size:15px}
+table.compare caption{text-align:left;color:var(--muted);font-size:14px;padding-bottom:8px}
+table.compare th,table.compare td{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top}
+table.compare th{background:var(--card);color:var(--text);font-weight:650}
+table.compare td{color:#c9cfdb}
+table.compare th:first-child,table.compare td:first-child{font-weight:650;color:var(--text)}
+
+/* impact section */
+.muted{color:var(--muted);font-size:.9em}
+.impact{margin:8px 0 8px}
+.scen-grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));margin:12px 0}
+.scen{background:var(--card);border:1px solid var(--line);border-top:3px solid var(--blue);border-radius:12px;padding:14px 16px}
+.scen h4{margin:0 0 10px;font-size:14px;color:var(--muted);font-weight:650;letter-spacing:.02em}
+.scen .nums{display:grid;grid-template-columns:1fr 1fr;gap:14px 12px}
+.num b{display:block;font-size:22px;line-height:1.2;color:var(--text)}
+.num span{display:block;font-size:13px;line-height:1.35;color:var(--muted);margin-top:2px}
+.num.pos b{color:#34d399}.num.neg b{color:#f87171}
+.chart{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 12px 8px;margin:14px 0}
+.chart svg{width:100%;height:auto;display:block}
+.chart figcaption{color:var(--muted);font-size:13.5px;line-height:1.5;margin-top:6px}
+figure.chart{margin-left:0;margin-right:0}
+.impact-short{max-width:none}
+.impact-short .scen-grid{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+.impact-short .num b{font-size:20px}
+article .impact-short h2{font-size:24px;margin-top:40px}
+.impact-note{font-size:14.5px;color:var(--muted)}
+.mtable{min-width:640px!important;font-size:12px;table-layout:fixed;width:100%}.mtable th,.mtable td{padding:6px 2px!important;text-align:center;white-space:nowrap}.mtable th:first-child{width:46px}.mtable td.mc{color:#e6e9ef;font-variant-numeric:tabular-nums}.mtable td.yr{font-weight:700;background:var(--card)}.mtable th:first-child{text-align:left}
+/* impact css end */
 </style>
 </head>
 <body>
@@ -97,8 +127,8 @@ details.faq summary{cursor:pointer;font-weight:650;color:var(--text);font-size:1
 <nav>
   <a class="home" href="/"><img src="/img/ragnar-160.png" alt="">TiltKiller</a>
   <div class="links">
-    <a class="navlink" href="/stratalerts/"><span class="pname">strat<span>Alerts</span></span></a>
     <a class="navlink" href="/stratbacktest/"><span class="pname">strat<span>Backtest</span></span></a>
+    <a class="navlink" href="/stratalerts/"><span class="pname">strat<span>Alerts</span></span></a>
   </div>
 </nav>
 </div>
@@ -175,6 +205,60 @@ details.faq summary{cursor:pointer;font-weight:650;color:var(--text);font-size:1
 <p>Caps still matter. High Growth Leaders allows at most <strong>3 new trades a day</strong>, so at 0.5% risk per trade the most you put at risk on new trades in a day is 1.5%. <strong>Winners held overnight can stack</strong>: in the simulated backtest at a fixed 0.5% risk per trade, total open risk across held positions peaked at 2.5%. And <strong>stops aren’t guaranteed on gap-downs</strong>. A stock can open below your stop, and the loss can be bigger than the risk you planned.</p>
 </div>
 
+
+
+
+<!-- impact:start -->
+<h2 id="on-an-account">What this looks like on a $100,000 account</h2>
+<div class="impact">
+<p>Here is a simulated run from <a href="/stratbacktest/">stratBacktest</a> (in beta, invite-only): an example strategy tested on about three years of market data, <strong>cash only</strong> (no margin), with <a href="#progressive-exposure">progressive exposure</a> setting the risk on each trade. It is a backtest, not a real account. It is shown with its rough patches, including the trades that were skipped when cash ran out. The exact rules of this example aren&rsquo;t published here.</p>
+<p><strong>These are hypothetical results from a simulated backtest, not live trading. Past results do not guarantee future results, and nothing here is a promise of profit or investment advice.</strong></p>
+
+<h3>The account over three years</h3>
+<div class="scen-grid">
+<div class="scen"><h4>The result, simulated</h4><div class="nums">
+<div class="num pos"><b>$266,272</b><span>from $100,000 (+166%), Nov 27, 2023 to Nov 25, 2026</span></div>
+<div class="num pos"><b>38.7% a year</b><span>average yearly growth</span></div>
+<div class="num neg"><b>−16.0%</b><span>largest drop from a peak</span></div>
+<div class="num neg"><b>249 days</b><span>longest stretch below a previous peak (May 30, 2024 to Feb 3, 2025)</span></div>
+</div></div>
+<div class="scen"><h4>How it was run</h4><div class="nums">
+<div class="num"><b>1,057 trades</b><span>taken; 668 skipped because cash was in other positions</span></div>
+<div class="num"><b>21 of 37 months</b><span>made money (best +19.2%, worst −5.1%)</span></div>
+<div class="num"><b>0.17% average</b><span>risk per trade; the highest used was 0.46% (range 0.1% to 0.5%)</span></div>
+<div class="num"><b>33 at once</b><span>most positions open together, each about 5% of the account</span></div>
+</div></div>
+</div>
+<figure class="chart">
+<svg viewBox="0 0 720 290" role="img" aria-labelledby="c1t c1d"><title id="c1t">Simulated account at month ends, from $100,000, against QQQ</title><desc id="c1d">Month-end value of a $100,000 simulated account from November 27, 2023 to November 25, 2026, ending near $266,000, with QQQ price shown for comparison through October 2026.</desc><line x1="54" y1="243.2" x2="706" y2="243.2" stroke="#1b2330"/><text x="48" y="247.2" text-anchor="end" fill="#8b93a7" font-size="11">$100k</text><line x1="54" y1="131.0" x2="706" y2="131.0" stroke="#1b2330"/><text x="48" y="135.0" text-anchor="end" fill="#8b93a7" font-size="11">$200k</text><text x="48" y="60.6" text-anchor="end" fill="#8b93a7" font-size="11">$266k</text><line x1="89.2" y1="30" x2="89.2" y2="260" stroke="#1b2330" stroke-dasharray="2 4"/><text x="89.2" y="280" text-anchor="middle" fill="#8b93a7" font-size="11">2024</text><line x1="300.7" y1="30" x2="300.7" y2="260" stroke="#1b2330" stroke-dasharray="2 4"/><text x="300.7" y="280" text-anchor="middle" fill="#8b93a7" font-size="11">2025</text><line x1="512.2" y1="30" x2="512.2" y2="260" stroke="#1b2330" stroke-dasharray="2 4"/><text x="512.2" y="280" text-anchor="middle" fill="#8b93a7" font-size="11">2026</text><polyline points="54.0,243.2 71.6,243.3 89.2,237.3 106.9,235.2 124.5,228.8 142.1,227.4 159.7,233.0 177.4,225.4 195.0,217.2 212.6,219.6 230.2,218.1 247.8,214.7 265.5,215.9 283.1,208.4 300.7,208.0 318.3,204.8 335.9,208.9 353.6,220.2 371.2,218.3 388.8,205.7 406.4,196.3 424.1,192.5 441.7,190.9 459.3,182.3 476.9,174.0 494.5,176.8 512.2,178.3 529.8,176.1 547.4,180.3 565.0,189.0 582.6,162.9 600.3,142.5 617.9,143.1 635.5,157.0 653.1,148.7 670.8,142.1 688.4,150.0" fill="none" stroke="#8b93a7" stroke-width="1.8" stroke-dasharray="5 4"/><polyline points="54.0,243.2 71.6,244.0 89.2,245.9 106.9,246.2 124.5,233.1 142.1,231.0 159.7,224.8 177.4,214.3 195.0,216.9 212.6,219.6 230.2,220.9 247.8,225.3 265.5,224.5 283.1,218.2 300.7,220.0 318.3,217.0 335.9,190.5 353.6,194.4 371.2,198.9 388.8,206.9 406.4,210.9 424.1,203.7 441.7,194.3 459.3,194.0 476.9,170.8 494.5,159.1 512.2,161.1 529.8,148.6 547.4,117.0 565.0,123.5 582.6,111.2 600.3,95.8 617.9,95.3 635.5,70.6 653.1,71.1 670.8,76.0 688.4,72.3 706.0,56.8" fill="none" stroke="#38bdf8" stroke-width="2.4" stroke-linejoin="round"/><g font-size="11.5"><line x1="62" y1="16" x2="84" y2="16" stroke="#38bdf8" stroke-width="2.4"/><text x="90" y="20" fill="#e6e9ef">Simulated account, progressive 0.1% to 0.5%</text><line x1="384" y1="16" x2="406" y2="16" stroke="#8b93a7" stroke-width="1.8" stroke-dasharray="5 4"/><text x="412" y="20" fill="#e6e9ef">QQQ (price only)</text></g></svg>
+<figcaption>Simulated account value at each month end, from $100,000, with no margin, against QQQ&rsquo;s price from the same start date. The account line is compounded from the monthly figures below, so it ends within a fraction of a percent of the $266,272 on the results screen. QQQ is price only, with no dividends, and its data ends on October 26, 2026. Month-end points hide the intra-month low: the largest drop on the results screen is −16.0%, deeper than the −12.4% the month ends show.</figcaption>
+</figure>
+<p>The largest drop was <strong>−16.0%</strong>, and the longest stretch below a previous peak was <strong>249 days</strong>, from May 30, 2024 to Feb 3, 2025. Those are part of this run, not footnotes. For context, QQQ&rsquo;s price rose about 83% from November 27, 2023 to October 26, 2026. The point is not to beat it; it is to see how rough the ride was.</p>
+
+<h3>Month by month</h3>
+<div class="table-wrap"><table class="compare mtable"><caption>Simulated account, change each month (a trade&rsquo;s gain or loss counts in the month it was sold). Yearly figures are compounded from the monthly ones; 2023 is Nov and Dec only, 2026 is Jan to Nov.</caption><thead><tr><th>Year</th><th>Jan</th><th>Feb</th><th>Mar</th><th>Apr</th><th>May</th><th>Jun</th><th>Jul</th><th>Aug</th><th>Sep</th><th>Oct</th><th>Nov</th><th>Dec</th><th>Year</th></tr></thead><tbody><tr><th scope="row">2023</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="mc" style="background:rgba(244,63,94,0.14)">−0.7%</td><td class="mc" style="background:rgba(244,63,94,0.16)">−1.7%</td><td class="mc yr">−2.4%</td></tr><tr><th scope="row">2024</th><td class="mc" style="background:rgba(244,63,94,0.13)">−0.3%</td><td class="mc" style="background:rgba(52,211,153,0.42)">+12.0%</td><td class="mc" style="background:rgba(52,211,153,0.16)">+1.7%</td><td class="mc" style="background:rgba(52,211,153,0.24)">+5.0%</td><td class="mc" style="background:rgba(52,211,153,0.32)">+8.0%</td><td class="mc" style="background:rgba(244,63,94,0.16)">−1.8%</td><td class="mc" style="background:rgba(244,63,94,0.17)">−2.0%</td><td class="mc" style="background:rgba(244,63,94,0.14)">−0.9%</td><td class="mc" style="background:rgba(244,63,94,0.20)">−3.3%</td><td class="mc" style="background:rgba(52,211,153,0.14)">+0.6%</td><td class="mc" style="background:rgba(52,211,153,0.24)">+4.8%</td><td class="mc" style="background:rgba(244,63,94,0.15)">−1.3%</td><td class="mc yr">+23.6%</td></tr><tr><th scope="row">2025</th><td class="mc" style="background:rgba(52,211,153,0.17)">+2.2%</td><td class="mc" style="background:rgba(52,211,153,0.60)">+19.2%</td><td class="mc" style="background:rgba(244,63,94,0.18)">−2.4%</td><td class="mc" style="background:rgba(244,63,94,0.19)">−2.8%</td><td class="mc" style="background:rgba(244,63,94,0.25)">−5.1%</td><td class="mc" style="background:rgba(244,63,94,0.19)">−2.7%</td><td class="mc" style="background:rgba(52,211,153,0.24)">+5.0%</td><td class="mc" style="background:rgba(52,211,153,0.28)">+6.2%</td><td class="mc" style="background:rgba(52,211,153,0.12)">+0.2%</td><td class="mc" style="background:rgba(52,211,153,0.48)">+14.4%</td><td class="mc" style="background:rgba(52,211,153,0.28)">+6.3%</td><td class="mc" style="background:rgba(244,63,94,0.14)">−1.0%</td><td class="mc yr">+43.5%</td></tr><tr><th scope="row">2026</th><td class="mc" style="background:rgba(52,211,153,0.28)">+6.4%</td><td class="mc" style="background:rgba(52,211,153,0.50)">+15.3%</td><td class="mc" style="background:rgba(244,63,94,0.19)">−2.7%</td><td class="mc" style="background:rgba(52,211,153,0.25)">+5.3%</td><td class="mc" style="background:rgba(52,211,153,0.28)">+6.3%</td><td class="mc" style="background:rgba(52,211,153,0.12)">+0.2%</td><td class="mc" style="background:rgba(52,211,153,0.36)">+9.5%</td><td class="mc" style="background:rgba(244,63,94,0.12)">−0.2%</td><td class="mc" style="background:rgba(244,63,94,0.16)">−1.7%</td><td class="mc" style="background:rgba(52,211,153,0.15)">+1.3%</td><td class="mc" style="background:rgba(52,211,153,0.26)">+5.5%</td><td></td><td class="mc yr">+53.7%</td></tr></tbody></table></div>
+<p>21 of 37 months made money, so 16 did not. The best month was +19.2% (February 2025) and the worst was −5.1% (May 2025). Yearly growth, compounded from the monthly figures: −2.4% for the last two months of 2023, +23.6% in 2024, +43.5% in 2025 and +53.7% for January to November 2026.</p>
+
+<h3>Through weak markets</h3>
+<div class="table-wrap"><table class="compare" style="min-width:420px"><caption>QQQ&rsquo;s five weakest months in the window (price only), and the simulated account in the same months.</caption><thead><tr><th>Month</th><th>QQQ</th><th>Simulated account</th></tr></thead><tbody><tr><td>Apr 2024</td><td>−4.4%</td><td>+5.0%</td></tr><tr><td>Mar 2025</td><td>−7.7%</td><td>−2.4%</td></tr><tr><td>Mar 2026</td><td>−5.0%</td><td>−2.7%</td></tr><tr><td>Jul 2026</td><td>−6.6%</td><td>+9.5%</td></tr><tr><td>Oct 2026 (to Oct 26)</td><td>−3.7%</td><td>+1.3%</td></tr></tbody></table></div>
+<p>QQQ&rsquo;s price fell in 13 of the 37 months. The simulated account rose in 8 of those 13 months, and in 3 of QQQ&rsquo;s five weakest. It was not always protected. <strong>March to June 2025 was four down months in a row</strong> for the account (−2.4%, −2.8%, −5.1%, −2.7%, about −12% together), even as QQQ was recovering. A strategy that is selective will still have stretches like that. The window starts in November 2023, so 2022&rsquo;s bear market is not in it.</p>
+
+<h3>Tight stops that move up as a trade works</h3>
+<p>In stratBacktest every trade has a set stop from day one, so the most you plan to lose is known before you buy. Losers are cut quickly, and winners can be protected with a stop that trails up behind the trade. That is how a strategy can lose small most of the time and still do well when a few trades run.</p>
+<p><strong>Stops are not guaranteed.</strong> A stock that gaps down overnight or on news can open below your stop, and the loss can be bigger than planned.</p>
+
+<h3>Progressive exposure: risk that follows results</h3>
+<p>In this run the risk on each trade started at 0.1% and stepped up by 0.04% for each winner among the last 10 closed trades, topping out at 0.5% only if all 10 had won. Losers bring it back toward 0.1%, and only trades already closed when you buy count. Progressive exposure is an idea associated with trader Mark Minervini. TiltKiller isn&rsquo;t affiliated with him.</p>
+<div class="table-wrap"><table class="compare" style="min-width:420px"><caption>Risk per trade, by how many of the last 10 closed trades were winners (this run&rsquo;s setting: lowest 0.1%, highest 0.5%).</caption><thead><tr><th>Winners in the last 10</th><th>Risk per trade</th><th>On $100,000</th></tr></thead><tbody><tr><td>0</td><td>0.10%</td><td>$100</td></tr><tr><td>3</td><td>0.22%</td><td>$220</td></tr><tr><td>5</td><td>0.30%</td><td>$300</td></tr><tr><td>8</td><td>0.42%</td><td>$420</td></tr><tr><td>10</td><td>0.50%</td><td>$500</td></tr></tbody></table></div>
+<p>Because it only steps up when recent trades are winning, most trades were sized near the bottom: the risk averaged 0.17% and the highest used was 0.46%, never the full 0.5%. We haven&rsquo;t published a fixed-risk run beside this one. In stratBacktest you can switch the same run between progressive and a fixed risk per trade and compare the two yourself. Progressive exposure can&rsquo;t make a weak strategy good, and it doesn&rsquo;t guarantee a better result.</p>
+
+<h3>No gut calls</h3>
+<p>The rules are written down before the first trade, so there is nothing to decide in the moment. Entries, stops and exits are set in advance, and the app has settings for a market filter, a daily cap on new trades (the High Growth Leaders rules use 3 a day) and not holding over earnings. You follow the rules mechanically, with no gut calls on whether to hold, add, or win it back.</p>
+<p><strong>Risks to know about.</strong> Up to 33 positions were open at once, and winners held overnight can stack, so risk adds up across positions. 668 trades were skipped because cash was already in other positions; real fills and margin would change the result. Stops aren&rsquo;t guaranteed on gap-downs. A backtest can look better than live trading, because rules can be fitted to the past and not every real-world cost is included.</p>
+<p>You can run this kind of test on your own strategy in <a href="/stratbacktest/">stratBacktest</a>, which is in beta and invite-only. stratAlerts, TiltKiller&rsquo;s buy and sell alerts in Discord, is coming soon.</p>
+</div>
+<!-- impact:end -->
+
 <h2 id="tiltkiller">How TiltKiller fits in</h2>
 <ul>
 <li><strong><a href="/stratbacktest/">stratBacktest</a> (in beta)</strong> lets you build a strategy in seven steps and backtest it on three years of daily and 15-minute data. In its Account Performance view you can size the account at a fixed risk per trade or a progressive one, choosing the lowest risk, the highest risk and how many recent trades it looks at. A band under the account curve shows the risk each trade was sized at, and the average and highest risk used.</li>
@@ -201,7 +285,7 @@ details.faq summary{cursor:pointer;font-weight:650;color:var(--text);font-size:1
 </article></main>
 
 <footer><div class="wrap">
-  <p class="foot-links"><a href="/stratalerts/">stratAlerts</a><a href="/stratbacktest/">stratBacktest</a><a href="/backtesting-and-progressive-exposure/">Backtesting guide</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="https://x.com/tiltkillerapp" rel="noopener">@tiltkillerapp on X</a></p>
+  <p class="foot-links"><a href="/stratbacktest/">stratBacktest</a><a href="/stratalerts/">stratAlerts</a><a href="/backtesting-and-progressive-exposure/">Backtesting guide</a><a href="/stratbacktest-vs-tradingview/">vs TradingView</a><a href="/trendspider-alternatives/">TrendSpider alternatives</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="https://x.com/tiltkillerapp" rel="noopener">@tiltkillerapp on X</a></p>
   <p>&copy; 2026 Innovative Objects LLC. TiltKiller is a family of trading products operated by Innovative Objects LLC.</p>
   <p class="disc">TiltKiller is an educational tool and does not provide financial advice. Trading involves risk of loss. Backtested and simulated results are hypothetical and do not guarantee future results. No rule, alert or position-sizing method can guarantee profits.</p>
 </div></footer>
