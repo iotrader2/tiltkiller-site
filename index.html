@@ -1,10 +1,19 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>TiltKiller · Trade the leaders. Stop blowing up.</title>
-<meta name="description" content="TiltKiller is a family of trading products. First up: stratAlerts in Discord, starting with High Growth Leaders. You pick your risk.">
-<link rel="icon" href="favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png"><link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png"><link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>TiltKiller · Stock Strategy Backtester &amp; Rules-Based Alerts</title>
+<meta name="description" content="stratBacktest (in beta) lets you build and backtest your own stock trading strategies on three years of data and test progressive exposure. stratAlerts, Discord trade alerts, is coming soon.">
+<link rel="canonical" href="https://tiltkiller.com/">
+<meta property="og:site_name" content="TiltKiller"><meta property="og:locale" content="en_US">
+<meta property="og:type" content="website"><meta property="og:url" content="https://tiltkiller.com/">
+<meta property="og:title" content="TiltKiller · Stock Strategy Backtester &amp; Rules-Based Alerts"><meta property="og:description" content="stratBacktest (in beta) lets you build and backtest your own stock trading strategies on three years of data and test progressive exposure. stratAlerts, Discord trade alerts, is coming soon.">
+<meta property="og:image" content="https://tiltkiller.com/img/og.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="TiltKiller: Ragnar the Viking in front of green price candles">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content="@tiltkillerapp">
+<meta name="twitter:title" content="TiltKiller · Stock Strategy Backtester &amp; Rules-Based Alerts"><meta name="twitter:description" content="stratBacktest (in beta) lets you build and backtest your own stock trading strategies on three years of data and test progressive exposure. stratAlerts, Discord trade alerts, is coming soon."><meta name="twitter:image" content="https://tiltkiller.com/img/og.jpg"><meta name="twitter:image:alt" content="TiltKiller: Ragnar the Viking in front of green price candles">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="theme-color" content="#07090d">
-<meta property="og:type" content="website"><meta property="og:url" content="https://tiltkiller.com/"><meta property="og:title" content="TiltKiller · Trade the leaders. Stop blowing up."><meta property="og:description" content="TiltKiller stratAlerts in Discord, starting with High Growth Leaders. Buy with entry and stop, sell when it's time."><meta property="og:image" content="https://tiltkiller.com/img/og.jpg">
-<meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content="@tiltkillerapp"><meta name="twitter:title" content="TiltKiller · Trade the leaders. Stop blowing up."><meta name="twitter:description" content="TiltKiller stratAlerts in Discord, starting with High Growth Leaders. Buy with entry and stop, sell when it's time."><meta name="twitter:image" content="https://tiltkiller.com/img/og.jpg">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://tiltkiller.com/#org","name":"TiltKiller","legalName":"Innovative Objects LLC","url":"https://tiltkiller.com/","logo":"https://tiltkiller.com/img/ragnar-512.jpg","description":"TiltKiller is a family of trading products: stratBacktest, a stock strategy backtester in beta, and stratAlerts, rules-based trade alerts in Discord, coming soon.","sameAs":["https://x.com/tiltkillerapp"],"founder":{"@type":"Person","name":"ioTrader","sameAs":["https://x.com/ioTrader"]}},{"@type":"WebSite","@id":"https://tiltkiller.com/#website","url":"https://tiltkiller.com/","name":"TiltKiller","publisher":{"@id":"https://tiltkiller.com/#org"},"inLanguage":"en"}]}</script>
 <style>
 :root{--bg:#07090d;--card:#0f141c;--text:#e6e9ef;--muted:#8b93a7;--blue:#38bdf8;--green:#22c55e;--red:#f43f5e}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
@@ -92,6 +101,7 @@ a.status:hover{border-color:var(--blue)}
 .product-alerts .how-steps{display:grid;gap:12px}
 .product-alerts .how-steps .card{padding:16px 18px;background:rgba(7,9,13,.35)}
 .product-alerts .how-steps .card b{font-size:22px;margin-bottom:4px}
+.products .card p.guide-link{margin-top:12px;font-size:14px}
 @media(max-width:800px){.products-layout{grid-template-columns:1fr}}
 </style></head><body>
 <div class="wrap"><nav><a class="home" href="/"><img src="img/ragnar-160.png" alt="">TiltKiller</a><div class="links"><a class="navlink" href="/stratalerts/"><span class="pname">strat<span>Alerts</span></span></a><a class="navlink" href="/stratbacktest/"><span class="pname">strat<span>Backtest</span></span></a></div></nav></div>
@@ -151,7 +161,9 @@ a.status:hover{border-color:var(--blue)}
           <li>Generate rules and backtest them on three years of 15-minute data.</li>
           <li>Iterate incrementally to optimize parameters for total gains and minimize drawdowns, with metrics on each version.</li>
           <li>Save version history so you can return to what worked best.</li>
+          <li>Test progressive exposure: risk less until a strategy is working, more as its winners come.</li>
         </ul>
+        <p class="guide-link"><a href="/backtesting-and-progressive-exposure/">New to this? Backtesting and progressive exposure, explained →</a></p>
       </div>
       <aside class="how-built" id="how-built" aria-label="How this was built">
         <div class="hb-top">
@@ -190,7 +202,7 @@ a.status:hover{border-color:var(--blue)}
 <span class="soon" role="status"><svg class="discord-mark" viewBox="0 0 24 24" width="16" height="16" role="img" aria-label="Discord" xmlns="http://www.w3.org/2000/svg"><title>Discord</title><path fill="#5865F2" d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg><strong>Trade alerts in Discord — opening soon</strong></span>
 </section>
 </main>
-<footer><div class="wrap"><p class="foot-links"><a href="/stratalerts/">stratAlerts</a><a href="/stratbacktest/">stratBacktest</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="https://x.com/tiltkillerapp" rel="noopener">@tiltkillerapp on X</a></p>
+<footer><div class="wrap"><p class="foot-links"><a href="/stratalerts/">stratAlerts</a><a href="/stratbacktest/">stratBacktest</a><a href="/backtesting-and-progressive-exposure/">Backtesting guide</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="https://x.com/tiltkillerapp" rel="noopener">@tiltkillerapp on X</a></p>
 <p>&copy; 2026 Innovative Objects LLC. TiltKiller is a family of trading products operated by Innovative Objects LLC.</p>
 <p class="disc">Legal stuff, translated from Old Norse: Ragnar is not a financial advisor. His only certification is in pillaging. He has lost three longships on margin, which is exactly why he built this. TiltKiller is an educational tool and does not provide financial advice. Trading involves risk of loss. No alert, rule, or deeply disappointed Viking can guarantee profits.</p></div></footer>
 <script>

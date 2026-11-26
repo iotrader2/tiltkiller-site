@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Backtesting and Progressive Exposure, Explained · TiltKiller</title>
+<meta name="description" content="What backtesting a stock strategy can and can&#x27;t tell you, and what progressive exposure is: raising risk per trade as recent results improve, lowering it as they worsen. With a worked example.">
+<link rel="canonical" href="https://tiltkiller.com/backtesting-and-progressive-exposure/">
+<meta property="og:site_name" content="TiltKiller"><meta property="og:locale" content="en_US">
+<meta property="og:type" content="article"><meta property="og:url" content="https://tiltkiller.com/backtesting-and-progressive-exposure/">
+<meta property="og:title" content="Backtesting and Progressive Exposure, Explained · TiltKiller"><meta property="og:description" content="What backtesting a stock strategy can and can&#x27;t tell you, and what progressive exposure is: raising risk per trade as recent results improve, lowering it as they worsen. With a worked example.">
+<meta property="og:image" content="https://tiltkiller.com/img/og.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="TiltKiller: Ragnar the Viking in front of green price candles">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content="@tiltkillerapp">
+<meta name="twitter:title" content="Backtesting and Progressive Exposure, Explained · TiltKiller"><meta name="twitter:description" content="What backtesting a stock strategy can and can&#x27;t tell you, and what progressive exposure is: raising risk per trade as recent results improve, lowering it as they worsen. With a worked example."><meta name="twitter:image" content="https://tiltkiller.com/img/og.jpg"><meta name="twitter:image:alt" content="TiltKiller: Ragnar the Viking in front of green price candles">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="theme-color" content="#07090d">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Backtesting and progressive exposure, in plain language","description":"What backtesting a stock strategy can and can't tell you, and what progressive exposure is: raising risk per trade as recent results improve, lowering it as they worsen. With a worked example.","inLanguage":"en","datePublished":"2026-11-26","dateModified":"2026-11-26","mainEntityOfPage":"https://tiltkiller.com/backtesting-and-progressive-exposure/","image":"https://tiltkiller.com/img/og.jpg","author":{"@type":"Organization","name":"TiltKiller","url":"https://tiltkiller.com/"},"publisher":{"@type":"Organization","name":"TiltKiller","url":"https://tiltkiller.com/","logo":{"@type":"ImageObject","url":"https://tiltkiller.com/img/ragnar-512.jpg"}}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is backtesting in trading?","acceptedAnswer":{"@type":"Answer","text":"Backtesting means replaying a written set of trading rules on past market data, trade by trade, to see what the rules would have done: how much they made or lost, how often they won, and how deep the worst drawdown was."}},{"@type":"Question","name":"Can a backtest predict future results?","acceptedAnswer":{"@type":"Answer","text":"No. A backtest is simulated, built with hindsight, and often tuned on the same data it is judged on. It can show you how a strategy behaves and what its bad stretches look like, but it does not guarantee future results."}},{"@type":"Question","name":"What is progressive exposure?","acceptedAnswer":{"@type":"Answer","text":"Progressive exposure means the amount you risk per trade is not fixed. You start small, step the risk up as your recent trades show the strategy is working, and step it back down after a run of losing trades."}},{"@type":"Question","name":"Does progressive exposure guarantee better returns?","acceptedAnswer":{"@type":"Answer","text":"No. It can make winning streaks count for more, but it also makes losses after a winning streak bigger, and it cannot turn a weak strategy into a good one. Stops are not guaranteed either: a stock that gaps down can open below your stop."}},{"@type":"Question","name":"Can I test progressive exposure in stratBacktest?","acceptedAnswer":{"@type":"Answer","text":"Yes. stratBacktest is in beta. On a strategy's Results page, switch to Account Performance and choose Progressive. You set a lowest risk, a highest risk and how many recent trades it looks at, and the account curve shows the risk each trade was sized at."}},{"@type":"Question","name":"Does High Growth Leaders use progressive exposure?","acceptedAnswer":{"@type":"Answer","text":"No. High Growth Leaders sizes every trade from one risk per trade that you choose, typically 0.1% to 0.5%. Its rules pull back in other ways: a cap of 3 new trades a day, a stop for the day after several losing trades in a row, and no new alerts when the overall market is weak."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"TiltKiller","item":"https://tiltkiller.com/"},{"@type":"ListItem","position":2,"name":"Backtesting and progressive exposure","item":"https://tiltkiller.com/backtesting-and-progressive-exposure/"}]}</script>
+<style>
+:root{--bg:#07090d;--card:#0f141c;--text:#e6e9ef;--muted:#8b93a7;--blue:#38bdf8;--line:#1b2330}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+a{color:var(--blue)}.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+nav{display:flex;align-items:center;gap:10px;padding:18px 0;font-weight:700;font-size:20px;flex-wrap:wrap}
+nav img{width:40px;height:40px;border-radius:50%}
+nav .home{display:flex;align-items:center;gap:10px;color:inherit;text-decoration:none}
+nav .links{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.navlink{font-size:14px;font-weight:600;color:#e6e9ef;text-decoration:none;padding:8px 16px;border:1px solid rgba(56,189,248,.45);border-radius:999px;transition:all .2s}
+.navlink:hover,.navlink.on{background:rgba(56,189,248,.12);border-color:#38bdf8;color:#38bdf8}.pname{color:var(--text)}.pname>span{color:var(--blue)}.navlink .pname,.navlink:hover .pname,.navlink.on .pname,.product-head a .pname,.product-head a:hover .pname{color:var(--text)}.navlink .pname>span,.navlink:hover .pname>span,.navlink.on .pname>span,.product-head a .pname>span,.product-head a:hover .pname>span{color:var(--blue)}.credit-note .pname>span{color:var(--blue)}
+.hero{padding:48px 0 20px;text-align:center}
+h1{font-size:clamp(30px,5vw,46px);line-height:1.1;margin:0 0 12px}
+.sub{max-width:640px;margin:0 auto 0;color:var(--muted);font-size:17px}
+.status{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--blue);border:1px solid rgba(56,189,248,.35);background:rgba(56,189,248,.08);padding:5px 10px;border-radius:999px;margin-bottom:16px;text-decoration:none}
+section{padding:28px 0 48px}
+.card{max-width:560px;margin:0 auto;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 20px}
+.feature-list{list-style:none;padding:0;margin:0}
+.card-h{margin:0 0 12px;font-size:17px;color:var(--text)}
+.steps{list-style:none;padding:0;margin:0 0 18px;display:flex;flex-wrap:wrap;gap:6px}
+.steps li{display:flex;align-items:center;gap:6px;padding:5px 11px 5px 6px;border:1px solid var(--line);border-radius:999px;font-size:13px;font-weight:600;color:var(--text)}
+.steps li span{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:rgba(56,189,248,.16);color:var(--blue);font-size:11px;font-weight:700}
+.feature-list li b{color:var(--text);font-weight:600}
+.feature-list li{position:relative;padding:10px 0 10px 14px;border-top:1px solid var(--line);color:var(--muted);font-size:15px;line-height:1.45}
+.feature-list li:first-child{border-top:0;padding-top:0}
+.feature-list li:before{content:"";position:absolute;left:0;top:calc(0.85em + 2px);width:5px;height:5px;border-radius:50%;background:rgba(56,189,248,.7)}
+.feature-list li:first-child:before{top:0.55em}
+.how-built{max-width:560px;margin:18px auto 0;padding:16px 16px 14px;border:1px solid var(--line);border-radius:14px;background:linear-gradient(135deg,rgba(15,20,28,.95),rgba(12,18,28,.9));text-align:left}
+.how-built .hb-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.how-built h2{font-size:15px;margin:0;text-align:left;font-weight:700}
+.model-badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;letter-spacing:.03em;color:var(--blue);border:1px solid rgba(56,189,248,.4);background:rgba(56,189,248,.08);padding:4px 9px;border-radius:999px}
+.model-badge .anthropic-mark{height:0.9em;width:auto;flex:none;display:block;color:currentColor}
+.how-built p{margin:0;color:var(--muted);font-size:13px;line-height:1.5}
+.how-built p strong{color:var(--text);font-weight:600}
+.how-built .hb-cta{display:inline-block;margin-top:10px;font-size:13px;font-weight:700;color:var(--blue);text-decoration:none}
+.how-built .hb-cta:hover{text-decoration:underline}
+footer{padding:40px 0;color:var(--muted);font-size:13px;border-top:1px solid var(--line);margin-top:20px}
+footer .disc{max-width:760px}
+footer .foot-links{display:flex;gap:14px;flex-wrap:wrap;margin:0 0 12px}
+footer .foot-links a{color:var(--muted);text-decoration:none;font-weight:600}
+footer .foot-links a:hover{color:var(--blue)}
+@media(max-width:560px){nav .links{width:100%;margin-left:0;gap:6px}.navlink{padding:7px 12px;font-size:13px}.tab{padding:7px 10px;font-size:12.5px}}
+.hero{padding:40px 0 8px;text-align:left}
+.hero h1{max-width:820px}.hero .sub{margin:0;max-width:760px}
+.crumb{display:flex;gap:8px;flex-wrap:wrap;padding:2px 0 10px;font-size:13px;font-weight:600;color:var(--muted)}
+.crumb a{color:var(--blue);text-decoration:none}.crumb a:hover{text-decoration:underline}.crumb .sep{opacity:.55}
+article{max-width:760px;padding:8px 0 24px}
+article h2{font-size:28px;line-height:1.2;margin:44px 0 12px}
+article h3{font-size:19px;margin:28px 0 8px}
+article p,article li{color:#c9cfdb;font-size:17px;line-height:1.65}
+article p{margin:0 0 14px}
+article ul,article ol{padding-left:22px;margin:0 0 16px}article li{margin:6px 0}
+article strong{color:var(--text)}
+.quick{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));margin:6px 0 8px}
+.quick .box{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--blue);border-radius:12px;padding:14px 16px}
+.quick .box b{display:block;color:var(--text);margin-bottom:4px}.quick .box span{color:#c9cfdb;font-size:16px;line-height:1.55}
+table.ladder{border-collapse:collapse;width:100%;max-width:520px;margin:6px 0 16px;font-size:16px}
+table.ladder caption{text-align:left;color:var(--muted);font-size:14px;padding-bottom:8px}
+table.ladder th,table.ladder td{border:1px solid var(--line);padding:9px 12px;text-align:left}
+table.ladder th{background:var(--card);color:var(--text)}table.ladder td{color:#c9cfdb}
+.callout{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:18px 0}
+.callout p:last-child{margin-bottom:0}
+.callout.warn{border-left:3px solid #f43f5e}
+.cta-box{background:linear-gradient(135deg,rgba(15,20,28,.95),rgba(12,18,28,.9));border:1px solid rgba(56,189,248,.35);border-radius:14px;padding:22px 22px;margin:36px 0 8px}
+.cta-box h2{margin:0 0 8px;font-size:24px}.cta-box p{margin-bottom:12px}
+.btn-row{display:flex;gap:12px;flex-wrap:wrap}
+.ghost-btn{display:inline-block;padding:11px 18px;border-radius:10px;border:1px solid rgba(56,189,248,.45);color:var(--text);font-weight:600;font-size:15px;text-decoration:none}
+.ghost-btn:hover{background:rgba(56,189,248,.1);border-color:#38bdf8;color:#38bdf8}
+details.faq{border-top:1px solid var(--line);padding:12px 0}details.faq:last-of-type{border-bottom:1px solid var(--line)}
+details.faq summary{cursor:pointer;font-weight:650;color:var(--text);font-size:17px}details.faq p{margin:10px 0 0}
+.byline{color:var(--muted);font-size:14px;margin-top:26px}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav>
+  <a class="home" href="/"><img src="/img/ragnar-160.png" alt="">TiltKiller</a>
+  <div class="links">
+    <a class="navlink" href="/stratalerts/"><span class="pname">strat<span>Alerts</span></span></a>
+    <a class="navlink" href="/stratbacktest/"><span class="pname">strat<span>Backtest</span></span></a>
+  </div>
+</nav>
+</div>
+
+<header class="hero"><div class="wrap">
+  <p class="crumb"><a href="/">TiltKiller</a><span class="sep">›</span><span>Backtesting and progressive exposure</span></p>
+  <h1>Backtesting and progressive exposure, <span style="color:var(--blue)">in plain language</span></h1>
+  <p class="sub">Two ideas rules-based stock traders lean on: testing a strategy on past data before risking money, and scaling how much you risk per trade up and down with how the strategy is doing. Here is what each one means, what it can and can’t tell you, and how to try both in stratBacktest.</p>
+</div></header>
+
+<main class="wrap"><article>
+<div class="quick">
+  <div class="box"><b>Backtesting</b><span>Replaying a written set of trading rules on past market data to see what they would have done.</span></div>
+  <div class="box"><b>Progressive exposure</b><span>Raising the risk per trade as your recent results improve, and lowering it as they worsen.</span></div>
+</div>
+
+<h2 id="backtesting">What is backtesting?</h2>
+<p>A backtest takes a written set of rules (which stocks, when to buy, where the stop goes, when to sell, how much to risk) and replays them over past market data, trade by trade. You get back a list of trades and the totals: what the rules made or lost, how often they won, and the <strong>drawdown</strong>, which is how far the account fell from a peak to the low that followed.</p>
+<p>Results are easiest to compare in <strong>R</strong>: 1R is the amount you risk on one trade, so it is what you lose if the stop is hit. A trade that makes 3R made three times what you risked. Measuring in R keeps a strategy’s results separate from how big your account happens to be.</p>
+
+<h3>Why backtest a stock strategy</h3>
+<ul>
+<li><strong>It forces the rules into writing.</strong> A rule you can’t write down can’t be tested, and can’t be followed on a bad day either.</li>
+<li><strong>It shows the bumps, not just the average.</strong> Losing streaks, deep drawdowns and flat months are part of the ride, and it is better to see them in a simulation first.</li>
+<li><strong>It lets you change one thing at a time.</strong> Run the same data with one setting different, and you can see what that setting did.</li>
+</ul>
+
+<h3>What a backtest can’t tell you</h3>
+<ul>
+<li><strong>The future.</strong> Markets change, and past results don’t guarantee future ones.</li>
+<li><strong>Whether you tuned it to the past.</strong> Try enough rule sets on the same data and one will look great by luck. Fewer rules and consistent results year to year are a healthier sign than a perfect-looking curve.</li>
+<li><strong>Real-world friction.</strong> Fills, delays and costs are never exactly what a simulation assumes.</li>
+<li><strong>Gap risk.</strong> A stop isn’t guaranteed. A stock that gaps down on news can open below your stop, and the loss can be bigger than planned. A good backtest counts those trades instead of hiding them.</li>
+</ul>
+
+<h3>A short checklist for a backtest worth trusting</h3>
+<ol>
+<li>Write the rules down first: the stocks, the entry, the stop, the exits and the risk per trade.</li>
+<li>Change one thing at a time, and keep every version with its results.</li>
+<li>Look at the worst stretch before you look at the total.</li>
+<li>Look at the individual trades. If a handful of big winners carry everything, size as if the next ones may not come.</li>
+<li>Expect quiet months. A strategy that stays out of weak markets will sometimes do nothing.</li>
+</ol>
+
+<h2 id="progressive-exposure">What is progressive exposure?</h2>
+<p><strong>Exposure</strong> is how much of your account is at risk in the market. With <strong>progressive exposure</strong> that amount isn’t fixed. You start small. As your recent trades show the strategy is working in the current market, you step the risk per trade up. When results turn and losers pile up, you step it back down.</p>
+<p>In short: press when it’s working, pull back when it isn’t. The idea is closely associated with trader Mark Minervini, and stratBacktest’s version is modeled on his approach. TiltKiller isn’t affiliated with him.</p>
+<p>Two things can drive that dial: how the overall market is behaving, and how your own recent trades turned out. stratBacktest’s progressive setting uses the second one, your own recent closed trades. The overall market is handled separately, by the market filter step that decides which days a strategy may open new trades at all.</p>
+
+<h3>A worked example</h3>
+<p>Say you set a lowest risk of 0.25% per trade and a highest of 0.5%, and you look at the last 10 closed trades. On a $100,000 account that is $250 at risk per trade at the low end and $500 at the high end.</p>
+<p>Until 10 trades have closed, every trade risks the lowest, 0.25%. After that, each winner among the last 10 moves the risk one step up, a tenth of the way from the lowest to the highest:</p>
+<table class="ladder">
+<caption>Risk per trade, by how many of the last 10 closed trades were winners</caption>
+<thead><tr><th>Winners in the last 10</th><th>Risk per trade</th><th>On $100,000</th></tr></thead>
+<tbody>
+<tr><td>0</td><td>0.25%</td><td>$250</td></tr>
+<tr><td>4</td><td>0.35%</td><td>$350</td></tr>
+<tr><td>6</td><td>0.40%</td><td>$400</td></tr>
+<tr><td>8</td><td>0.45%</td><td>$450</td></tr>
+<tr><td>10</td><td>0.50%</td><td>$500</td></tr>
+</tbody></table>
+<p>Only trades that had already closed when you bought count. The setting never peeks at the future.</p>
+
+<h3>Why traders do it</h3>
+<ul>
+<li>It keeps risk small while a strategy hasn’t proven itself, or has stopped working.</li>
+<li>It lets winning stretches count for more, because you are risking more while the strategy is working.</li>
+</ul>
+
+<h3>What it can’t do, and what keeps it in check</h3>
+<div class="callout warn">
+<p>Progressive exposure can’t make a weak strategy good. It also makes the swings bigger: a losing trade right after a winning streak costs more than the same loser at the lowest risk. It doesn’t guarantee a better result.</p>
+<p>Caps still matter. High Growth Leaders allows at most <strong>3 new trades a day</strong>, so at 0.5% risk per trade the most you put at risk on new trades in a day is 1.5%. <strong>Winners held overnight can stack</strong>: in the simulated backtest at a fixed 0.5% risk per trade, total open risk across held positions peaked at 2.5%. And <strong>stops aren’t guaranteed on gap-downs</strong>. A stock can open below your stop, and the loss can be bigger than the risk you planned.</p>
+</div>
+
+<h2 id="tiltkiller">How TiltKiller fits in</h2>
+<ul>
+<li><strong><a href="/stratbacktest/">stratBacktest</a> (in beta)</strong> lets you build a strategy in seven steps and backtest it on three years of daily and 15-minute data. In its Account Performance view you can size the account at a fixed risk per trade or a progressive one, choosing the lowest risk, the highest risk and how many recent trades it looks at. A band under the account curve shows the risk each trade was sized at, and the average and highest risk used.</li>
+<li><strong><a href="/rules/">High Growth Leaders</a></strong> sizes every trade from one risk per trade that you pick, typically 0.1% to 0.5%. Its rules don’t ramp that number up and down. They pull back in other ways: at most 3 new trades a day, a stop for the day after several losing trades in a row, and no alerts when the overall market is weak or choppy.</li>
+<li><strong><a href="/stratalerts/">stratAlerts</a></strong> is coming soon. Its alerts are sized from the risk you pick.</li>
+<li>Want to see a backtest end to end? Read <a href="/how-we-built/">how High Growth Leaders was tested</a> and the <a href="/backtest/">simulated results</a>. They are hypothetical and not actual trading.</li>
+</ul>
+
+<div class="cta-box">
+<h2>Try it in stratBacktest</h2>
+<p>Build a strategy, backtest it on three years of market data, and see what a progressive risk would have done to the account. stratBacktest is <a href="https://backtest.tiltkiller.com">in beta</a>.</p>
+<div class="btn-row"><a class="ghost-btn" href="https://backtest.tiltkiller.com">Open stratBacktest (in beta)</a><a class="ghost-btn" href="/stratbacktest/">What stratBacktest does</a></div>
+</div>
+
+<h2 id="faq">Common questions</h2>
+<details class="faq"><summary>What is backtesting in trading?</summary><p>Backtesting means replaying a written set of trading rules on past market data, trade by trade, to see what the rules would have done: how much they made or lost, how often they won, and how deep the worst drawdown was.</p></details>
+<details class="faq"><summary>Can a backtest predict future results?</summary><p>No. A backtest is simulated, built with hindsight, and often tuned on the same data it is judged on. It can show you how a strategy behaves and what its bad stretches look like, but it does not guarantee future results.</p></details>
+<details class="faq"><summary>What is progressive exposure?</summary><p>Progressive exposure means the amount you risk per trade is not fixed. You start small, step the risk up as your recent trades show the strategy is working, and step it back down after a run of losing trades.</p></details>
+<details class="faq"><summary>Does progressive exposure guarantee better returns?</summary><p>No. It can make winning streaks count for more, but it also makes losses after a winning streak bigger, and it cannot turn a weak strategy into a good one. Stops are not guaranteed either: a stock that gaps down can open below your stop.</p></details>
+<details class="faq"><summary>Can I test progressive exposure in stratBacktest?</summary><p>Yes. stratBacktest is in beta. On a strategy&#x27;s Results page, switch to Account Performance and choose Progressive. You set a lowest risk, a highest risk and how many recent trades it looks at, and the account curve shows the risk each trade was sized at.</p></details>
+<details class="faq"><summary>Does High Growth Leaders use progressive exposure?</summary><p>No. High Growth Leaders sizes every trade from one risk per trade that you choose, typically 0.1% to 0.5%. Its rules pull back in other ways: a cap of 3 new trades a day, a stop for the day after several losing trades in a row, and no new alerts when the overall market is weak.</p></details>
+
+<p class="byline">TiltKiller was built by <a href="https://x.com/ioTrader" target="_blank" rel="noopener">ioTrader</a> (<a href="https://x.com/ioTrader" target="_blank" rel="noopener">@ioTrader on X</a>).</p>
+</article></main>
+
+<footer><div class="wrap">
+  <p class="foot-links"><a href="/stratalerts/">stratAlerts</a><a href="/stratbacktest/">stratBacktest</a><a href="/backtesting-and-progressive-exposure/">Backtesting guide</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="https://x.com/tiltkillerapp" rel="noopener">@tiltkillerapp on X</a></p>
+  <p>&copy; 2026 Innovative Objects LLC. TiltKiller is a family of trading products operated by Innovative Objects LLC.</p>
+  <p class="disc">TiltKiller is an educational tool and does not provide financial advice. Trading involves risk of loss. Backtested and simulated results are hypothetical and do not guarantee future results. No rule, alert or position-sizing method can guarantee profits.</p>
+</div></footer>
+<script data-goatcounter="https://tiltkiller.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
