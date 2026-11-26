@@ -193,18 +193,20 @@ article .impact-short h2{font-size:24px;margin-top:40px}
 <p>Plenty of people will use both: TradingView for charts and single-symbol work, stratBacktest for universe-wide stock-strategy tests. Neither tool can promise profits. A backtest is a simulation.</p>
 
 
+
+
 <!-- impact:start -->
 <h2 id="on-an-account">What this looks like on a $100,000 account (simulated)</h2>
 <div class="impact impact-short">
-<p>A backtest is only useful if it shows what the rules would have done to an account, including in bad stretches. Here is what stratBacktest showed for the High Growth Leaders rules, tested on three years of market data. It is a simulation, and the account is a hypothetical one.</p>
+<p>A backtest is only useful if it shows what the rules would have done to an account, including in bad stretches. Here is a simulated run from stratBacktest: an example strategy tested on three years of market data, cash only, with progressive exposure setting the risk on each trade. The account is a hypothetical one.</p>
 <div class="scen-grid">
-<div class="scen"><div class="num pos"><b>$204,113</b><span>from $100,000 at 0.25% risk per trade, Nov 2023 to Nov 2026</span></div></div>
-<div class="scen"><div class="num pos"><b>26.8% a year</b><span>average yearly growth</span></div></div>
-<div class="scen"><div class="num neg"><b>−5.7%</b><span>largest drop from a peak</span></div></div>
-<div class="scen"><div class="num neg"><b>−22.9%</b><span>QQQ&rsquo;s worst drop in the same window (price only)</span></div></div>
+<div class="scen"><div class="num pos"><b>$266,272</b><span>from $100,000, Nov 27, 2023 to Nov 25, 2026 (cash only)</span></div></div>
+<div class="scen"><div class="num pos"><b>38.7% a year</b><span>average yearly growth</span></div></div>
+<div class="scen"><div class="num neg"><b>−16.0%</b><span>largest drop from a peak</span></div></div>
+<div class="scen"><div class="num neg"><b>249 days</b><span>longest stretch below a previous peak</span></div></div>
 </div>
-<p>In the two sharpest QQQ drops in that window, the rules took one trade each and the account barely moved. Every trade has a set stop from day one, and winners are protected with a stop that trails up. Progressive exposure adds a risk that starts small and steps up only after recent winners. At most 3 new trades a day, with rules set in advance, so there are no gut calls. Winners held overnight can stack (open risk peaked at 2.5% at 0.50% risk), and stops aren&rsquo;t guaranteed on gap-downs.</p>
-<p><strong>These are hypothetical results from a simulated backtest, not live trading. Past results do not guarantee future results, and nothing here is a promise of profit or investment advice.</strong> <a href="/backtesting-and-progressive-exposure/#on-an-account">See the full version, with the account chart, the rough patches and fixed against progressive exposure &rarr;</a></p>
+<p>Progressive exposure started each trade at 0.1% risk and stepped up toward 0.5% only after recent winners; it averaged 0.17% and topped out at 0.46%. 21 of 37 months made money, and 668 trades were skipped when cash was tied up. Every trade has a set stop from day one, and winners can be protected with a stop that trails up. Up to 33 positions were open at once, winners held overnight can stack, and stops aren&rsquo;t guaranteed on gap-downs.</p>
+<p><strong>These are hypothetical results from a simulated backtest, not live trading. Past results do not guarantee future results, and nothing here is a promise of profit or investment advice.</strong> <a href="/backtesting-and-progressive-exposure/#on-an-account">See the full version, with the month-by-month results &rarr;</a></p>
 </div>
 <!-- impact:end -->
 
