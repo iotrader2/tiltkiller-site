@@ -70,12 +70,7 @@ footer .foot-links a:hover{color:var(--blue)}
 .products .card p{margin:0;color:var(--muted);font-size:15.5px;line-height:1.55}
 .products .card .status{display:inline-block;margin-top:14px;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);border:1px solid #1b2330;background:rgba(15,20,28,.8);padding:5px 10px;border-radius:999px}
 .products .card .status.soonish{color:var(--blue);border-color:rgba(56,189,248,.35);background:rgba(56,189,248,.08)}
-.products-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;align-items:start}
-.product-backtester .feature-list{list-style:none;padding:0;margin:12px 0 0}
-.product-backtester .feature-list li{position:relative;padding:7px 0 7px 14px;border-top:1px solid #1b2330;color:var(--muted);font-size:14px;line-height:1.45}
-.product-backtester .feature-list li:first-child{border-top:0;padding-top:0}
-.product-backtester .feature-list li:before{content:"";position:absolute;left:0;top:calc(0.75em + 2px);width:5px;height:5px;border-radius:50%;background:rgba(56,189,248,.7)}
-.product-backtester .feature-list li:first-child:before{top:0.55em}
+.products-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;align-items:stretch}.products-layout>.card{display:flex;flex-direction:column}.product-backtester .card-ctas{margin-top:auto;padding-top:16px}
 .how-built{padding:16px 16px 14px;border:1px solid #1b2330;border-radius:14px;background:linear-gradient(135deg,rgba(15,20,28,.95),rgba(12,18,28,.9));text-align:left}
 .how-built .hb-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
 .how-built h2{font-size:15px;margin:0;text-align:left;font-weight:700}
@@ -94,12 +89,12 @@ a.status:hover{border-color:var(--blue)}
 .strategy-tagline{display:block;margin:4px 0 0;font-size:13px;font-weight:500;color:var(--muted);line-height:1.35}
 .hero .strategy-tagline{margin:6px 0 0}
 .products .strategy-name + .strategy-tagline{margin:4px 0 0}
-.product-alerts .how-alerts{margin-top:22px;padding-top:20px;border-top:1px solid #1b2330}
-.product-alerts .how-alerts h3{margin:0 0 6px;font-size:18px;font-weight:700;color:var(--text);text-align:left}
-.product-alerts .how-alerts .how-lead{margin:0 0 16px;color:var(--muted);font-size:14.5px;line-height:1.5}
-.product-alerts .how-steps{display:grid;gap:12px}
-.product-alerts .how-steps .card{padding:16px 18px;background:rgba(7,9,13,.35)}
-.product-alerts .how-steps .card b{font-size:22px;margin-bottom:4px}
+.products .how-alerts{margin-top:22px;padding-top:20px;border-top:1px solid #1b2330;display:flex;flex-direction:column;flex:1}
+.products .how-alerts h3{margin:0 0 6px;font-size:18px;font-weight:700;color:var(--text);text-align:left}
+.products .how-alerts .how-lead{margin:0 0 16px;color:var(--muted);font-size:14.5px;line-height:1.5}
+.products .how-steps{display:grid;gap:12px;flex:1;align-content:stretch;grid-auto-rows:1fr}
+.products .how-steps .card{padding:16px 18px;background:rgba(7,9,13,.35);display:flex;flex-direction:column;justify-content:center}
+.products .how-steps .card b{font-size:22px;margin-bottom:4px}
 .products .card p.guide-link{margin-top:12px;font-size:14px}
 @media(max-width:800px){.products-layout{grid-template-columns:1fr}}
 </style></head><body>
@@ -137,17 +132,23 @@ a.status:hover{border-color:var(--blue)}
           <strong><a href="/stratbacktest/"><span class="pname">strat<span>Backtest</span></span></a></strong>
           <a class="status soonish" href="https://backtest.tiltkiller.com">In beta</a>
         </div>
-        <ul class="feature-list">
-          <li>Generate rules and backtest them on three years of 15-minute data.</li>
-          <li>Iterate incrementally to optimize parameters for total gains and minimize drawdowns, with metrics on each version.</li>
-          <li>Save version history so you can return to what worked best.</li>
-          <li>Test progressive exposure: risk less until a strategy is working, more as its winners come.</li>
-        </ul>
+        <p>Build a strategy and test it on three years of 15-minute data. Change one setting at a time, keep a history of versions, and see what it would have done to a simulated account.</p>
+        <div class="how-alerts" id="how-the-backtest-works">
+          <h3>How the backtest works</h3>
+          <p class="how-lead">You write the rules before the first trade. The result is a hypothetical backtest, not live trading.</p>
+          <div class="how-steps">
+            <div class="card"><b>1</b><strong>Pick a strategy.</strong> Write the rules, or start from one you have, and run them on three years of market data.</div>
+            <div class="card"><b>2</b><strong>Set your account size and risk.</strong> Choose how much to risk per trade, up to 0.5%. You can keep it fixed, or use progressive exposure so it steps up after recent winners.</div>
+            <div class="card"><b>3</b><strong>See the simulated results.</strong> Look at the hypothetical account month by month, and against the market, including the rough stretches. Then take the strategy to stratAlerts, coming soon.</div>
+          </div>
+        </div>
+        <div class="card-ctas">
         <p class="guide-link"><a href="/backtesting-and-progressive-exposure/">New to this? Backtesting and progressive exposure, explained →</a></p>
         <!-- impact-home:start -->
         <p class="guide-link">Simulated: $100,000 grew to $266,272 (38.7% a year) in a cash-only stratBacktest run with progressive exposure, with a largest drop of −16.0% and 249 days below a previous peak. Hypothetical backtest, not live trading. <a href="/backtesting-and-progressive-exposure/#on-an-account">What it looks like on an account →</a></p>
         <p class="guide-link">Comparing tools? <a href="/stratbacktest-vs-tradingview/">stratBacktest vs TradingView</a> · <a href="/trendspider-alternatives/">TrendSpider alternatives</a></p>
         <!-- impact-home:end -->
+        </div>
       </div>
     <div class="card product-alerts">
       <div class="product-head">
