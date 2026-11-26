@@ -85,6 +85,27 @@ details.faq summary{cursor:pointer;font-weight:650;color:var(--text);font-size:1
 .byline{color:var(--muted);font-size:14px;margin-top:26px}
 .updated{color:var(--muted);font-size:14px;margin:0 0 18px}
 .legal-note{color:var(--muted);font-size:14px;margin-top:22px}
+/* impact css */
+/* impact section */
+.muted{color:var(--muted);font-size:.9em}
+.impact{margin:8px 0 8px}
+.scen-grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));margin:12px 0}
+.scen{background:var(--card);border:1px solid var(--line);border-top:3px solid var(--blue);border-radius:12px;padding:14px 16px}
+.scen h4{margin:0 0 10px;font-size:14px;color:var(--muted);font-weight:650;letter-spacing:.02em}
+.scen .nums{display:grid;grid-template-columns:1fr 1fr;gap:14px 12px}
+.num b{display:block;font-size:22px;line-height:1.2;color:var(--text)}
+.num span{display:block;font-size:13px;line-height:1.35;color:var(--muted);margin-top:2px}
+.num.pos b{color:#34d399}.num.neg b{color:#f87171}
+.chart{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 12px 8px;margin:14px 0}
+.chart svg{width:100%;height:auto;display:block}
+.chart figcaption{color:var(--muted);font-size:13.5px;line-height:1.5;margin-top:6px}
+figure.chart{margin-left:0;margin-right:0}
+.impact-short{max-width:none}
+.impact-short .scen-grid{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+.impact-short .num b{font-size:20px}
+article .impact-short h2{font-size:24px;margin-top:40px}
+.impact-note{font-size:14.5px;color:var(--muted)}
+/* impact css end */
 </style>
 </head>
 <body>
@@ -175,6 +196,22 @@ details.faq summary{cursor:pointer;font-weight:650;color:var(--text);font-size:1
 <li>Do not need the rest of a market terminal in the same product.</li>
 </ul>
 <p>Some traders will keep TrendSpider for research and execution and use stratBacktest for a second look at a stock strategy. That is a reasonable split. Neither product can guarantee results, and a strong backtest can still fail in live trading.</p>
+
+
+<!-- impact:start -->
+<h2 id="on-an-account">What this looks like on a $100,000 account (simulated)</h2>
+<div class="impact impact-short">
+<p>Whichever tool you use, the question for a swing trader is what a rule set would have done to an account when the market turned. Here is what stratBacktest showed for the High Growth Leaders rules, tested on three years of market data. It is a simulation, and the account is a hypothetical one.</p>
+<div class="scen-grid">
+<div class="scen"><div class="num pos"><b>$204,113</b><span>from $100,000 at 0.25% risk per trade, Nov 2023 to Nov 2026</span></div></div>
+<div class="scen"><div class="num pos"><b>26.8% a year</b><span>average yearly growth</span></div></div>
+<div class="scen"><div class="num neg"><b>−5.7%</b><span>largest drop from a peak</span></div></div>
+<div class="scen"><div class="num neg"><b>−22.9%</b><span>QQQ&rsquo;s worst drop in the same window (price only)</span></div></div>
+</div>
+<p>In the two sharpest QQQ drops in that window, the rules took one trade each and the account barely moved. Every trade has a set stop from day one, and winners are protected with a stop that trails up. Progressive exposure adds a risk that starts small and steps up only after recent winners. At most 3 new trades a day, with rules set in advance, so there are no gut calls. Winners held overnight can stack (open risk peaked at 2.5% at 0.50% risk), and stops aren&rsquo;t guaranteed on gap-downs.</p>
+<p><strong>These are hypothetical results from a simulated backtest, not live trading. Past results do not guarantee future results, and nothing here is a promise of profit or investment advice.</strong> <a href="/backtesting-and-progressive-exposure/#on-an-account">See the full version, with the account chart, the rough patches and fixed against progressive exposure &rarr;</a></p>
+</div>
+<!-- impact:end -->
 
 <div class="cta-box">
 <h2>Try stratBacktest</h2>
