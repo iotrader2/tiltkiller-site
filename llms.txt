@@ -1,0 +1,19 @@
+# TiltKiller
+
+> TiltKiller is a family of trading products from Innovative Objects LLC. stratBacktest, in beta, is a stock strategy backtester. stratAlerts, coming soon, is rules-based buy and sell alerts in Discord. TiltKiller is for education and information only and is not investment advice. Trading involves risk of loss. Backtested results are simulated and do not guarantee future results.
+
+## Pages
+
+- [TiltKiller](https://tiltkiller.com/): Home page for the product family.
+- [stratBacktest](https://tiltkiller.com/stratbacktest/): Marketing page for the stock strategy backtester. Build a strategy in seven steps, backtest it on three years of market data, and test progressive exposure. In beta.
+- [Open stratBacktest (in beta)](https://backtest.tiltkiller.com/): The app itself. Closed beta; sign-in required.
+- [Backtesting and progressive exposure](https://tiltkiller.com/backtesting-and-progressive-exposure/): Plain-language explainer of backtesting and of progressive exposure: raising or lowering risk per trade as recent results improve or worsen. Risk examples top out at 0.5% per trade.
+- [High Growth Leaders rules](https://tiltkiller.com/rules/): The written rules behind High Growth Leaders, long trades in liquid growth stocks. Uses a fixed risk per trade you choose (typically 0.1% to 0.5%), not progressive exposure.
+- [stratAlerts](https://tiltkiller.com/stratalerts/): Rules-based buy and sell alerts in Discord, starting with High Growth Leaders. Coming soon.
+
+## Optional
+
+- [High Growth Leaders backtest](https://tiltkiller.com/backtest/): Simulated results, November 2023 to November 2026. Not actual trading.
+- [How High Growth Leaders was tested](https://tiltkiller.com/how-we-built/): How the strategy was researched and backtested, one change at a time.
+- [Privacy Policy](https://tiltkiller.com/privacy/): What TiltKiller collects and how it is used.
+- [Terms of Use](https://tiltkiller.com/terms/): Education and information only, not investment advice.
