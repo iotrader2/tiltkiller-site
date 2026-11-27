@@ -77,7 +77,7 @@ footer .foot-links a:hover{color:var(--blue)}
   <p><b>Asking for beta access.</b> If you sign in before you're invited, you can ask to be let in. We keep your name, email, the messages you write (your 20 most recent, up to 500 characters each), how many times you asked, and when. We keep this even if we say "not now", so we can see interest and let you in later.</p>
   <p><b>What you build.</b> The strategies you create and save, their versions, and which version you tagged are stored with your account. Admins of TiltKiller can see every strategy saved in <span class="pname">strat<span>Backtest</span></span>, to run and support the service. Other users can't see yours.</p>
   <p><b>Kept in your browser.</b> Some things stay only in your browser's local storage and are not sent to us: unsaved drafts, trades you flag for review, the account value you enter on the Impact on Account tab, and similar display settings. Signing in also stores a session cookie so you stay signed in.</p>
-  <p><b>Usage and logs.</b> Our hosting providers record standard request logs, such as IP address, browser type, and the time of a request, to keep the service running and secure. This website (tiltkiller.com) counts page views with GoatCounter, which doesn't use cookies or follow you across other sites. The stratBacktest app has no analytics, and we don't use advertising trackers.</p>
+  <p><b>Usage and logs.</b> Our hosting providers record standard request logs, such as IP address, browser type, and the time of a request, to keep the service running and secure. This website (tiltkiller.com) counts page views with GoatCounter and Vercel Web Analytics. Neither uses cookies or follows you across other sites. The stratBacktest app has no analytics, and we don't use advertising trackers.</p>
 
   <h2>How we use your information</h2>
   <p>We use this information only to run <span class="pname">strat<span>Backtest</span></span>: to sign you in, decide who has beta access, save and run your strategies, and contact you about the service (for example, sign-in codes or letting you know you've been invited). We do not sell your personal data, and we do not use it for ads.</p>
@@ -88,11 +88,11 @@ footer .foot-links a:hover{color:var(--blue)}
   <ul>
     <li><b>Neon</b>: account sign-in (Neon Auth) and the database (Neon Postgres) that holds your account, strategies, and access requests.</li>
     <li><b>Resend</b>: sends sign-in codes and service emails.</li>
-    <li><b>Vercel</b>: hosts the <span class="pname">strat<span>Backtest</span></span> app.</li>
+    <li><b>Vercel</b>: hosts the <span class="pname">strat<span>Backtest</span></span> app, and this website when it is served from Vercel. It also provides Web Analytics for this website.</li>
     <li><b>Cloudflare</b>: runs the <span class="pname">strat<span>Backtest</span></span> API and backtests.</li>
     <li><b>GitHub Pages</b>: hosts this website.</li>
     <li><b>FormSubmit</b>: handles waitlist sign-ups.</li>
-    <li><b>GoatCounter</b>: counts page views on this website.</li>
+    <li><b>GoatCounter</b> and <b>Vercel Web Analytics</b>: count page views on this website.</li>
     <li><b>Google</b>: only if you choose Sign in with Google.</li>
   </ul>
   <p>Backtests use market price data from a market data provider. We send it ticker symbols and dates, not your personal data.</p>
@@ -120,5 +120,9 @@ footer .foot-links a:hover{color:var(--blue)}
   <p class="disc">TiltKiller is an educational tool and does not provide financial advice. Trading involves risk of loss. Simulated results are hypothetical and do not guarantee future results.</p>
 </div></footer>
 <script data-goatcounter="https://tiltkiller.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script>
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
